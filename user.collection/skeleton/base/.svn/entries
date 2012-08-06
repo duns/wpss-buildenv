@@ -1,0 +1,34 @@
+10
+
+dir
+12
+svn+ssh://chpap@localhost/var/svn-repos/overo-oe/user.collection/skeleton/base
+svn+ssh://chpap@localhost/var/svn-repos/overo-oe
+
+
+
+2012-01-22T22:12:26.932217Z
+12
+chpap
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8e858737-5c57-4c4f-8d60-9b84e776ba8a
+
+home
+dir
+
+etc
+dir
+

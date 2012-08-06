@@ -1,0 +1,30 @@
+diff -ruN git/arch//arm/mach-omap2/board-overo.c git-mod/arch//arm/mach-omap2/board-overo.c
+--- git/arch//arm/mach-omap2/board-overo.c	2012-01-31 07:11:45.920707365 +0100
++++ git-mod/arch//arm/mach-omap2/board-overo.c	2012-01-31 17:58:58.612365843 +0100
+@@ -748,7 +748,11 @@
+ #else
+ 	.mode			= MUSB_HOST,
+ #endif
++#if defined(CONFIG_OVERO_OTG_POWER_HACK)
++	.power			= 500,
++#else
+ 	.power			= 100,
++#endif
+ };
+ 
+ static void __init overo_init(void)
+diff -ruN git/arch//arm/mach-omap2/Kconfig git-mod/arch//arm/mach-omap2/Kconfig
+--- git/arch//arm/mach-omap2/Kconfig	2012-01-31 18:01:42.412364404 +0100
++++ git-mod/arch//arm/mach-omap2/Kconfig	2012-01-31 18:01:23.580364568 +0100
+@@ -141,6 +141,11 @@
+ 	default y
+ 	select OMAP_PACKAGE_CBB
+ 
++config OVERO_OTG_POWER_HACK
++	bool "Overo OTG port power hack"
++	depends on MACH_OVERO
++	default n
++
+ config MACH_OMAP3EVM
+ 	bool "OMAP 3530 EVM board"
+ 	depends on ARCH_OMAP3

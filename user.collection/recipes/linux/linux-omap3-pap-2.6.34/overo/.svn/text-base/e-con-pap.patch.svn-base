@@ -1,0 +1,73 @@
+--- a/arch/arm/mach-omap2/board-overo.c	2011-10-03 06:24:24.000000000 +0300
++++ b/arch/arm/mach-omap2/board-overo.c	2011-10-03 06:23:46.000000000 +0300
+@@ -607,6 +607,7 @@
+ 	},
+ };
+ 
++#if defined(CONFIG_VIDEO_OMAP3) || defined(CONFIG_VIDEO_OMAP3_MODULE)
+ /* Include V4L2 ISP-Camera driver related header file */
+ #include <../drivers/media/video/omap34xxcam.h>
+ #include <../drivers/media/video/mt9v032.h>
+@@ -682,14 +683,35 @@
+ 		.platform_data	= &mt9v032_platform_data,
+ 	},
+ };
++#endif
++
++#define LM3553_SLAVE_ADDRESS   0x53
++#define OV3640_I2C_ADDR                (0x78 >> 1)
++int omap3evm_ov3640_platform_data;
++int lm3553_platform_data;
++static struct i2c_board_info __initdata omap3_i2c_boardinfo_3[] = {
++       {
++               I2C_BOARD_INFO("ov3640", OV3640_I2C_ADDR),
++               .platform_data = &omap3evm_ov3640_platform_data,
++       },
++       {
++               I2C_BOARD_INFO("lm3553",LM3553_SLAVE_ADDRESS),
++               .platform_data = &lm3553_platform_data,
++       },
++};
+ 
+ static int __init overo_i2c_init(void)
+ {
+ 	omap_register_i2c_bus(1, 2600, overo_i2c_boardinfo,
+ 			ARRAY_SIZE(overo_i2c_boardinfo));
+ 	/* i2c2 pins are used for gpio */
++#if defined(CONFIG_VIDEO_OMAP3) || defined(CONFIG_VIDEO_OMAP3_MODULE)
+ 	omap_register_i2c_bus(3, 400, mt9v032_i2c_board_info, 
+ 			ARRAY_SIZE(mt9v032_i2c_board_info));
++#endif
++#if defined(CONFIG_VIDEO_OMAP3_ECON)
++	omap_register_i2c_bus(3, 400, omap3_i2c_boardinfo_3, ARRAY_SIZE(omap3_i2c_boardinfo_3));
++#endif
+ 	return 0;
+ }
+ 
+ 
+--- a/drivers/media/video/Kconfig	2011-10-03 05:25:14.000000000 +0300
++++ b/drivers/media/video/Kconfig.mod	2011-10-03 06:00:54.000000000 +0300
+@@ -833,6 +833,12 @@
+ 	  CMOS camera controller.  This is the controller found on first-
+ 	  generation OLPC systems.
+ 
++config VIDEO_OMAP3_ECON
++	bool "ECON Camera support"
++	depends on VIDEO_V4L2 && (ARCH_OMAP24XX || ARCH_OMAP34XX || ARCH_OMAP3430)
++	---help---
++	  Driver for an e-com camera.
++
+ config VIDEO_OMAP3
+ 	tristate "OMAP 3 Camera support"
+ 	select VIDEO_OMAP3_ISP
+--- a/arch/arm/mach-omap2/devices.c	2011-09-29 03:27:14.000000000 +0300
++++ b/arch/arm/mach-omap2/devices.c.mod	2011-10-03 06:02:20.000000000 +0300
+@@ -55,7 +55,7 @@
+ 	platform_device_register(&omap_cam_device);
+ }
+ 
+-#elif defined(CONFIG_VIDEO_OMAP3) || defined(CONFIG_VIDEO_OMAP3_MODULE)
++#elif defined(CONFIG_VIDEO_OMAP3) || defined(CONFIG_VIDEO_OMAP3_MODULE) || defined(CONFIG_VIDEO_OMAP3_ECON)
+ 
+ static struct resource omap3isp_resources[] = {
+ 	{

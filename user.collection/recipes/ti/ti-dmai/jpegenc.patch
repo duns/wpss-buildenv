@@ -1,0 +1,43 @@
+--- dmai_2_10_00_01+svnr570/packages/ti/sdo/dmai/ce/Ienc1.c.orig	2012-02-04 20:47:26.313237509 +0100
++++ dmai_2_10_00_01+svnr570/packages/ti/sdo/dmai/ce/Ienc1.c	2012-02-04 21:29:03.057215559 +0100
+@@ -286,3 +286,28 @@
+ 
+     return size;
+ }
++
++/******************************************************************************
++ * Ienc1_control
++ ******************************************************************************/
++Ienc1_Handle Ienc1_control(Ienc1_Handle hIe, IMGENC1_DynamicParams *dynParams)
++{
++    IMGENC1_Handle       hEncode;
++    IMGENC1_Status       encStatus;
++    XDAS_Int32           status;
++
++    hEncode = Ienc1_getVisaHandle(hIe);
++     /* Set dynamic parameters */
++     encStatus.data.buf = NULL;
++     encStatus.size = sizeof(IMGENC1_Status);
++     status = IMGENC1_control(hEncode, XDM_SETPARAMS, dynParams, &encStatus);
++
++        if (status != IMGENC1_EOK) {
++            Dmai_err1("XDM_SETPARAMS failed, status=%d\n", status);
++            IMGENC1_delete(hEncode);
++            free(hIe);
++            return NULL;
++        }
++
++    return hIe;
++}
+--- dmai_2_10_00_01+svnr570/packages/ti/sdo/dmai/ce/Ienc1.h.orig	2012-02-04 20:47:20.845237542 +0100
++++ dmai_2_10_00_01+svnr570/packages/ti/sdo/dmai/ce/Ienc1.h	2012-02-04 21:31:51.089214084 +0100
+@@ -167,6 +167,9 @@
+  * @remarks     #Ienc1_create must be called before this function.
+  */
+ extern Int32 Ienc1_getOutBufSize(Ienc1_Handle hIe);
++extern Ienc1_Handle Ienc1_control(Ienc1_Handle hIe, IMGENC1_DynamicParams *dynParams);
++
++
+ 
+ #if defined (__cplusplus)
+ }

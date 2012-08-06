@@ -1,0 +1,31 @@
+--- a/security/coreconf/Linux.mk	2012-02-01 14:17:02.259723097 +0100
++++ b/security/coreconf/Linux.mk.mod	2012-02-01 14:15:09.375724091 +0100
+@@ -57,7 +57,7 @@
+ 
+ LIBC_TAG		= _glibc
+ 
+-ifeq ($(OS_RELEASE),2.0)
++#ifeq ($(OS_RELEASE),2.0)
+ 	OS_REL_CFLAGS	+= -DLINUX2_0
+ 	MKSHLIB		= $(CC) -shared -Wl,-soname -Wl,$(@:$(OBJDIR)/%.so=%.so) $(RPATH)
+ 	ifdef MAPFILE
+@@ -65,7 +65,7 @@
+ 	endif
+ 	PROCESS_MAP_FILE = grep -v ';-' $< | \
+          sed -e 's,;+,,' -e 's; DATA ;;' -e 's,;;,,' -e 's,;.*,;,' > $@
+-endif
++#endif
+ 
+ ifdef BUILD_OPT
+ ifeq (11,$(ALLOW_OPT_CODE_SIZE)$(OPT_CODE_SIZE))
+--- a/security/coreconf/config.mk	2012-02-01 14:16:24.187723433 +0100
++++ b/security/coreconf/config.mk.mod	2012-02-01 14:15:50.467723730 +0100
+@@ -63,7 +63,7 @@
+ #######################################################################
+ 
+ TARGET_OSES = FreeBSD BSD_OS NetBSD OpenUNIX OS2 QNX Darwin BeOS OpenBSD \
+-              AIX RISCOS WINNT WIN95 WINCE
++              AIX RISCOS WINNT WIN95 WINCE Linux
+ 
+ ifeq (,$(filter-out $(TARGET_OSES),$(OS_TARGET)))
+ include $(CORE_DEPTH)/coreconf/$(OS_TARGET).mk

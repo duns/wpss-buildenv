@@ -1,0 +1,37 @@
+Index: git/source/mpu_api/make/build.mk
+===================================================================
+--- git.orig/source/mpu_api/make/build.mk	2010-04-26 17:10:24.000000000 +0200
++++ git/source/mpu_api/make/build.mk	2010-04-27 11:46:01.000000000 +0200
+@@ -43,11 +43,11 @@
+ ST_LIBS     := $(strip $(ST_LIBS))
+ SH_LIBS     := $(strip $(SH_LIBS))
+ 
+-CFLAGS      := $(strip $(CFLAGS))
++#CFLAGS      := $(strip $(CFLAGS))
+ CDEFS       := $(strip $(CDEFS))
+ EXEC_ARGS   := $(strip $(EXEC_ARGS))
+ ST_LIB_ARGS := $(strip $(ST_LIB_ARGS))
+-SH_LIB_ARGS := $(strip $(SH_LIB_ARGS))
++#SH_LIB_ARGS := $(strip $(SH_LIB_ARGS))
+ 
+ #   ----------------------------------------------------------
+ #   COMPILER OPTIONS
+@@ -79,7 +79,7 @@
+ #   Machine dependent
+ 
+ ifeq ($(PROCFAMILY),OMAP_3430)
+-CFLAGS += -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -march=armv7-a -msoft-float -Uarm -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR($(basename $(TARGETNAME)))" -D"KBUILD_MODNAME=KBUILD_STR($(basename $(TARGETNAME)))"  -DMODULE -D__LINUX_ARM_ARCH__=7
++#CFLAGS += -mapcs -mno-sched-prolog -mabi=aapcs-linux -mno-thumb-interwork -march=armv7-a -msoft-float -Uarm -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR($(basename $(TARGETNAME)))" -D"KBUILD_MODNAME=KBUILD_STR($(basename $(TARGETNAME)))"  -DMODULE -D__LINUX_ARM_ARCH__=7
+ endif
+ 
+ #   Code generation
+@@ -150,7 +150,8 @@
+ 
+ ifeq ($(TARGETTYPE),SH_LIB)
+ CFLAGS += -fpic
+-TARGETARGS := $(SH_LIB_ARGS) -nostartfiles -nodefaultlibs -nostdlib -shared -Wl
++#TARGETARGS := $(SH_LIB_ARGS) -nostartfiles -nodefaultlibs -nostdlib -shared -Wl
++TARGETARGS := ${LDFLAGS} -shared -Wl
+ ifneq ($(SH_SONAME),)
+ TARGETARGS += -Wl,-soname,$(SH_SONAME)
+ endif

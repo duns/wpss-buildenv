@@ -1,0 +1,4320 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+   
+   
+    
+    
+         <!-- provider content goes here -->
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Account Login</title>
+<link rel="stylesheet" type="text/css" href="https://focus.ti.com/css/shared/ticom4-myti-login.css">
+</head>
+<body>
+<a name="top" id="top"></a>
+<!-- Header Starts -->
+    
+
+
+
+<!-- Modified for Kintana 38585 starts -->
+<script language="javascript" type="text/javascript" src="https://focus.ti.com/secure/en/js/shared/menu/header/includes.js"></script>
+<!-- Modified for Kintana 38585 ends -->
+
+<!-- TI Header Begins -->
+
+<div id="header">
+
+  <div id="hdrtop">
+
+    <div id="hdrlogo"><a href="http://www.ti.com/hdr_home"><img src="https://focus.ti.com/en/graphics/header/hdr_ti_logo.gif" alt="Texas Instruments" width="226" height="31" border="0"></a></div>
+
+    <div>
+
+    <ul id="hdrtoplinks">
+
+      <li><a href="http://www.ti.com/hdr_contact">Contact Us</a></li>
+
+      <li>|</li>
+
+      <li><a href="http://www.ti.com/hdr_worldwide">TI Worldwide</a>:&nbsp;United States</li>
+
+      <li>|</li>
+
+      <li class="last_item"><a href="http://www.ti.com/hdr_my_ti">my.TI Login</a></li>
+
+    </ul>
+
+    </div>
+
+  </div>
+
+  <div id="hdrblackbar">
+
+    <ul id="hdrnav" class="nav">
+
+      <li class="products"><a href="http://www.ti.com/hdr_p_products" class="products_list"><img src="https://focus.ti.com/en/graphics/header/hdr_products.gif" border="0" alt="Products"></a>
+
+        <script language="javascript" type="text/javascript">menu_products();</script>
+
+      </li>
+
+      <li class="applications"><a href="http://www.ti.com/hdr_a_appln" class="applications_list"><img src="https://focus.ti.com/en/graphics/header/hdr_apps.gif" border="0" alt="Applications"></a>
+
+        <script language="javascript" type="text/javascript">menu_applications();</script>
+
+      </li>
+
+      <li class="dsgnspprt"><a href="http://www.ti.com/hdr_s_design" class="dsgnspprt_list"><img src="https://focus.ti.com/en/graphics/header/hdr_dsgn_spprt.gif" border="0" alt="Design Support"></a>
+
+        <script language="javascript" type="text/javascript">menu_designsupport();</script>
+
+      </li>
+
+      <li class="smplbuy"><a href="http://www.ti.com/hdr_b_buy" class="smplbuy_list"><img src="https://focus.ti.com/en/graphics/header/hdr_smpl_buy.gif" border="0" alt="Sample & Buy"></a>
+
+        <script language="javascript" type="text/javascript">menu_samplebuy();</script>
+
+      </li>
+
+    </ul>
+
+    <div id="hdrsearches">
+
+      <div id="hdrsearchbox">
+
+        <table border="0" cellpadding="0" cellspacing="0">
+
+          <tr>
+
+            <form action="http://focus.ti.com/general/docs/sitesearch/generalsearch.tsp" name="keywordSearchForm" id="keywordSearchForm">
+
+                <td><input style="" name="query" type="text" class="hdrfrm" value='Enter Keyword' onFocus="if(this.value=='Enter Keyword') this.value='';" onBlur="if(this.value=='') this.value='Enter Keyword';" /></td>
+
+                <td>
+
+                    <input name="go" type="submit" class="btn_go" value="GO">
+
+                    <input type="hidden" name="siteSearch.x" value="sc" />
+
+                    <input type="hidden" name="site" value="sc" />
+
+                </td>
+
+            </form>
+
+            <td>&nbsp;</td>
+
+            <form action="http://focus.ti.com/general/docs/sitesearch/generalsearch.tsp" name="partSearchForm" id="partSearchForm">
+
+                <td><input name="query" type="text" class="hdrfrm" value='Enter Part Number' style="width: 13em;" onFocus="if(this.value=='Enter Part Number') this.value='';" onBlur="if(this.value=='') this.value='Enter Part Number';"></td>
+
+                <td>
+
+                    <input name="go" type="submit" class="btn_go" value="GO">
+
+                    <input type="hidden" name="partSearch.x" value="sc" />
+
+                    <input type="hidden" name="site" value="sc" />
+
+                </td>
+
+            </form>
+
+          </tr>
+
+        </table>
+
+      </div>
+
+      <ul id="hdrallsearches" class="nav">
+
+        <li><a href="http://www.ti.com/hdr_allsearch">all searches</a>
+
+          <script language="javascript" type="text/javascript">menu_allsearches();</script>
+
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <div id="hdrclear">
+
+    <!-- -->
+
+  </div>
+
+</div>
+
+<!-- TI Header Ends -->
+
+
+
+
+<!-- Header Ends -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script language="javascript"">
+    
+    var tiContentGroup = '/myti/portal/Default/Combined/Not-Remembered';
+	var tiPageName='Login-EN';
+	
+</script>
+
+
+<script language="javascript" src="https://ti-pass.ext.ti.com/scripts/iatc.js" type="text/javascript"></script>
+<script language="javascript" src="https://ti-pass.ext.ti.com/scripts/global.js" type="text/javascript"></script>
+
+
+<!-- Jquery - Scripts - Start -->
+
+
+
+<script type="text/javascript" src="https://myportal.ti.com/loginportal/js/shared/jquery-latest.js"></script>
+<script type="text/javascript" src="https://myportal.ti.com/loginportal/js/shared/jquery-myti-login-language-toggle.js"></script>
+<script type="text/javascript" src="https://focus.ti.com/js/shared/jquery-tooltip.js"></script>
+<script type="text/javascript" src="https://myportal.ti.com/loginportal/js/shared/myti-validations.js"></script>
+
+
+<!-- Jquery - Scripts - End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Login - Start -->
+  <!-- Form Wrapper - Start -->
+
+
+
+
+
+
+<!-- BEGIN FULL  TOP CHANNELS -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- END TOP CHANNELS -->
+
+<!-- Page Margin - Start -->
+<div id="pgmargin" class="portal ticom3">
+<!-- Silo Title - Start -->
+
+
+
+
+
+
+
+<!-- Silo Title - Start -->
+<div id="silotitle"><h1 class="silotitle">my.TI Account</h1><div class="silotitleRule">&nbsp;</div></div>
+<!-- Silo Title - End -->
+
+
+<!-- Silo Title - End -->
+  <!-- Middle Area - Start -->
+<div id="middle">
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+<!-- BEGIN LEFT CHANNELS -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+    
+    
+
+    
+      
+      
+      
+
+
+      
+        
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Existing User Login - Start -->
+<div id="existingUser">
+<form id="loginForm" action='https://ti-pass.ext.ti.com/cgi-bin/login/plogin.pl'
+                method="post" name="userid_form" enctype="application/x-www-form-urlencoded">
+
+<h2>Existing user? Log in here:</h2>
+
+<div id="exEmailDiv">
+<label for="exmyTIEmail" id="exEmail">Your email address:</label>
+<input type="text" id="exmyTIEmail" name="fld2"  tabindex="1" title="Your email address:">
+</div>
+
+<div id="exPasswordDiv">
+
+<label for="exmyTIPassword" id="exPassword">Your my.TI password:</label>
+<input type="password" id="exmyTIPassword" name="fld5" tabindex="2"  title="Your my.TI password:" autocomplete="off" maxlength="12">
+</div>
+
+<div id="exRememberDiv"><input tabindex="3" id="exmyTIRememberMe" name="fld3" type="checkbox" value="1" CHECKED title="Remember me"> <label for="exmyTIRememberMe" id="exRemember">Remember me</label> <a href="javascript:popWin('http://focus.ti.com/general/docs/staticcontent.tsp?contentId=29125','WhatThis','width=405,height=415')" name="&lid=en_US_myti _Default_remember_me_login_questionmark"><img border="0" class="helpicon" alt="Help - What's this?" src="https://focus.ti.com/graphics/shared/help-ico.gif">
+
+
+
+</a></div>
+
+<div id="exLoginDiv"><input tabindex="4" name="SignUp" type="submit" onclick="_hbLink('en_US_myti _Default_login_btn_click');"   value="Log in" class="btn3"></div>
+
+<div id="exforgotDiv"><p><a href="https://focus.ti.com/tipass/docs/forgotpasswordform.tsp" name="&lid=en_US_myti _Default_forgot');">Forgot your password?</a></p></div>
+<!-- Existing User Login - End -->
+<!-- Hidden Parameters -->
+
+                     <input type="hidden" name="j3" value="1" >
+
+                     <input type="hidden" name="lt" value="myti" >
+
+                     <input type="hidden" name="fld1" value="a8f4565d0a1295e506191718d2d3f65d" >
+
+                     <input type="hidden" name="portal" value="1" >
+
+                     <input type="hidden" name="j5" value="2" >
+
+                     <input type="hidden" name="OKPage" value="http://software-dl.ti.com:80/dsps/dsps_registered_sw/sdo_ccstudio/codegen/C6000/6.1.20/exports/ti_cgt_c6000_6.1.20_setup_linux_x86.bin" >
+
+                     <input type="hidden" name="fld4" value="all" >
+
+                     <input type="hidden" name="provider" value="TIPassLoginSingleContainer" >
+
+                     <input type="hidden" name="ErrPage" value="https://myportal.ti.com:443/portal/dt?j3=1&lt=myti&j5=2&OKPage=http%3A%2F%2Fsoftware-dl.ti.com%3A80%2Fdsps%2Fdsps_registered_sw%2Fsdo_ccstudio%2Fcodegen%2FC6000%2F6.1.20%2Fexports%2Fti_cgt_c6000_6.1.20_setup_linux_x86.bin&provider=TIPassLoginSingleContainer" >
+
+  <!-- Set focus of cursor -->
+  <script language="javascript">
+
+    document.userid_form.fld2.focus();
+
+  </script>
+
+</form>
+</div>
+
+  
+
+
+
+        
+      
+    
+  
+
+
+
+
+<!-- END LEFT CHANNELS -->
+<!-- BEGIN CENTER CHANNELS -->
+
+<!-- END CENTER CHANNELS -->
+
+<!-- BEGIN RIGHT CHANNELS -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+    
+    
+
+    
+      
+      
+      
+
+
+      
+        
+
+
+
+
+
+  
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script language="Javascript">
+
+function setCookie(c_name, value, expiredays) {
+            var exdate=new Date();
+            exdate.setDate(exdate.getDate() + expiredays);
+           // document.cookie = c_name+ "=" +escape(value)+";path=/"+";domain=.ti.com"+((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+            document.cookie = c_name+ "=" +escape(value)+";path=/"+";domain=.ti.com";
+}
+function getCookieVal (offset) {
+  var endstr = document.cookie.indexOf (";", offset);
+  if (endstr == -1) { endstr = document.cookie.length; }
+  return unescape(document.cookie.substring(offset, endstr));
+  }
+
+function GetCookie (name) {
+  var arg = name + "=";
+  var alen = arg.length;
+  var clen = document.cookie.length;
+  var i = 0;
+  while (i < clen) {
+    var j = i + alen;
+    if (document.cookie.substring(i, j) == arg) {
+      return getCookieVal (j);
+      }
+    i = document.cookie.indexOf(" ", i) + 1;
+    if (i == 0) break;
+    }
+  return null;
+  }
+
+</script>
+
+
+
+<script type="text/javascript">
+
+    $.cookie('showTop','expanded');
+
+</script>
+
+
+<script type="text/javascript" src="https://myportal.ti.com/loginportal/js/shared/myti-validations.js"></script>
+<script type="text/javascript">
+
+var pageErrors = new Hash();
+var pageErr = new Array();
+
+
+var errorsHash = new Hash();
+errorsHash.setItem("error.country.not.selected",'Please select a country for signing up.');
+errorsHash.setItem("error.reg.emailTI",'Your email address cannot be @ ti.com.');
+errorsHash.setItem("error.reg.invalidemail",'This email address already exists in our system. Please retype the email address, or try to log in with the address');
+errorsHash.setItem("error.reg.passwordMatch",'This password must match the password above; please retype');
+errorsHash.setItem("error.reg.nonAscii",'Please use only ASCII characters');
+errorsHash.setItem("error.reg.passwordInvalid",'Your password must contain at least 6 characters; please select a different password');
+errorsHash.setItem("error.reg.invalidName",'Please do not use the "|" (vertical bar) character in name');
+errorsHash.setItem("error.reg.provide.info",'Please provide this information');
+errorsHash.setItem("CNerror.country.not.selected",'Please select a country for signing up.');
+errorsHash.setItem("CNerror.reg.emailTI",'电子邮件地址不能以 ti.com 结尾');
+errorsHash.setItem("CNerror.reg.invalidemail","此电子邮件地址已存在于我们的系统中。 请重新键入电子邮件地址，或者尝试使用该地址登录。");
+errorsHash.setItem("CNerror.reg.passwordMatch",'此密码必须与上述密码匹配；请重新键入');
+errorsHash.setItem("CNerror.reg.nonAscii",'请只使用 ASCII 字符');
+errorsHash.setItem("CNerror.reg.passwordInvalid",'输入的密码必须为 6 到 12 个字符');
+errorsHash.setItem("CNerror.reg.invalidName",'请不要在公司名称中使用 "|"（竖线）字符');
+errorsHash.setItem("CNerror.reg.provide.info",'请提供以下信息：');
+errorsHash.setItem("JPerror.country.not.selected",'Please select a country for signing up.');
+errorsHash.setItem("JPerror.reg.emailTI",'メール・アドレスの末尾は ti.com にできません');
+errorsHash.setItem("JPerror.reg.invalidemail",'﻿この e メール・アドレスは既に登録されています。');
+errorsHash.setItem("JPerror.reg.passwordMatch",'パスワードが、上に入力したパスワードと異なります。入力し直してください。');
+errorsHash.setItem("JPerror.reg.nonAscii",'﻿ローマ字で入力してください。');
+errorsHash.setItem("JPerror.reg.passwordInvalid",'パスワードには 6～12 文字必要です。');
+errorsHash.setItem("JPerror.reg.invalidName",'"|" 文字（縦棒）は会社名に使用しないでください');
+errorsHash.setItem("JPerror.reg.provide.info",'﻿この項目は必須です。');
+
+function initErrors() {
+    init();
+    prepopulate();
+   //cookie value -- expanded1 = CN, expanded2 = JP
+     var showTop = $.cookie('showTop');
+     if (showTop == 'expanded1') {
+        showErrors('CN');
+     } else if (showTop == 'expanded2') {
+        showErrors('JP');
+     } else {
+        showErrors('');
+     }
+}
+
+function prepopulate() {
+   var regForm = document.forms["myti_reg_form"];
+   var showTop= $.cookie('showTop');
+   if(regForm) 
+	  {
+			
+					
+			
+
+			
+
+		 
+	 
+
+
+
+
+
+	
+   }
+}
+function hideAllErrors()
+{
+  
+     fullFormClear();
+  
+     document.getElementById("newUserError").className = "hide";
+}
+
+function ValidateForm(regForm) {
+    var valid = 1;
+    hideAllErrors();
+    
+         //cookie value -- expanded1 = CN, expanded2 = JP
+         var showTop = $.cookie('showTop');
+         if (showTop == 'expanded1') {
+            valid = validateCN(regForm);
+         } else if (showTop == 'expanded2') {
+            valid = validateJP(regForm);
+         } else {
+            valid = validateWW(regForm);
+         }
+    
+
+    if(valid == 1) {
+           if (regForm.actionId != null && regForm.actionId.value != null &&
+                  trim(regForm.actionId.value) != "" && trim(regForm.actionId.value) != "null") {
+            } else {
+               regForm.actionId.value = 0;
+            }
+            regForm.submit();
+     } else {
+        document.getElementById("newUserError").className = "";
+        scroll(0,0);
+     }
+}
+
+
+function validateWW(regForm) {
+   var valid = 1;
+   if(regForm.countryCodeEN) {
+      if(trim(regForm.countryCodeEN.value) == "" || trim(regForm.countryCodeEN.value) == "-99" || trim(regForm.countryCodeEN.value) == "-100") {
+         document.getElementById("newCountryDiv").className = "error";
+         document.getElementById("newCountryDivErr").className = "errorMsg";
+         document.getElementById("newCountryDivErr").innerHTML = "<p>Please select a country for signing up.</p>";
+         valid = 0;
+      }
+      regForm.countryCode.value = regForm.countryCodeEN.value;
+   }
+
+   var email = trim(regForm.newmyTIEmailAddress.value);
+   if(isValidEmail(email)) {
+      if(email.substring(email.length-7,email.length) == "@ti.com" ||
+                      email.substring(email.length-7,email.length) == ".ti.com") {
+           document.getElementById("newEmailDiv").className = "error";
+           document.getElementById("newEmailAddressErr").className = "errorMsg";
+           document.getElementById("newEmailAddressErr").innerHTML = "<p>Your email address cannot be @ ti.com.</p>";
+           valid = 0;
+      }
+   } else {
+      document.getElementById("newEmailDiv").className = "error";
+      document.getElementById("newEmailAddressErr").className = "errorMsg";
+      document.getElementById("newEmailAddressErr").innerHTML = "<p>We can't recognize your email address; please check it for accuracy</p>";
+      valid = 0;
+   }
+   regForm.emailId.value = regForm.newmyTIEmailAddress.value;
+
+   var pwd = trim(regForm.newmyTIPassword.value);
+   if(isValidPassword(pwd) == 'false') {
+      document.getElementById("newPasswordDiv").className = "error";
+      document.getElementById("newPasswordErr").className = "errorMsg";
+      document.getElementById("newPasswordErr").innerHTML = "<p>Your password must contain at least 6 characters; please select a different password</p>";
+      valid = 0;
+    } else if (isValidPassword(pwd) == 'n-ascii') {
+       document.getElementById("newPasswordDiv").className = "error";
+       document.getElementById("newPasswordErr").className = "errorMsg";
+       document.getElementById("newPasswordErr").innerHTML = "<p>Please use only ASCII characters</p>";
+       valid = 0;
+    }
+    regForm.password.value = regForm.newmyTIPassword.value;
+
+    if(trim(regForm.newmyTIConfirmPassword.value) != pwd) {
+       document.getElementById("newConfirmPasswordDiv").className = "error";
+       document.getElementById("newConfirmPasswordErr").className = "errorMsg";
+       document.getElementById("newConfirmPasswordErr").innerHTML = "<p>This password must match the password above; please retype</p>";
+       valid = 0;
+    }
+    regForm.passwordConfirm.value = regForm.newmyTIConfirmPassword.value;
+
+    if(trim(regForm.newmyTIFirstName.value) == "") {
+       document.getElementById("newFirstNameDiv").className = "error";
+       document.getElementById("newFirstNameErr").className = "errorMsg";
+       document.getElementById("newFirstNameErr").innerHTML = "<p>Please provide this information</p>";
+       valid = 0;
+    } else if(regForm.newmyTIFirstName.value.indexOf('|') >= 0) {
+       document.getElementById("newFirstNameDiv").className = "error";
+       document.getElementById("newFirstNameErr").className = "errorMsg";
+       document.getElementById("newFirstNameErr").innerHTML = "<p>Please do not use the "|" (vertical bar) character in name</p>";
+       valid = 0;
+    }
+    regForm.firstName.value = regForm.newmyTIFirstName.value;
+
+    if(trim(regForm.newmyTILastName.value) == "") {
+       document.getElementById("newLastNameDiv").className = "error";
+       document.getElementById("newLastNameErr").className = "errorMsg";
+       document.getElementById("newLastNameErr").innerHTML = "<p>Please provide this information</p>";
+       valid = 0;
+    } else if(regForm.newmyTILastName.value.indexOf('|') >= 0) {
+       document.getElementById("newLastNameDiv").className = "error";
+       document.getElementById("newLastNameErr").className = "errorMsg";
+       document.getElementById("newLastNameErr").innerHTML = "<p>Please do not use the "|" (vertical bar) character in name</p>";
+       valid = 0;
+    }
+    regForm.lastName.value = regForm.newmyTILastName.value;
+
+    if(trim(regForm.newmyTICompany.value) == "") {
+       document.getElementById("newCompanyDiv").className = "error";
+       document.getElementById("newCompanyErr").className = "errorMsg";
+       document.getElementById("newCompanyErr").innerHTML = "<p>Please provide this information</p>";
+       valid = 0;
+    } else if(regForm.newmyTICompany.value.indexOf('|') >= 0) {
+       document.getElementById("newCompanyDiv").className = "error";
+       document.getElementById("newCompanyErr").className = "errorMsg";
+       document.getElementById("newCompanyErr").innerHTML = '<p>Please do not use the "|" (vertical bar) character in name</p>';
+       valid = 0;
+    }
+    regForm.companyName.value = regForm.newmyTICompany.value;
+
+    if(regForm.newmyTIRememberMe.checked == true) {
+       regForm.rememberMe.value = 'true';
+    }
+    if(regForm.newmyTIEmailSignup.checked == true) {
+       regForm.subscribe.value = 'true';
+    }
+    regForm.action = 'https://focus.ti.com/tipass/docs/register.tsp?';
+    return valid;
+}
+
+function validateCN(regForm) {
+   var valid = 1;
+   if(regForm.countryCodeCN) {
+      if(trim(regForm.countryCodeCN.value) == "" || trim(regForm.countryCodeCN.value) == "-99" || trim(regForm.countryCodeCN.value) == "-100") {
+         document.getElementById("newCountryDiv").className = "error";
+         document.getElementById("newCountryDivErr").className = "errorMsg";
+         document.getElementById("newCountryDivErr").innerHTML = "<p>Please select a country for signing up.</p>";
+         valid = 0;
+      }
+      regForm.countryCode.value = regForm.countryCodeCN.value;
+   }
+
+   var email = trim(regForm.CNnewmyTIEmailAddress.value);
+   if(isValidEmail(email)) {
+      if(email.substring(email.length-7,email.length) == "@ti.com" ||
+                      email.substring(email.length-7,email.length) == ".ti.com") {
+           document.getElementById("CNnewEmailDiv").className = "error";
+           document.getElementById("CNnewEmailAddressErr").className = "errorMsg";
+           document.getElementById("CNnewEmailAddressErr").innerHTML = "<p>电子邮件地址不能以 ti.com 结尾</p>";
+           valid = 0;
+      }
+   } else {
+      document.getElementById("CNnewEmailDiv").className = "error";
+      document.getElementById("CNnewEmailAddressErr").className = "errorMsg";
+      document.getElementById("CNnewEmailAddressErr").innerHTML = "<p>我们无法识别您的电子邮件地址；请检查是否正确</p>";
+      valid = 0;
+   }
+   regForm.emailId.value = regForm.CNnewmyTIEmailAddress.value;
+
+   var pwd = trim(regForm.CNnewmyTIPassword.value);
+   if(isValidPassword(pwd) == 'false') {
+      document.getElementById("CNnewPasswordDiv").className = "error";
+      document.getElementById("CNnewPasswordErr").className = "errorMsg";
+      document.getElementById("CNnewPasswordErr").innerHTML = "<p>输入的密码必须为 6 到 12 个字符</p>";
+      valid = 0;
+    } else if (isValidPassword(pwd) == 'n-ascii') {
+       document.getElementById("CNnewPasswordDiv").className = "error";
+       document.getElementById("CNnewPasswordErr").className = "errorMsg";
+       document.getElementById("CNnewPasswordErr").innerHTML = "<p>请只使用 ASCII 字符</p>";
+       valid = 0;
+    }
+    regForm.password.value = regForm.CNnewmyTIPassword.value;
+
+    if(trim(regForm.CNnewmyTIConfirmPassword.value) != pwd) {
+       document.getElementById("CNnewConfirmPasswordDiv").className = "error";
+       document.getElementById("CNnewConfirmPasswordErr").className = "errorMsg";
+       document.getElementById("CNnewConfirmPasswordErr").innerHTML = "<p>此密码必须与上述密码匹配；请重新键入</p>";
+       valid = 0;
+    }
+    regForm.passwordConfirm.value = regForm.CNnewmyTIConfirmPassword.value;
+
+    if(trim(regForm.CNnewmyTIFirstName.value) == "") {
+       document.getElementById("CNnewFirstNameDiv").className = "error";
+       document.getElementById("CNnewFirstNameErr").className = "errorMsg";
+       document.getElementById("CNnewFirstNameErr").innerHTML = "<p>请提供以下信息：</p>";
+       valid = 0;
+    } else if(regForm.CNnewmyTIFirstName.value.indexOf('|') >= 0) {
+       document.getElementById("CNnewFirstNameDiv").className = "error";
+       document.getElementById("CNnewFirstNameErr").className = "errorMsg";
+       document.getElementById("CNnewFirstNameErr").innerHTML = "<p>请不要在公司名称中使用 "|"（竖线）字符</p>";
+       valid = 0;
+    }
+    regForm.firstName.value = regForm.CNnewmyTIFirstName.value;
+
+    if(trim(regForm.CNnewmyTILastName.value) == "") {
+       document.getElementById("CNnewLastNameDiv").className = "error";
+       document.getElementById("CNnewLastNameErr").className = "errorMsg";
+       document.getElementById("CNnewLastNameErr").innerHTML = "<p>请提供以下信息：</p>";
+       valid = 0;
+    } else if(regForm.CNnewmyTILastName.value.indexOf('|') >= 0) {
+       document.getElementById("CNnewLastNameDiv").className = "error";
+       document.getElementById("CNnewLastNameErr").className = "errorMsg";
+       document.getElementById("CNnewLastNameErr").innerHTML = "<p>请不要在公司名称中使用 "|"（竖线）字符</p>";
+       valid = 0;
+    }
+    regForm.lastName.value = regForm.CNnewmyTILastName.value;
+
+    if(trim(regForm.CNnewmyTICompany.value) == "") {
+       document.getElementById("CNnewCompanyDiv").className = "error";
+       document.getElementById("CNnewCompanyErr").className = "errorMsg";
+       document.getElementById("CNnewCompanyErr").innerHTML = "<p>请提供以下信息：</p>";
+       valid = 0;
+    } else if(regForm.CNnewmyTICompany.value.indexOf('|') >= 0) {
+       document.getElementById("CNnewCompanyDiv").className = "error";
+       document.getElementById("CNnewCompanyErr").className = "errorMsg";
+       document.getElementById("CNnewCompanyErr").innerHTML = '<p>请不要在公司名称中使用 "|"（竖线）字符</p>';
+       valid = 0;
+    }
+    regForm.companyName.value = regForm.CNnewmyTICompany.value;
+
+    if(trim(regForm.CNnewmyTILastNameEN.value) == "") {
+       document.getElementById("CNnewLastNameDivEN").className = "error";
+       document.getElementById("CNnewLastNameENErr").className = "errorMsg";
+       document.getElementById("CNnewLastNameENErr").innerHTML = "<p>请提供以下信息：</p>";
+       valid = 0;
+    } else if(regForm.CNnewmyTILastNameEN.value.indexOf('|') >= 0) {
+       document.getElementById("CNnewLastNameDivEN").className = "error";
+       document.getElementById("CNnewLastNameENErr").className = "errorMsg";
+       document.getElementById("CNnewLastNameENErr").innerHTML = '<p>请不要在公司名称中使用 "|"（竖线）字符</p>';
+       valid = 0;
+    } else if(!isValidAscii(regForm.CNnewmyTILastNameEN.value)) {
+       document.getElementById("CNnewLastNameDivEN").className = "error";
+       document.getElementById("CNnewLastNameENErr").className = "errorMsg";
+       document.getElementById("CNnewLastNameENErr").innerHTML = '<p>请只使用 ASCII 字符</p>';
+       valid = 0;
+    }
+    regForm.englishLastName.value = regForm.CNnewmyTILastNameEN.value;
+
+    if(trim(regForm.CNnewmyTIFirstNameEN.value) == "") {
+       document.getElementById("CNnewFirstNameDivEN").className = "error";
+       document.getElementById("CNewFirstNameENErr").className = "errorMsg";
+       document.getElementById("CNewFirstNameENErr").innerHTML = "<p>请提供以下信息：</p>";
+       valid = 0;
+    } else if(regForm.CNnewmyTIFirstNameEN.value.indexOf('|') >= 0) {
+       document.getElementById("CNnewFirstNameDivEN").className = "error";
+       document.getElementById("CNewFirstNameENErr").className = "errorMsg";
+       document.getElementById("CNewFirstNameENErr").innerHTML = '<p>请不要在公司名称中使用 "|"（竖线）字符</p>';
+       valid = 0;
+    } else if(!isValidAscii(regForm.CNnewmyTIFirstNameEN.value)) {
+       document.getElementById("CNnewFirstNameDivEN").className = "error";
+       document.getElementById("CNewFirstNameENErr").className = "errorMsg";
+       document.getElementById("CNewFirstNameENErr").innerHTML = '<p>请只使用 ASCII 字符</p>';
+       valid = 0;
+    }
+    regForm.englishFirstName.value = regForm.CNnewmyTIFirstNameEN.value;
+
+    if(trim(regForm.CNnewmyTICompanyEN.value) == "") {
+       document.getElementById("CNnewCompanyDivEN").className = "error";
+       document.getElementById("CNnewCompanyENErr").className = "errorMsg";
+       document.getElementById("CNnewCompanyENErr").innerHTML = "<p>请提供以下信息：</p>";
+       valid = 0;
+    } else if(regForm.CNnewmyTICompanyEN.value.indexOf('|') >= 0) {
+       document.getElementById("CNnewCompanyDivEN").className = "error";
+       document.getElementById("CNnewCompanyENErr").className = "errorMsg";
+       document.getElementById("CNnewCompanyENErr").innerHTML = '<p>请不要在公司名称中使用 "|"（竖线）字符</p>';
+       valid = 0;
+    } else if(!isValidAscii(regForm.CNnewmyTICompanyEN.value)) {
+       document.getElementById("CNnewCompanyDivEN").className = "error";
+       document.getElementById("CNnewCompanyENErr").className = "errorMsg";
+       document.getElementById("CNnewCompanyENErr").innerHTML = '<p>请只使用 ASCII 字符</p>';
+       valid = 0;
+    }
+    regForm.englishCompany.value = regForm.CNnewmyTICompanyEN.value;
+
+    if(regForm.CNnewmyTIRememberMe.checked == true) {
+       regForm.rememberMe.value = 'true';
+    }
+
+    if(regForm.CNnewmyTIEmailSignup.checked == true) {
+       regForm.subscribe.value = 'true';
+    }
+    regForm.action = 'https://focus.ti.com/cn/tipass/docs/register.tsp?';
+   return valid;
+}
+
+function validateJP(regForm) {
+   var valid = 1;
+   if(regForm.countryCodeJP) {
+      if(trim(regForm.countryCodeJP.value) == "" || trim(regForm.countryCodeJP.value) == "-99" || trim(regForm.countryCodeJP.value) == "-100") {
+         document.getElementById("newCountryDiv").className = "error";
+         document.getElementById("newCountryDivErr").className = "errorMsg";
+         document.getElementById("newCountryDivErr").innerHTML = "<p>Please select a country for signing up.</p>";
+         valid = 0;
+      }
+      regForm.countryCode.value = regForm.countryCodeJP.value;
+   }
+
+   var email = trim(regForm.JPnewmyTIEmailAddress.value);
+   if(isValidEmail(email)) {
+      if(email.substring(email.length-7,email.length) == "@ti.com" ||
+                      email.substring(email.length-7,email.length) == ".ti.com") {
+           document.getElementById("JPnewEmailDiv").className = "error";
+           document.getElementById("JPnewEmailAddressErr").className = "errorMsg";
+           document.getElementById("JPnewEmailAddressErr").innerHTML = "<p>メール・アドレスの末尾は ti.com にできません</p>";
+           valid = 0;
+      }
+   } else {
+      document.getElementById("JPnewEmailDiv").className = "error";
+      document.getElementById("JPnewEmailAddressErr").className = "errorMsg";
+      document.getElementById("JPnewEmailAddressErr").innerHTML = "<p>メール・アドレスを確認できません。正しいかどうか確認してください。</p>";
+      valid = 0;
+   }
+   regForm.emailId.value = regForm.JPnewmyTIEmailAddress.value;
+
+   var pwd = trim(regForm.JPnewmyTIPassword.value);
+   if(isValidPassword(pwd) == 'false') {
+      document.getElementById("JPnewPasswordDiv").className = "error";
+      document.getElementById("JPnewPasswordErr").className = "errorMsg";
+      document.getElementById("JPnewPasswordErr").innerHTML = "<p>パスワードには 6～12 文字必要です。</p>";
+      valid = 0;
+    } else if (isValidPassword(pwd) == 'n-ascii') {
+       document.getElementById("JPnewPasswordDiv").className = "error";
+       document.getElementById("JPnewPasswordErr").className = "errorMsg";
+       document.getElementById("JPnewPasswordErr").innerHTML = "<p>﻿ローマ字で入力してください。</p>";
+       valid = 0;
+    }
+    regForm.password.value = regForm.JPnewmyTIPassword.value;
+
+    if(trim(regForm.JPnewmyTIConfirmPassword.value) != pwd) {
+       document.getElementById("JPnewConfirmPasswordDiv").className = "error";
+       document.getElementById("JPnewConfirmPasswordErr").className = "errorMsg";
+       document.getElementById("JPnewConfirmPasswordErr").innerHTML = "<p>パスワードが、上に入力したパスワードと異なります。入力し直してください。</p>";
+       valid = 0;
+    }
+    regForm.passwordConfirm.value = regForm.JPnewmyTIConfirmPassword.value;
+
+    if(trim(regForm.JPnewmyTIFirstName.value) == "") {
+       document.getElementById("JPnewFirstNameDiv").className = "error";
+       document.getElementById("JPnewFirstNameErr").className = "errorMsg";
+       document.getElementById("JPnewFirstNameErr").innerHTML = "<p>﻿この項目は必須です。</p>";
+       valid = 0;
+    } else if(regForm.JPnewmyTIFirstName.value.indexOf('|') >= 0) {
+       document.getElementById("JPnewFirstNameDiv").className = "error";
+       document.getElementById("JPnewFirstNameErr").className = "errorMsg";
+       document.getElementById("JPnewFirstNameErr").innerHTML = "<p>"|" 文字（縦棒）は会社名に使用しないでください</p>";
+       valid = 0;
+    }
+    regForm.firstName.value = regForm.JPnewmyTIFirstName.value;
+
+    if(trim(regForm.JPnewmyTILastName.value) == "") {
+       document.getElementById("JPnewLastNameDiv").className = "error";
+       document.getElementById("JPnewLastNameErr").className = "errorMsg";
+       document.getElementById("JPnewLastNameErr").innerHTML = "<p>﻿この項目は必須です。</p>";
+       valid = 0;
+    } else if(regForm.JPnewmyTILastName.value.indexOf('|') >= 0) {
+       document.getElementById("JPnewLastNameDiv").className = "error";
+       document.getElementById("JPnewLastNameErr").className = "errorMsg";
+       document.getElementById("JPnewLastNameErr").innerHTML = "<p>"|" 文字（縦棒）は会社名に使用しないでください</p>";
+       valid = 0;
+    }
+    regForm.lastName.value = regForm.JPnewmyTILastName.value;
+
+    if(trim(regForm.JPnewmyTICompany.value) == "") {
+       document.getElementById("JPnewCompanyDiv").className = "error";
+       document.getElementById("JPnewCompanyErr").className = "errorMsg";
+       document.getElementById("JPnewCompanyErr").innerHTML = "<p>﻿この項目は必須です。</p>";
+       valid = 0;
+    } else if(regForm.JPnewmyTICompany.value.indexOf('|') >= 0) {
+       document.getElementById("JPnewCompanyDiv").className = "error";
+       document.getElementById("JPnewCompanyErr").className = "errorMsg";
+       document.getElementById("JPnewCompanyErr").innerHTML = '<p>"|" 文字（縦棒）は会社名に使用しないでください</p>';
+       valid = 0;
+    }
+    regForm.companyName.value = regForm.JPnewmyTICompany.value;
+
+    if(trim(regForm.JPnewmyTILastNameEN.value) == "") {
+       document.getElementById("JPnewLastNameDivEN").className = "error";
+       document.getElementById("JPnewLastNameENErr").className = "errorMsg";
+       document.getElementById("JPnewLastNameENErr").innerHTML = "<p>﻿この項目は必須です。</p>";
+       valid = 0;
+    } else if(regForm.JPnewmyTILastNameEN.value.indexOf('|') >= 0) {
+       document.getElementById("JPnewLastNameDivEN").className = "error";
+       document.getElementById("JPnewLastNameENErr").className = "errorMsg";
+       document.getElementById("JPnewLastNameENErr").innerHTML = '<p>"|" 文字（縦棒）は会社名に使用しないでください</p>';
+       valid = 0;
+    } else if(!isValidAscii(regForm.JPnewmyTILastNameEN.value)) {
+       document.getElementById("JPnewLastNameDivEN").className = "error";
+       document.getElementById("JPnewLastNameENErr").className = "errorMsg";
+       document.getElementById("JPnewLastNameENErr").innerHTML = '<p>﻿ローマ字で入力してください。</p>';
+       valid = 0;
+    }
+    regForm.englishLastName.value = regForm.JPnewmyTILastNameEN.value;
+
+    if(trim(regForm.JPnewmyTIFirstNameEN.value) == "") {
+       document.getElementById("JPnewFirstNameDivEN").className = "error";
+       document.getElementById("JPewFirstNameENErr").className = "errorMsg";
+       document.getElementById("JPewFirstNameENErr").innerHTML = "<p>﻿この項目は必須です。</p>";
+       valid = 0;
+    } else if(regForm.JPnewmyTIFirstNameEN.value.indexOf('|') >= 0) {
+       document.getElementById("JPnewFirstNameDivEN").className = "error";
+       document.getElementById("JPewFirstNameENErr").className = "errorMsg";
+       document.getElementById("JPewFirstNameENErr").innerHTML = '<p>"|" 文字（縦棒）は会社名に使用しないでください</p>';
+       valid = 0;
+    } else if(!isValidAscii(regForm.JPnewmyTIFirstNameEN.value)) {
+       document.getElementById("JPnewFirstNameDivEN").className = "error";
+       document.getElementById("JPewFirstNameENErr").className = "errorMsg";
+       document.getElementById("JPewFirstNameENErr").innerHTML = '<p>﻿ローマ字で入力してください。</p>';
+       valid = 0;
+    }
+    regForm.englishFirstName.value = regForm.JPnewmyTIFirstNameEN.value;
+
+    if(trim(regForm.JPnewmyTICompanyEN.value) == "") {
+       document.getElementById("JPnewCompanyDivEN").className = "error";
+       document.getElementById("JPnewCompanyENErr").className = "errorMsg";
+       document.getElementById("JPnewCompanyENErr").innerHTML = "<p>﻿この項目は必須です。</p>";
+       valid = 0;
+    } else if(regForm.JPnewmyTICompanyEN.value.indexOf('|') >= 0) {
+       document.getElementById("JPnewCompanyDivEN").className = "error";
+       document.getElementById("JPnewCompanyENErr").className = "errorMsg";
+       document.getElementById("JPnewCompanyENErr").innerHTML = '<p>"|" 文字（縦棒）は会社名に使用しないでください</p>';
+       valid = 0;
+    } else if(!isValidAscii(regForm.JPnewmyTICompanyEN.value)) {
+       document.getElementById("JPnewCompanyDivEN").className = "error";
+       document.getElementById("JPnewCompanyENErr").className = "errorMsg";
+       document.getElementById("JPnewCompanyENErr").innerHTML = '<p>﻿ローマ字で入力してください。</p>';
+       valid = 0;
+    }
+    regForm.englishCompany.value = regForm.JPnewmyTICompanyEN.value;
+
+    if(regForm.JPnewmyTIRememberMe.checked == true) {
+       regForm.rememberMe.value = 'true';
+    }
+
+    if(regForm.JPnewmyTIEmailSignup.checked == true) {
+       regForm.subscribe.value = 'true';
+    }
+    regForm.action = 'https://focus.ti.com/jp/tipass/docs/register.tsp?';
+   return valid;
+}
+function clearFormData()
+	{
+ 
+		
+		
+		/* document.getElementById("newUserError").innerHTML='';  */
+		hideAllErrors();
+		document.getElementById("JPnewmyTILastName").value='';
+		document.getElementById("JPnewmyTIFirstName").value='';
+		document.getElementById("JPnewmyTICompany").value='';
+		document.getElementById("CNnewmyTICompany").value='';
+		document.getElementById("CNnewmyTIFirstName").value='';
+		document.getElementById("CNnewmyTILastName").value='';
+		document.getElementById("newmyTICompany").value='';
+		document.getElementById("newmyTILastName").value='';
+		document.getElementById("newmyTIFirstName").value='';
+		document.getElementById("newmyTIEmailAddress").value='';
+		document.getElementById("CNnewmyTIEmailAddress").value='';
+		document.getElementById("JPnewmyTIEmailAddress").value='';
+		
+	}
+	function clearErrorMessage(){
+		
+		document.getElementById("displayError").innerHTML='';
+   }
+
+
+</script>
+<!-- New User Registration - Start -->
+<div id="newUser">
+<form id="newUserForm" action="https://focus.ti.com/tipass/docs/register.tsp?" onsubmit="ValidateForm(this); return false;" method="post" name="myti_reg_form">
+
+
+        <input type="hidden" name="forwardUrl" value='http://software-dl.ti.com:80/dsps/dsps_registered_sw/sdo_ccstudio/codegen/C6000/6.1.20/exports/ti_cgt_c6000_6.1.20_setup_linux_x86.bin' >
+
+
+<!-- Overall Form Error Message - Start -->
+<div id="newUserError" class="hide">
+<span class="WW">
+<ul class="alert">
+<li class="alertfont">Sorry, there was some trouble creating your account. Please take a moment to review your information.</li>
+</ul>
+</span>
+<span class="CN">
+<ul class="alert">
+<li class="alertfont">﻿“ 对不起，我们无法处理您的请求。请复查下面的警报消息，并根据提示添加或更新信息”</li>
+</ul>
+</span>
+<span class="JP">
+<ul class="alert">
+<li class="alertfont">﻿申し訳ございませんが、お客様のアカウントを作成中にエラーが発生しました。 お客様情報の再確認をお願いします。</li>
+</ul>
+</span>
+</div>
+<!-- Overall Form Error Message - End -->
+<div class="requiredDiv"><span>*</span><span class="WW">Required</span><span class="CN">为必填字段</span><span class="JP">﻿必須</span></div>
+<!-- Worldwide Overview Copy - Start -->
+<span class="WW">
+<h2>New user? Register for free:</h2>
+
+<div id="newUserOvw"><p>It's quick and gives you access to free samples, TI's E2E Community, training, product reviews and personalized recommendations.</p></div>
+</span>
+<!-- Worldwide Overview Copy - End -->
+<!-- China Overview Copy - Start -->
+<span class="CN">
+<h2>﻿新用户？ 免费注册：</h2>
+<div id="newUserOvw"><p>﻿快速注册即可访问免费样片、TI 的 E2E 社区、培训、产品评论以及个性化推荐。</p></div>
+</span>
+<!-- China Overview Copy - End -->
+<!-- Japan Overview Copy - Start -->
+<span class="JP">
+<h2>﻿新規登録 （登録は無料です）</h2>
+<div id="newUserOvw"><p>﻿my.TI アカウントを取得すると、無償サンプルの注文、技術問い合わせ窓口の利用、E2E エンジニア・コミュニティへの参加、ニュースレター登録など様々なサービスをご利用いただけます。</p></div>
+</span>
+<!-- Japan Overview Copy - End -->
+
+<!-- New User Registration Form - Start -->
+
+<div id="newUserForm">
+<input type="hidden" name="emailId" value="">
+<input type="hidden" name="password" value="">
+<input type="hidden" name="passwordConfirm" value="">
+<input type="hidden" name="firstName" value="">
+<input type="hidden" name="lastName" value="">
+<input type="hidden" name="companyName" value="">
+<input type="hidden" name="countryCode" value="">
+<input type="hidden" name="rememberMe" value="">
+<input type="hidden" name="salutation" value="mr">
+<input type="hidden" name="englishFirstName" value="">
+<input type="hidden" name="englishLastName" value="">
+<input type="hidden" name="englishCompany" value="">
+<input type="hidden" name="subscribe" value="">
+<input type="hidden" name="actionPerformed" value="simpleSignOn">
+
+
+<!-- Global Language Selection and WW,CN,JP Form Toggle - Start -->
+
+
+
+<div id="newCountryDiv"  >
+<label for="newmyTICountry" id="newCountry"><span>*</span><span class="WW">Your country/region:</span><span class="CN">选择国家和地区:</span><span class="JP">居住国/地域を選択してください</span></label>
+<span class="WW">
+
+
+<noscript>
+    <select onchange="clearFormData()" tabindex="5" name="countryCode" id="newmyTICountryEN" title="Your country/region:" class="toggleForm">
+</noscript>
+<noscript>
+    <option value="-99" selected>- Select a Country/Region -</option>
+ <!-- <option value="-99" selected>- Select a Country/Region -</option> -->
+    
+                    <option value="US">United States</option>
+    
+                    <option value="CN">China</option>
+    
+                    <option value="JP">Japan</option>
+    
+                    <option value="-100">---------------------</option>
+    
+                    <option value="AF">Afghanistan</option>
+    
+                    <option value="AL">Albania</option>
+    
+                    <option value="DZ">Algeria</option>
+    
+                    <option value="AS">American Samoa</option>
+    
+                    <option value="AD">Andorra</option>
+    
+                    <option value="AO">Angola</option>
+    
+                    <option value="AI">Anguilla</option>
+    
+                    <option value="AQ">Antarctica</option>
+    
+                    <option value="AG">Antigua and Barbuda</option>
+    
+                    <option value="AR">Argentina</option>
+    
+                    <option value="AM">Armenia</option>
+    
+                    <option value="AW">Aruba</option>
+    
+                    <option value="AU">Australia</option>
+    
+                    <option value="AT">Austria</option>
+    
+                    <option value="AZ">Azerbaijan</option>
+    
+                    <option value="BS">Bahamas</option>
+    
+                    <option value="BH">Bahrain</option>
+    
+                    <option value="BD">Bangladesh</option>
+    
+                    <option value="BB">Barbados</option>
+    
+                    <option value="BY">Belarus</option>
+    
+                    <option value="BE">Belgium</option>
+    
+                    <option value="BZ">Belize</option>
+    
+                    <option value="BJ">Benin</option>
+    
+                    <option value="BM">Bermuda</option>
+    
+                    <option value="BT">Bhutan</option>
+    
+                    <option value="BO">Bolivia</option>
+    
+                    <option value="BA">Bosnia-Herzegovina</option>
+    
+                    <option value="BW">Botswana</option>
+    
+                    <option value="BV">Bouvet Island</option>
+    
+                    <option value="BR">Brazil</option>
+    
+                    <option value="IO">British Indian Ocean Territory</option>
+    
+                    <option value="BN">Brunei Darussalam</option>
+    
+                    <option value="BG">Bulgaria</option>
+    
+                    <option value="BF">Burkina Faso</option>
+    
+                    <option value="BI">Burundi</option>
+    
+                    <option value="KH">Cambodia</option>
+    
+                    <option value="CM">Cameroon</option>
+    
+                    <option value="CA">Canada</option>
+    
+                    <option value="CV">Cape Verde</option>
+    
+                    <option value="KY">Cayman Islands</option>
+    
+                    <option value="CF">Central African Republic</option>
+    
+                    <option value="TD">Chad</option>
+    
+                    <option value="CL">Chile</option>
+    
+                    <option value="CX">Christmas Island</option>
+    
+                    <option value="CC">Cocos (Keeling) Islands</option>
+    
+                    <option value="CO">Colombia</option>
+    
+                    <option value="KM">Comoros</option>
+    
+                    <option value="CG">Congo</option>
+    
+                    <option value="CK">Cook Islands</option>
+    
+                    <option value="CR">Costa Rica</option>
+    
+                    <option value="CI">Cote D'Ivoire</option>
+    
+                    <option value="HR">Croatia</option>
+    
+                    <option value="CY">Cyprus</option>
+    
+                    <option value="CZ">Czech Republic</option>
+    
+                    <option value="CD">Democratic Republic of the Congo</option>
+    
+                    <option value="DK">Denmark</option>
+    
+                    <option value="DJ">Djibouti</option>
+    
+                    <option value="DM">Dominica</option>
+    
+                    <option value="DO">Dominican Republic</option>
+    
+                    <option value="TP">East Timor</option>
+    
+                    <option value="EC">Ecuador</option>
+    
+                    <option value="EG">Egypt</option>
+    
+                    <option value="SV">El Salvador</option>
+    
+                    <option value="GQ">Equatorial Guinea</option>
+    
+                    <option value="ER">Eritrea</option>
+    
+                    <option value="EE">Estonia</option>
+    
+                    <option value="ET">Ethiopia</option>
+    
+                    <option value="FK">Falkland Islands</option>
+    
+                    <option value="FO">Faroe Islands</option>
+    
+                    <option value="FJ">Fiji</option>
+    
+                    <option value="FI">Finland</option>
+    
+                    <option value="FR">France</option>
+    
+                    <option value="GF">French Guyana</option>
+    
+                    <option value="PF">French Polynesia</option>
+    
+                    <option value="TF">French Southern Territories</option>
+    
+                    <option value="GA">Gabon</option>
+    
+                    <option value="GM">Gambia</option>
+    
+                    <option value="GE">Georgia</option>
+    
+                    <option value="DE">Germany</option>
+    
+                    <option value="GH">Ghana</option>
+    
+                    <option value="GI">Gibraltar</option>
+    
+                    <option value="GR">Greece</option>
+    
+                    <option value="GL">Greenland</option>
+    
+                    <option value="GD">Grenada</option>
+    
+                    <option value="GP">Guadeloupe</option>
+    
+                    <option value="GU">Guam</option>
+    
+                    <option value="GT">Guatemala</option>
+    
+                    <option value="GG">Guernsey</option>
+    
+                    <option value="GN">Guinea</option>
+    
+                    <option value="GW">Guinea Bissau</option>
+    
+                    <option value="GY">Guyana</option>
+    
+                    <option value="HT">Haiti</option>
+    
+                    <option value="HM">Heard and McDonald Islands</option>
+    
+                    <option value="HN">Honduras</option>
+    
+                    <option value="HK">Hong Kong</option>
+    
+                    <option value="HU">Hungary</option>
+    
+                    <option value="IS">Iceland</option>
+    
+                    <option value="IN">India</option>
+    
+                    <option value="ID">Indonesia</option>
+    
+                    <option value="IQ">Iraq</option>
+    
+                    <option value="IE">Ireland</option>
+    
+                    <option value="IM">Isle of Man</option>
+    
+                    <option value="IL">Israel</option>
+    
+                    <option value="IT">Italy</option>
+    
+                    <option value="JM">Jamaica</option>
+    
+                    <option value="JE">Jersey</option>
+    
+                    <option value="JO">Jordan</option>
+    
+                    <option value="KZ">Kazakhstan</option>
+    
+                    <option value="KE">Kenya</option>
+    
+                    <option value="KI">Kiribati</option>
+    
+                    <option value="KW">Kuwait</option>
+    
+                    <option value="KG">Kyrgyzstan</option>
+    
+                    <option value="LA">Laos</option>
+    
+                    <option value="LV">Latvia</option>
+    
+                    <option value="LB">Lebanon</option>
+    
+                    <option value="LS">Lesotho</option>
+    
+                    <option value="LR">Liberia</option>
+    
+                    <option value="LI">Liechtenstein</option>
+    
+                    <option value="LT">Lithuania</option>
+    
+                    <option value="LU">Luxembourg</option>
+    
+                    <option value="MO">Macao</option>
+    
+                    <option value="MK">Macedonia</option>
+    
+                    <option value="MG">Madagascar</option>
+    
+                    <option value="MW">Malawi</option>
+    
+                    <option value="MY">Malaysia</option>
+    
+                    <option value="MV">Maldives</option>
+    
+                    <option value="ML">Mali</option>
+    
+                    <option value="MT">Malta</option>
+    
+                    <option value="MH">Marshall Islands</option>
+    
+                    <option value="MQ">Martinique</option>
+    
+                    <option value="MR">Mauritania</option>
+    
+                    <option value="MU">Mauritius</option>
+    
+                    <option value="YT">Mayotte</option>
+    
+                    <option value="MX">Mexico</option>
+    
+                    <option value="FM">Micronesia</option>
+    
+                    <option value="MD">Moldavia</option>
+    
+                    <option value="MC">Monaco</option>
+    
+                    <option value="MN">Mongolia</option>
+    
+                    <option value="ME">Montenegro</option>
+    
+                    <option value="MS">Montserrat</option>
+    
+                    <option value="MA">Morocco</option>
+    
+                    <option value="MZ">Mozambique</option>
+    
+                    <option value="MM">Myanmar</option>
+    
+                    <option value="NA">Namibia</option>
+    
+                    <option value="NR">Nauru</option>
+    
+                    <option value="NP">Nepal</option>
+    
+                    <option value="NL">Netherlands</option>
+    
+                    <option value="AN">Netherlands Antilles</option>
+    
+                    <option value="NC">New Caledonia</option>
+    
+                    <option value="NZ">New Zealand</option>
+    
+                    <option value="NI">Nicaragua</option>
+    
+                    <option value="NE">Niger</option>
+    
+                    <option value="NG">Nigeria</option>
+    
+                    <option value="NU">Niue</option>
+    
+                    <option value="NF">Norfolk Island</option>
+    
+                    <option value="MP">Northern Mariana Islands</option>
+    
+                    <option value="NO">Norway</option>
+    
+                    <option value="OM">Oman</option>
+    
+                    <option value="PK">Pakistan</option>
+    
+                    <option value="PW">Palau</option>
+    
+                    <option value="PA">Panama</option>
+    
+                    <option value="PG">Papua New Guinea</option>
+    
+                    <option value="PY">Paraguay</option>
+    
+                    <option value="PE">Peru</option>
+    
+                    <option value="PH">Philippines</option>
+    
+                    <option value="PN">Pitcairn</option>
+    
+                    <option value="PL">Poland</option>
+    
+                    <option value="PT">Portugal</option>
+    
+                    <option value="PR">Puerto Rico</option>
+    
+                    <option value="QA">Qatar</option>
+    
+                    <option value="RE">Reunion</option>
+    
+                    <option value="RO">Romania</option>
+    
+                    <option value="RU">Russian Federation</option>
+    
+                    <option value="RW">Rwanda</option>
+    
+                    <option value="GS">S. Georgia & S. Sandwich Isls.</option>
+    
+                    <option value="SH">Saint Helena</option>
+    
+                    <option value="KN">Saint Kitts and Nevis</option>
+    
+                    <option value="LC">Saint Lucia</option>
+    
+                    <option value="PM">Saint Pierre and Miquelon</option>
+    
+                    <option value="VC">Saint Vincent & Grenadines</option>
+    
+                    <option value="WS">Samoa</option>
+    
+                    <option value="SM">San Marino</option>
+    
+                    <option value="ST">Sao Tome and Principe</option>
+    
+                    <option value="SA">Saudi Arabia</option>
+    
+                    <option value="SN">Senegal</option>
+    
+                    <option value="RS">Serbia</option>
+    
+                    <option value="SC">Seychelles</option>
+    
+                    <option value="SL">Sierra Leone</option>
+    
+                    <option value="SG">Singapore</option>
+    
+                    <option value="SK">Slovakia</option>
+    
+                    <option value="SI">Slovenia</option>
+    
+                    <option value="SB">Solomon Islands</option>
+    
+                    <option value="SO">Somalia</option>
+    
+                    <option value="ZA">South Africa</option>
+    
+                    <option value="KR">South Korea</option>
+    
+                    <option value="ES">Spain</option>
+    
+                    <option value="LK">Sri Lanka</option>
+    
+                    <option value="SR">Suriname</option>
+    
+                    <option value="SJ">Svalbard and Jan Mayen</option>
+    
+                    <option value="SZ">Swaziland</option>
+    
+                    <option value="SE">Sweden</option>
+    
+                    <option value="CH">Switzerland</option>
+    
+                    <option value="TW">Taiwan</option>
+    
+                    <option value="TJ">Tajikistan</option>
+    
+                    <option value="TZ">Tanzania</option>
+    
+                    <option value="TH">Thailand</option>
+    
+                    <option value="TG">Togo</option>
+    
+                    <option value="TK">Tokelau</option>
+    
+                    <option value="TO">Tonga</option>
+    
+                    <option value="TT">Trinidad and Tobago</option>
+    
+                    <option value="TN">Tunisia</option>
+    
+                    <option value="TR">Turkey</option>
+    
+                    <option value="TM">Turkmenistan</option>
+    
+                    <option value="TC">Turks and Caicos Islands</option>
+    
+                    <option value="TV">Tuvalu</option>
+    
+                    <option value="UM">US Minor Outlying Islands</option>
+    
+                    <option value="UG">Uganda</option>
+    
+                    <option value="UA">Ukraine</option>
+    
+                    <option value="AE">United Arab Emirates</option>
+    
+                    <option value="GB">United Kingdom</option>
+    
+                    <option value="UY">Uruguay</option>
+    
+                    <option value="UZ">Uzbekistan</option>
+    
+                    <option value="VU">Vanuatu</option>
+    
+                    <option value="VA">Vatican City State</option>
+    
+                    <option value="VE">Venezuela</option>
+    
+                    <option value="VN">Vietnam</option>
+    
+                    <option value="VG">Virgin Islands (British)</option>
+    
+                    <option value="VI">Virgin Islands (USA)</option>
+    
+                    <option value="WF">Wallis and Futura</option>
+    
+                    <option value="EH">Western Sahara</option>
+    
+                    <option value="YU">Yugoslavia</option>
+    
+                    <option value="ZM">Zambia</option>
+    
+                    <option value="ZW">Zimbabwe</option>
+    
+
+</select>
+
+
+ 
+
+
+
+</noscript>
+
+<!-- <select tabindex="5" name="countryCodeEN" id="newmyTICountryEN" title="Your country/region:" class="toggleForm"> -->
+<script type="text/javascript">
+
+    var selectContent='<select onchange=\"clearFormData()\" tabindex=\"5\" name=\"countryCodeEN\" id=\"newmyTICountryEN\" '  +'title=\"Your country/region:\" ' +'class=\"toggleForm\">';
+document.write(selectContent);
+
+    var optionContent='<option value=\"-99\" '
+    +'selected>- Select a Country/Region -</option>';
+document.write(optionContent);
+    
+                    var optionContext2="<option value=\"US\">United States</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CN\">China</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"JP\">Japan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"-100\">---------------------</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AF\">Afghanistan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AL\">Albania</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"DZ\">Algeria</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AS\">American Samoa</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AD\">Andorra</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AO\">Angola</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AI\">Anguilla</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AQ\">Antarctica</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AG\">Antigua and Barbuda</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AR\">Argentina</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AM\">Armenia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AW\">Aruba</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AU\">Australia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AT\">Austria</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AZ\">Azerbaijan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BS\">Bahamas</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BH\">Bahrain</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BD\">Bangladesh</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BB\">Barbados</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BY\">Belarus</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BE\">Belgium</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BZ\">Belize</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BJ\">Benin</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BM\">Bermuda</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BT\">Bhutan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BO\">Bolivia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BA\">Bosnia-Herzegovina</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BW\">Botswana</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BV\">Bouvet Island</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BR\">Brazil</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IO\">British Indian Ocean Territory</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BN\">Brunei Darussalam</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BG\">Bulgaria</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BF\">Burkina Faso</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"BI\">Burundi</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KH\">Cambodia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CM\">Cameroon</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CA\">Canada</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CV\">Cape Verde</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KY\">Cayman Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CF\">Central African Republic</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TD\">Chad</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CL\">Chile</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CX\">Christmas Island</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CC\">Cocos (Keeling) Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CO\">Colombia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KM\">Comoros</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CG\">Congo</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CK\">Cook Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CR\">Costa Rica</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CI\">Cote D'Ivoire</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"HR\">Croatia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CY\">Cyprus</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CZ\">Czech Republic</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CD\">Democratic Republic of the Congo</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"DK\">Denmark</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"DJ\">Djibouti</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"DM\">Dominica</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"DO\">Dominican Republic</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TP\">East Timor</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"EC\">Ecuador</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"EG\">Egypt</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SV\">El Salvador</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GQ\">Equatorial Guinea</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ER\">Eritrea</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"EE\">Estonia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ET\">Ethiopia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"FK\">Falkland Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"FO\">Faroe Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"FJ\">Fiji</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"FI\">Finland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"FR\">France</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GF\">French Guyana</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PF\">French Polynesia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TF\">French Southern Territories</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GA\">Gabon</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GM\">Gambia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GE\">Georgia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"DE\">Germany</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GH\">Ghana</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GI\">Gibraltar</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GR\">Greece</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GL\">Greenland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GD\">Grenada</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GP\">Guadeloupe</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GU\">Guam</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GT\">Guatemala</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GG\">Guernsey</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GN\">Guinea</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GW\">Guinea Bissau</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GY\">Guyana</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"HT\">Haiti</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"HM\">Heard and McDonald Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"HN\">Honduras</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"HK\">Hong Kong</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"HU\">Hungary</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IS\">Iceland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IN\">India</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ID\">Indonesia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IQ\">Iraq</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IE\">Ireland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IM\">Isle of Man</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IL\">Israel</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"IT\">Italy</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"JM\">Jamaica</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"JE\">Jersey</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"JO\">Jordan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KZ\">Kazakhstan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KE\">Kenya</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KI\">Kiribati</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KW\">Kuwait</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KG\">Kyrgyzstan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LA\">Laos</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LV\">Latvia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LB\">Lebanon</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LS\">Lesotho</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LR\">Liberia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LI\">Liechtenstein</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LT\">Lithuania</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LU\">Luxembourg</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MO\">Macao</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MK\">Macedonia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MG\">Madagascar</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MW\">Malawi</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MY\">Malaysia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MV\">Maldives</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ML\">Mali</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MT\">Malta</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MH\">Marshall Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MQ\">Martinique</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MR\">Mauritania</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MU\">Mauritius</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"YT\">Mayotte</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MX\">Mexico</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"FM\">Micronesia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MD\">Moldavia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MC\">Monaco</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MN\">Mongolia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ME\">Montenegro</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MS\">Montserrat</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MA\">Morocco</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MZ\">Mozambique</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MM\">Myanmar</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NA\">Namibia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NR\">Nauru</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NP\">Nepal</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NL\">Netherlands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AN\">Netherlands Antilles</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NC\">New Caledonia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NZ\">New Zealand</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NI\">Nicaragua</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NE\">Niger</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NG\">Nigeria</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NU\">Niue</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NF\">Norfolk Island</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"MP\">Northern Mariana Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"NO\">Norway</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"OM\">Oman</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PK\">Pakistan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PW\">Palau</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PA\">Panama</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PG\">Papua New Guinea</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PY\">Paraguay</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PE\">Peru</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PH\">Philippines</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PN\">Pitcairn</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PL\">Poland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PT\">Portugal</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PR\">Puerto Rico</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"QA\">Qatar</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"RE\">Reunion</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"RO\">Romania</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"RU\">Russian Federation</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"RW\">Rwanda</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GS\">S. Georgia & S. Sandwich Isls.</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SH\">Saint Helena</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KN\">Saint Kitts and Nevis</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LC\">Saint Lucia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"PM\">Saint Pierre and Miquelon</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VC\">Saint Vincent & Grenadines</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"WS\">Samoa</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SM\">San Marino</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ST\">Sao Tome and Principe</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SA\">Saudi Arabia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SN\">Senegal</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"RS\">Serbia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SC\">Seychelles</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SL\">Sierra Leone</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SG\">Singapore</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SK\">Slovakia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SI\">Slovenia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SB\">Solomon Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SO\">Somalia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ZA\">South Africa</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"KR\">South Korea</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ES\">Spain</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"LK\">Sri Lanka</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SR\">Suriname</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SJ\">Svalbard and Jan Mayen</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SZ\">Swaziland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"SE\">Sweden</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"CH\">Switzerland</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TW\">Taiwan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TJ\">Tajikistan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TZ\">Tanzania</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TH\">Thailand</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TG\">Togo</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TK\">Tokelau</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TO\">Tonga</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TT\">Trinidad and Tobago</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TN\">Tunisia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TR\">Turkey</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TM\">Turkmenistan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TC\">Turks and Caicos Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"TV\">Tuvalu</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"UM\">US Minor Outlying Islands</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"UG\">Uganda</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"UA\">Ukraine</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"AE\">United Arab Emirates</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"GB\">United Kingdom</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"UY\">Uruguay</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"UZ\">Uzbekistan</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VU\">Vanuatu</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VA\">Vatican City State</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VE\">Venezuela</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VN\">Vietnam</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VG\">Virgin Islands (British)</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"VI\">Virgin Islands (USA)</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"WF\">Wallis and Futura</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"EH\">Western Sahara</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"YU\">Yugoslavia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ZM\">Zambia</option>";
+                    document.write(optionContext2);
+
+    
+                    var optionContext2="<option value=\"ZW\">Zimbabwe</option>";
+                    document.write(optionContext2);
+
+    
+
+document.write("</select>");
+    </script>
+</span>
+<span class="CN">
+<select onchange="clearFormData()" tabindex="5" name="countryCodeCN" id="newmyTICountryCN" title="选择国家和地区:" class="toggleForm">
+  <option value="-99" >- 选择国家和地区 -</option>
+    
+                    <option value="US">美国</option>
+    
+                    <option value="CN">中国</option>
+    
+                    <option value="JP">日本</option>
+    
+                    <option value="-100">---------------------</option>
+    
+                    <option value="AX">Åland Islands</option>
+    
+                    <option value="GG">Guernsey</option>
+    
+                    <option value="IM">Isle of Man</option>
+    
+                    <option value="JE">Jersey</option>
+    
+                    <option value="MY">Malaysia</option>
+    
+                    <option value="ME">Montenegro</option>
+    
+                    <option value="RS">Serbia</option>
+    
+                    <option value="AL">阿尔巴尼亚</option>
+    
+                    <option value="DZ">阿尔及利亚</option>
+    
+                    <option value="AF">阿富汗</option>
+    
+                    <option value="AR">阿根廷</option>
+    
+                    <option value="AE">阿拉伯联合酋长国</option>
+    
+                    <option value="AW">阿鲁巴岛</option>
+    
+                    <option value="OM">阿曼</option>
+    
+                    <option value="AZ">阿塞拜疆</option>
+    
+                    <option value="EG">埃及</option>
+    
+                    <option value="ET">埃塞俄比亚</option>
+    
+                    <option value="IE">爱尔兰</option>
+    
+                    <option value="EE">爱沙尼亚</option>
+    
+                    <option value="AD">安道尔共和国</option>
+    
+                    <option value="AO">安哥拉</option>
+    
+                    <option value="AI">安圭拉岛</option>
+    
+                    <option value="AG">安提瓜和巴布达</option>
+    
+                    <option value="AT">奥地利</option>
+    
+                    <option value="AU">澳大利亚</option>
+    
+                    <option value="MO">澳门</option>
+    
+                    <option value="BB">巴巴多斯岛</option>
+    
+                    <option value="PG">巴布亚新几内亚</option>
+    
+                    <option value="BS">巴哈马群岛</option>
+    
+                    <option value="PK">巴基斯坦</option>
+    
+                    <option value="PY">巴拉圭</option>
+    
+                    <option value="BH">巴林</option>
+    
+                    <option value="PA">巴拿马</option>
+    
+                    <option value="BR">巴西</option>
+    
+                    <option value="BY">白俄罗斯</option>
+    
+                    <option value="BM">百慕大群岛</option>
+    
+                    <option value="BG">保加利亚</option>
+    
+                    <option value="MP">北马里亚纳群岛</option>
+    
+                    <option value="BJ">贝宁湾</option>
+    
+                    <option value="BE">比利时</option>
+    
+                    <option value="IS">冰岛</option>
+    
+                    <option value="PR">波多黎各</option>
+    
+                    <option value="BA">波黑</option>
+    
+                    <option value="PL">波兰</option>
+    
+                    <option value="BO">玻利维亚</option>
+    
+                    <option value="BZ">伯利兹</option>
+    
+                    <option value="BW">博茨瓦纳</option>
+    
+                    <option value="BT">不丹</option>
+    
+                    <option value="BF">布基纳法索</option>
+    
+                    <option value="BI">布隆迪</option>
+    
+                    <option value="BV">布维岛</option>
+    
+                    <option value="GQ">赤道几内亚</option>
+    
+                    <option value="DK">丹麦</option>
+    
+                    <option value="DE">德国</option>
+    
+                    <option value="TP">东帝汶</option>
+    
+                    <option value="TG">多哥</option>
+    
+                    <option value="DM">多米尼加</option>
+    
+                    <option value="DO">多米尼加共和国</option>
+    
+                    <option value="RU">俄罗斯联邦</option>
+    
+                    <option value="EC">厄瓜多尔</option>
+    
+                    <option value="ER">厄立特里亚</option>
+    
+                    <option value="FR">法国</option>
+    
+                    <option value="FO">法罗群岛</option>
+    
+                    <option value="PF">法属波利尼西亚</option>
+    
+                    <option value="GF">法属圭亚那</option>
+    
+                    <option value="TF">法属南部领地</option>
+    
+                    <option value="VA">梵蒂冈</option>
+    
+                    <option value="PH">菲律宾共和国</option>
+    
+                    <option value="FJ">斐济</option>
+    
+                    <option value="FI">芬兰</option>
+    
+                    <option value="CV">佛得角</option>
+    
+                    <option value="FK">福克兰群岛</option>
+    
+                    <option value="GM">冈比亚</option>
+    
+                    <option value="CG">刚果</option>
+    
+                    <option value="CD">刚果民主共和国</option>
+    
+                    <option value="CO">哥伦比亚</option>
+    
+                    <option value="CR">哥斯达黎加</option>
+    
+                    <option value="GD">格林纳达</option>
+    
+                    <option value="GL">格陵兰</option>
+    
+                    <option value="GP">瓜德罗普岛</option>
+    
+                    <option value="GU">关岛</option>
+    
+                    <option value="GY">圭亚那</option>
+    
+                    <option value="KZ">哈萨克斯坦</option>
+    
+                    <option value="HT">海地</option>
+    
+                    <option value="KR">韩国</option>
+    
+                    <option value="NL">荷兰</option>
+    
+                    <option value="AN">荷属安的列斯</option>
+    
+                    <option value="HM">赫德和麦克唐纳岛</option>
+    
+                    <option value="HN">洪都拉斯</option>
+    
+                    <option value="KI">基里巴斯</option>
+    
+                    <option value="DJ">吉布提</option>
+    
+                    <option value="KG">吉尔吉斯</option>
+    
+                    <option value="GN">几内亚</option>
+    
+                    <option value="GW">几内亚比绍共和国</option>
+    
+                    <option value="CA">加拿大</option>
+    
+                    <option value="GH">加纳</option>
+    
+                    <option value="GA">加蓬</option>
+    
+                    <option value="KH">柬埔寨</option>
+    
+                    <option value="CZ">捷克斯洛伐克</option>
+    
+                    <option value="ZW">津巴布韦</option>
+    
+                    <option value="CM">喀麦隆</option>
+    
+                    <option value="QA">卡塔尔</option>
+    
+                    <option value="KY">开曼群岛</option>
+    
+                    <option value="CC">科科斯（基林）群岛</option>
+    
+                    <option value="KM">科摩罗</option>
+    
+                    <option value="CI">科特迪瓦</option>
+    
+                    <option value="KW">科威特</option>
+    
+                    <option value="HR">克罗地亚</option>
+    
+                    <option value="KE">肯尼亚</option>
+    
+                    <option value="CK">库克群岛</option>
+    
+                    <option value="LV">拉脱维亚</option>
+    
+                    <option value="LS">莱索托</option>
+    
+                    <option value="LA">老挝</option>
+    
+                    <option value="LB">黎巴嫩</option>
+    
+                    <option value="LT">立陶宛</option>
+    
+                    <option value="LR">利比里亚</option>
+    
+                    <option value="LI">列支敦士登</option>
+    
+                    <option value="RE">留尼旺</option>
+    
+                    <option value="LU">卢森堡</option>
+    
+                    <option value="RW">卢旺达</option>
+    
+                    <option value="RO">罗马尼亚</option>
+    
+                    <option value="MG">马达加斯加岛</option>
+    
+                    <option value="MV">马尔代夫</option>
+    
+                    <option value="MT">马耳他</option>
+    
+                    <option value="MW">马拉维</option>
+    
+                    <option value="ML">马里</option>
+    
+                    <option value="MK">马其顿</option>
+    
+                    <option value="MH">马绍尔群岛</option>
+    
+                    <option value="MQ">马提尼克岛</option>
+    
+                    <option value="YT">马约特岛</option>
+    
+                    <option value="MU">毛里求斯</option>
+    
+                    <option value="MR">毛利塔尼亚</option>
+    
+                    <option value="UM">美国海外小岛</option>
+    
+                    <option value="AS">美属萨摩亚</option>
+    
+                    <option value="MN">蒙古</option>
+    
+                    <option value="MS">蒙特塞拉特岛</option>
+    
+                    <option value="BD">孟加拉国</option>
+    
+                    <option value="PE">秘鲁</option>
+    
+                    <option value="FM">密克罗尼西亚</option>
+    
+                    <option value="MM">缅甸</option>
+    
+                    <option value="MD">摩尔达维亚</option>
+    
+                    <option value="MA">摩洛哥</option>
+    
+                    <option value="MC">摩纳哥</option>
+    
+                    <option value="MZ">莫桑比克</option>
+    
+                    <option value="MX">墨西哥</option>
+    
+                    <option value="NA">纳米比亚</option>
+    
+                    <option value="ZA">南非</option>
+    
+                    <option value="AQ">南极洲</option>
+    
+                    <option value="YU">南斯拉夫</option>
+    
+                    <option value="NR">瑙鲁</option>
+    
+                    <option value="NP">尼泊尔</option>
+    
+                    <option value="NI">尼加拉瓜</option>
+    
+                    <option value="NE">尼日尔</option>
+    
+                    <option value="NG">尼日利亚</option>
+    
+                    <option value="NU">纽埃岛</option>
+    
+                    <option value="NO">挪威</option>
+    
+                    <option value="NF">诺福克岛</option>
+    
+                    <option value="PW">帕劳群岛</option>
+    
+                    <option value="PN">皮特克恩</option>
+    
+                    <option value="PT">葡萄牙</option>
+    
+                    <option value="GE">乔治亚</option>
+    
+                    <option value="SE">瑞典</option>
+    
+                    <option value="CH">瑞士</option>
+    
+                    <option value="SV">萨尔瓦多</option>
+    
+                    <option value="WS">萨摩亚群岛</option>
+    
+                    <option value="SL">塞拉利昂</option>
+    
+                    <option value="SN">塞内加尔</option>
+    
+                    <option value="CY">塞浦路斯</option>
+    
+                    <option value="SC">塞舌尔</option>
+    
+                    <option value="SA">沙特阿拉伯</option>
+    
+                    <option value="CX">圣诞岛</option>
+    
+                    <option value="ST">圣多美和普林西比</option>
+    
+                    <option value="SH">圣赫勒拿</option>
+    
+                    <option value="KN">圣基茨和尼维斯</option>
+    
+                    <option value="LC">圣卢西亚岛</option>
+    
+                    <option value="SM">圣马力诺</option>
+    
+                    <option value="PM">圣皮埃尔岛及密克隆岛</option>
+    
+                    <option value="GS">圣乔治和圣桑奇威岛</option>
+    
+                    <option value="VC">圣文森特和格林纳丁斯</option>
+    
+                    <option value="LK">斯里兰卡</option>
+    
+                    <option value="SK">斯洛伐克</option>
+    
+                    <option value="SI">斯洛文尼亚</option>
+    
+                    <option value="SJ">斯瓦尔巴岛和扬马延岛</option>
+    
+                    <option value="SZ">斯威士兰</option>
+    
+                    <option value="SR">苏里南</option>
+    
+                    <option value="SB">所罗门群岛</option>
+    
+                    <option value="SO">索马里</option>
+    
+                    <option value="TJ">塔吉克斯坦</option>
+    
+                    <option value="TW">台湾</option>
+    
+                    <option value="TH">泰国</option>
+    
+                    <option value="TZ">坦桑尼亚</option>
+    
+                    <option value="TO">汤加</option>
+    
+                    <option value="TC">特克斯和凯科斯群岛</option>
+    
+                    <option value="TT">特立尼达和多巴哥</option>
+    
+                    <option value="TN">突尼斯</option>
+    
+                    <option value="TV">图瓦卢</option>
+    
+                    <option value="TR">土耳其</option>
+    
+                    <option value="TM">土库曼斯坦</option>
+    
+                    <option value="TK">托克劳</option>
+    
+                    <option value="WF">瓦利斯和富图纳</option>
+    
+                    <option value="VU">瓦努阿图</option>
+    
+                    <option value="GT">危地马拉</option>
+    
+                    <option value="VI">维尔京群岛（美属）</option>
+    
+                    <option value="VG">维尔京群岛（英属）</option>
+    
+                    <option value="VE">委内瑞拉</option>
+    
+                    <option value="BN">文莱达鲁萨兰国</option>
+    
+                    <option value="UG">乌干达</option>
+    
+                    <option value="UA">乌克兰</option>
+    
+                    <option value="UY">乌拉圭</option>
+    
+                    <option value="UZ">乌兹别克斯坦</option>
+    
+                    <option value="ES">西班牙</option>
+    
+                    <option value="EH">西撒哈拉</option>
+    
+                    <option value="GR">希腊</option>
+    
+                    <option value="HK">香港</option>
+    
+                    <option value="SG">新加坡</option>
+    
+                    <option value="NC">新喀里多尼亚</option>
+    
+                    <option value="NZ">新西兰</option>
+    
+                    <option value="HU">匈牙利</option>
+    
+                    <option value="JM">牙买加</option>
+    
+                    <option value="AM">亚美尼亚</option>
+    
+                    <option value="IQ">伊拉克</option>
+    
+                    <option value="IL">以色列</option>
+    
+                    <option value="IT">意大利</option>
+    
+                    <option value="IN">印度</option>
+    
+                    <option value="ID">印尼</option>
+    
+                    <option value="GB">英国</option>
+    
+                    <option value="IO">英属印度洋领土</option>
+    
+                    <option value="JO">约旦</option>
+    
+                    <option value="VN">越南</option>
+    
+                    <option value="ZM">赞比亚</option>
+    
+                    <option value="TD">乍得湖</option>
+    
+                    <option value="GI">直布罗陀</option>
+    
+                    <option value="CL">智利</option>
+    
+
+</select>
+</span>
+<span class="JP">
+<select  onchange="clearFormData()" tabindex="5" name="countryCodeJP" id="newmyTICountryJP" title="居住国/地域を選択してください" class="toggleForm">
+  <option value="-99" selected>- 居住国/地域を選択してください -</option>
+    
+                    <option value="US">米国</option>
+    
+                    <option value="CN">中国</option>
+    
+                    <option value="JP">日本</option>
+    
+                    <option value="-100">---------------------</option>
+    
+                    <option value="GG">Guernsey</option>
+    
+                    <option value="IM">Isle of Man</option>
+    
+                    <option value="JE">Jersey</option>
+    
+                    <option value="MY">Malaysia</option>
+    
+                    <option value="ME">Montenegro</option>
+    
+                    <option value="RS">Serbia</option>
+    
+                    <option value="IS">アイスランド</option>
+    
+                    <option value="IE">アイルランド共和国</option>
+    
+                    <option value="AZ">アゼルバイジャン</option>
+    
+                    <option value="AF">アフガニスタン</option>
+    
+                    <option value="AE">アラブ首長国連邦</option>
+    
+                    <option value="AW">アルーバ</option>
+    
+                    <option value="DZ">アルジェリア</option>
+    
+                    <option value="AR">アルゼンチン</option>
+    
+                    <option value="AL">アルバニア</option>
+    
+                    <option value="AM">アルメニア</option>
+    
+                    <option value="AI">アンギラ</option>
+    
+                    <option value="AO">アンゴラ</option>
+    
+                    <option value="AG">アンティグアバーブーダ</option>
+    
+                    <option value="AD">アンドラ</option>
+    
+                    <option value="IL">イスラエル</option>
+    
+                    <option value="IT">イタリア</option>
+    
+                    <option value="IQ">イラク</option>
+    
+                    <option value="IN">インド</option>
+    
+                    <option value="ID">インドネシア</option>
+    
+                    <option value="UG">ウガンダ</option>
+    
+                    <option value="UA">ウクライナ</option>
+    
+                    <option value="UZ">ウズベキスタン共和国</option>
+    
+                    <option value="UY">ウルグアイ</option>
+    
+                    <option value="EC">エクアドル</option>
+    
+                    <option value="EG">エジプト</option>
+    
+                    <option value="EE">エストニア</option>
+    
+                    <option value="ET">エチオピア</option>
+    
+                    <option value="ER">エリトリア</option>
+    
+                    <option value="SV">エルサルバドル</option>
+    
+                    <option value="AU">オーストラリア</option>
+    
+                    <option value="AT">オーストリア</option>
+    
+                    <option value="OM">オマーン</option>
+    
+                    <option value="NL">オランダ</option>
+    
+                    <option value="AN">オランダ領アンティル諸島</option>
+    
+                    <option value="GH">ガーナ</option>
+    
+                    <option value="CV">カーボベルデ共和国</option>
+    
+                    <option value="GY">ガイアナ</option>
+    
+                    <option value="KZ">カザフスタン共和国</option>
+    
+                    <option value="QA">カタール</option>
+    
+                    <option value="CA">カナダ</option>
+    
+                    <option value="GA">ガボン</option>
+    
+                    <option value="CM">カメルーン</option>
+    
+                    <option value="GM">ガンビア</option>
+    
+                    <option value="KH">カンボジア</option>
+    
+                    <option value="GN">ギニア</option>
+    
+                    <option value="GW">ギニアビサウ共和国</option>
+    
+                    <option value="CY">キプロス</option>
+    
+                    <option value="GR">ギリシャ</option>
+    
+                    <option value="KI">キリバス</option>
+    
+                    <option value="KG">キルギスタン</option>
+    
+                    <option value="GT">グアテマラ</option>
+    
+                    <option value="GP">グアドループ</option>
+    
+                    <option value="GU">グアム</option>
+    
+                    <option value="KW">クウェート</option>
+    
+                    <option value="CK">クック諸島</option>
+    
+                    <option value="GL">グリーンランド</option>
+    
+                    <option value="CX">クリスマス島</option>
+    
+                    <option value="GD">グレナダ</option>
+    
+                    <option value="HR">クロアチア</option>
+    
+                    <option value="KY">ケイマン諸島</option>
+    
+                    <option value="KE">ケニア</option>
+    
+                    <option value="CI">コートジボアール共和国</option>
+    
+                    <option value="CC">ココス（キーリング）諸島</option>
+    
+                    <option value="CR">コスタリカ</option>
+    
+                    <option value="KM">コモロ</option>
+    
+                    <option value="CO">コロンビア</option>
+    
+                    <option value="CG">コンゴ</option>
+    
+                    <option value="CD">コンゴ民主共和国</option>
+    
+                    <option value="SA">サウジアラビア</option>
+    
+                    <option value="GS">サウスジョージア・サウスサンドウィッチ諸島</option>
+    
+                    <option value="WS">サモア独立国</option>
+    
+                    <option value="ST">サントメプリンシペ</option>
+    
+                    <option value="ZM">ザンビア</option>
+    
+                    <option value="PM">サンピエール島・ミクロン島</option>
+    
+                    <option value="SM">サンマリノ</option>
+    
+                    <option value="SL">シエラレオネ</option>
+    
+                    <option value="DJ">ジブチ</option>
+    
+                    <option value="GI">ジブラルタル</option>
+    
+                    <option value="JM">ジャマイカ</option>
+    
+                    <option value="GE">ジョージア</option>
+    
+                    <option value="SG">シンガポール</option>
+    
+                    <option value="ZW">ジンバブエ</option>
+    
+                    <option value="CH">スイス</option>
+    
+                    <option value="SE">スウェーデン</option>
+    
+                    <option value="SJ">スバールバル諸島・ヤンマイエン島</option>
+    
+                    <option value="ES">スペイン</option>
+    
+                    <option value="SR">スリナム</option>
+    
+                    <option value="LK">スリランカ</option>
+    
+                    <option value="SK">スロバキア</option>
+    
+                    <option value="SI">スロベニア</option>
+    
+                    <option value="SZ">スワジランド</option>
+    
+                    <option value="SC">セイシェル共和国</option>
+    
+                    <option value="SN">セネガル</option>
+    
+                    <option value="KN">セントクリストファー・ネーヴィス</option>
+    
+                    <option value="VC">セントビンセントおよびグレナディーン諸島</option>
+    
+                    <option value="SH">セントヘレナ島</option>
+    
+                    <option value="LC">セントルシア</option>
+    
+                    <option value="SO">ソマリア</option>
+    
+                    <option value="SB">ソロモン諸島</option>
+    
+                    <option value="TC">タークスケイコス諸島</option>
+    
+                    <option value="TH">タイ</option>
+    
+                    <option value="TJ">タジキスタン</option>
+    
+                    <option value="TZ">タンザニア</option>
+    
+                    <option value="CZ">チェコ共和国</option>
+    
+                    <option value="TD">チャド</option>
+    
+                    <option value="TN">チュニジア</option>
+    
+                    <option value="CL">チリ</option>
+    
+                    <option value="TV">ツバル</option>
+    
+                    <option value="DK">デンマーク</option>
+    
+                    <option value="DE">ドイツ</option>
+    
+                    <option value="TG">トーゴ</option>
+    
+                    <option value="TK">トケラウ諸島</option>
+    
+                    <option value="DM">ドミニカ</option>
+    
+                    <option value="DO">ドミニカ共和国</option>
+    
+                    <option value="TT">トリニダード・トバゴ共和国</option>
+    
+                    <option value="TM">トルクメニスタン</option>
+    
+                    <option value="TR">トルコ</option>
+    
+                    <option value="TO">トンガ</option>
+    
+                    <option value="NG">ナイジェリア</option>
+    
+                    <option value="NR">ナウル</option>
+    
+                    <option value="NA">ナミビア</option>
+    
+                    <option value="NU">ニウエ</option>
+    
+                    <option value="NI">ニカラグア</option>
+    
+                    <option value="NE">ニジェール</option>
+    
+                    <option value="NC">ニューカレドニア</option>
+    
+                    <option value="NZ">ニュージーランド</option>
+    
+                    <option value="NP">ネパール</option>
+    
+                    <option value="NF">ノーフォーク島</option>
+    
+                    <option value="NO">ノルウェー</option>
+    
+                    <option value="BH">バーレーン</option>
+    
+                    <option value="HT">ハイチ</option>
+    
+                    <option value="PK">パキスタン</option>
+    
+                    <option value="VA">バチカン市国</option>
+    
+                    <option value="PA">パナマ</option>
+    
+                    <option value="VU">バヌアツ</option>
+    
+                    <option value="BS">バハマ</option>
+    
+                    <option value="PG">パプアニューギニア</option>
+    
+                    <option value="BM">バミューダ</option>
+    
+                    <option value="PW">パラオ</option>
+    
+                    <option value="PY">パラグアイ</option>
+    
+                    <option value="BB">バルバドス</option>
+    
+                    <option value="HU">ハンガリー</option>
+    
+                    <option value="BD">バングラデシュ</option>
+    
+                    <option value="PN">ピトケアン諸島</option>
+    
+                    <option value="FJ">フィジー共和国</option>
+    
+                    <option value="PH">フィリピン</option>
+    
+                    <option value="FI">フィンランド</option>
+    
+                    <option value="BV">ブーヴェ島</option>
+    
+                    <option value="BT">ブータン</option>
+    
+                    <option value="FO">フェロー諸島</option>
+    
+                    <option value="PR">プエルトリコ</option>
+    
+                    <option value="FK">フォークランド諸島</option>
+    
+                    <option value="BR">ブラジル</option>
+    
+                    <option value="FR">フランス</option>
+    
+                    <option value="BG">ブルガリア</option>
+    
+                    <option value="BF">ブルキナファソ</option>
+    
+                    <option value="BN">ブルネイ・ダルサラーム国</option>
+    
+                    <option value="BI">ブルンジ</option>
+    
+                    <option value="HM">ヘアド島・マクドナルド諸島</option>
+    
+                    <option value="VN">ベトナム</option>
+    
+                    <option value="BJ">ベニン</option>
+    
+                    <option value="VE">ベネズエラ</option>
+    
+                    <option value="BY">ベラルーシ</option>
+    
+                    <option value="BZ">ベリーズ</option>
+    
+                    <option value="PE">ペルー</option>
+    
+                    <option value="BE">ベルギー</option>
+    
+                    <option value="PL">ポーランド</option>
+    
+                    <option value="BA">ボスニア・ヘルツェゴビナ</option>
+    
+                    <option value="BW">ボツワナ</option>
+    
+                    <option value="BO">ボリビア</option>
+    
+                    <option value="PT">ポルトガル</option>
+    
+                    <option value="HN">ホンジュラス</option>
+    
+                    <option value="MH">マーシャル諸島</option>
+    
+                    <option value="MO">マカオ</option>
+    
+                    <option value="MK">マケドニア</option>
+    
+                    <option value="MG">マダガスカル共和国</option>
+    
+                    <option value="YT">マヨット</option>
+    
+                    <option value="MW">マラウイ</option>
+    
+                    <option value="ML">マリ</option>
+    
+                    <option value="MT">マルタ</option>
+    
+                    <option value="MQ">マルティニーク</option>
+    
+                    <option value="FM">ミクロネシア連邦</option>
+    
+                    <option value="MM">ミャンマー</option>
+    
+                    <option value="MX">メキシコ</option>
+    
+                    <option value="MU">モーリシャス</option>
+    
+                    <option value="MR">モーリタニア</option>
+    
+                    <option value="MZ">モザンビーク</option>
+    
+                    <option value="MC">モナコ</option>
+    
+                    <option value="MD">モルダビア</option>
+    
+                    <option value="MV">モルディブ</option>
+    
+                    <option value="MA">モロッコ</option>
+    
+                    <option value="MN">モンゴル</option>
+    
+                    <option value="MS">モンセラット</option>
+    
+                    <option value="YU">ユーゴスラビア</option>
+    
+                    <option value="JO">ヨルダン</option>
+    
+                    <option value="LA">ラオス</option>
+    
+                    <option value="LV">ラトビア</option>
+    
+                    <option value="LT">リトアニア</option>
+    
+                    <option value="LI">リヒテンシュタイン</option>
+    
+                    <option value="LR">リベリア</option>
+    
+                    <option value="RO">ルーマニア</option>
+    
+                    <option value="LU">ルクセンブルク</option>
+    
+                    <option value="RW">ルワンダ</option>
+    
+                    <option value="LS">レソト</option>
+    
+                    <option value="LB">レバノン共和国</option>
+    
+                    <option value="RE">レユニオン</option>
+    
+                    <option value="RU">ロシア連邦</option>
+    
+                    <option value="WF">ワリー・エ・フトゥーナ諸島</option>
+    
+                    <option value="GB">英国</option>
+    
+                    <option value="IO">英領インド洋地域</option>
+    
+                    <option value="VG">英領バージン諸島</option>
+    
+                    <option value="KR">韓国</option>
+    
+                    <option value="HK">香港</option>
+    
+                    <option value="EH">西サハラ</option>
+    
+                    <option value="GQ">赤道ギニア</option>
+    
+                    <option value="TW">台湾</option>
+    
+                    <option value="CF">中央アフリカ共和国</option>
+    
+                    <option value="TP">東チモール</option>
+    
+                    <option value="ZA">南アフリカ</option>
+    
+                    <option value="AQ">南極</option>
+    
+                    <option value="GF">仏領ガイアナ</option>
+    
+                    <option value="PF">仏領ポリネシア</option>
+    
+                    <option value="TF">仏領極南諸島</option>
+    
+                    <option value="AS">米領サモア</option>
+    
+                    <option value="VI">米領バージン諸島</option>
+    
+                    <option value="UM">米領太平洋諸島</option>
+    
+                    <option value="MP">北マリアナ諸島</option>
+    
+
+</select>
+</span>
+<div class="clear"><!-- --></div>
+    <div id="newCountryDivErr" class="hide" title="Error Message">
+    </div>
+</div>
+<!-- Global Language Selection and WW,CN,JP Form Toggle - End -->
+<!-- Worldwide Form - Start -->
+
+<div id="worldwideForm">
+
+<div id="newEmailDiv"  >
+
+<noscript>
+
+    <label for="newmyTIEmailAddress" id="newEmailAddress"><span>*</span>Your email address:</label>
+    <input tabindex="6" type="text" id="newmyTIEmailAddress" name="emailId" maxlength="64" value="" title="Your email address:" class="formtip">
+
+    
+
+</noscript>
+<script type="text/javascript" >
+    var labelContent1='<label for=\"newmyTIEmailAddress\" id=\"newEmailAddress\"><span>*</span>Your email address:</label>';
+    document.write(labelContent1);
+    var textContent1='<input tabindex=\"6\" type=\"text\" id=\"newmyTIEmailAddress\" maxlength=\"64\" name=\"newmyTIEmailAddress\" value=\"\" title=\"Your email address:\" class=\"formtip\" />';
+    document.write(textContent1);
+
+</script>
+ <div class="formtipbox">
+            <p>Please provide a valid email address. Your email address will be your login ID.</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="newEmailAddressErr" class="hide" title="Error Message">
+    <p></p>
+
+    </div>
+</div>
+
+<div id="newPasswordDiv"  >
+
+<noscript>
+<label for="newmyTIPassword" id="newPassword"><span>*</span>Create a my.TI password:</label>
+<input tabindex="7" type="password" id="newmyTIPassword" name="password" value="" title="Create a password:" class="formtip" maxlength="12">
+
+
+
+
+</noscript>
+
+<script type="text/javascript">
+    var labelContent2='<label for=\"newmyTIPassword\" id=\"newPassword\"><span>*</span>Create a my.TI password:</label>';
+    document.write(labelContent2);
+    var textContent2='<input tabindex=\"7\" type=\"password\" id=\"newmyTIPassword\" name=\"newmyTIPassword\" value=\"\" title=\"Create a password:\" class=\"formtip\" maxlength=\"12\" /> ';
+    document.write(textContent2);
+</script>
+    <div class="formtipbox">
+            <p>6-12 characters; case-sensitive.</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="newPasswordErr" class="hide" title="Error Message">
+
+    <p></p>
+    </div>
+</div>
+
+<div id="newConfirmPasswordDiv"  >
+
+<noscript>
+<label for="newmyTIConfirmPassword" id="newConfirmPassword"><span>*</span>Confirm password:</label>
+<input tabindex="8" type="password" id="newmyTIConfirmPassword" name="passwordConfirm" value="" title="Confirm password:" class="formtip" maxlength="12">
+
+
+</noscript>
+<script type="text/javascript">
+    var labelContent3='<label for=\"newmyTIConfirmPassword\" id=\"newConfirmPassword\"><span>*</span>Confirm password:</label>';
+    document.write(labelContent3);
+    var textContent3='<input tabindex=\"8\" type=\"password\" id=\"newmyTIConfirmPassword\" name=\"newmyTIConfirmPassword\" value=\"\" title=\"Confirm password:\" class=\"formtip\" maxlength=\"12\" />';
+    document.write(textContent3);
+</script>
+    <div class="formtipbox">
+            <p>6-12 characters; case-sensitive.</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="newConfirmPasswordErr" class="hide" title="Error Message">
+    <p></p>
+    </div>
+</div>
+
+
+
+<div id="newFirstNameDiv"  >
+
+<noscript>
+    <label for="newmyTIFirstName" id="newFirstName"><span>*</span>First name:</label>
+    <input tabindex="9" type="text" id="newmyTIFirstName" name="firstName" maxlength="25" value="" title="First name:" class="formtip">
+
+    
+
+</noscript>
+<script type="text/javascript" >
+    var labelContent4='<label for=\"newmyTIFirstName\" id=\"newFirstName\"><span>*</span>First name:</label>';
+    document.write(labelContent4);
+    var textContent4='<input tabindex=\"9\" type=\"text\" id=\"newmyTIFirstName\" maxlength=\"25\" name=\"newmyTIFirstName\" value=\"\" title=\"First name:\" class=\"formtip\" />';
+    document.write(textContent4);
+</script>
+    <div class="formtipbox">
+            <p>Enter your First Name or Given Name.</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="newFirstNameErr" class="hide" title="Error Message">
+    <p></p>
+    </div>
+</div>
+
+
+
+
+<div id="newLastNameDiv"   >
+
+<noscript>
+    <label for="newmyTILastName" id="newLastName"><span>*</span>Last name:</label>
+    <input tabindex="10" type="text" id="newmyTILastName" name="lastName" maxlength="30" value="" title="Last name:" class="formtip">
+
+	 
+
+</noscript>
+<script type="text/javascript" >
+    var labelContent5='<label for=\"newmyTILastName\" id=\"newLastName\"><span>*</span>Last name:</label>';
+    document.write(labelContent5);
+    var textContent5='<input tabindex=\"10\" type=\"text\" id=\"newmyTILastName\" name=\"newmyTILastName\" maxlength=\"30\" value=\"\" title=\"Last name:\" class=\"formtip\" />';
+    document.write(textContent5);
+</script>
+    <div class="formtipbox">
+            <p>Enter your Last Name or Family Name.</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="newLastNameErr" class="hide" title="Error Message">
+    <p></p>
+    </div>
+</div>
+
+
+
+<div id="newCompanyDiv"   >
+
+<noscript>
+<label for="newmyTICompany" id="newCompany"><span>*</span>Your company name:</label>
+<input tabindex="11" type="text" id="newmyTICompany" name="companyName" maxlength="50" value="" title="Your company name:" class="formtip">
+
+ 
+
+
+</noscript>
+<script type="text/javascript">
+    var labelContent6='<label for=\"newmyTICompany\" id=\"newCompany\"><span>*</span>Your company name:</label>';
+    document.write(labelContent6);
+    var textContent6='<input tabindex=\"11\" type=\"text\" id=\"newmyTICompany\" name=\"newmyTICompany\" maxlength=\"50\" value=\"\" title=\"Your company name:\" class=\"formtip\" />';
+    document.write(textContent6);
+</script>
+    <div class="formtipbox">
+            <p>Please do not abbreviate.</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="newCompanyErr" class="hide" title="Error Message">
+    <p></p>
+    </div>
+</div>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="newRememberDiv">
+<noscript>
+<input tabindex="12" id="newmyTIRememberMe" name="rememberMe" type="checkbox" value="check" checked title="Remember me">
+<label for="newmyTIRememberMe" id="newRemember">Remember me</label>
+<a href="javascript:popWin('http://focus.ti.com/general/docs/staticcontent.tsp?contentId=29125','WhatThis','width=405,height=415')" name="&lid=en_US_myti _Default_remember_me_register_questionmark" ><img border="0" class="helpicon" alt="Help - What's this?" src="https://focus.ti.com/graphics/shared/help-ico.gif"></a>
+</noscript>
+<script type="text/javascript">
+    var inputContent1='<input tabindex=\"12\" id=\"newmyTIRememberMe\" name=\"newmyTIRememberMe\" type=\"checkbox\" value=\"check\" checked title=\"Remember me\" />';
+    document.write(inputContent1);
+
+    var labelcontent1=' <label for=\"newmyTIRememberMe\" id=\"newRemember\">Remember me</label> ';
+    document.write(labelcontent1);
+
+    var imageContent1="<a href=\"javascript:popWin('http://focus.ti.com/general/docs/staticcontent.tsp?contentId=29125','WhatThis','width=405,height=415')\" name=\"&lid=en_US_myti _Default_remember_me_register_questionmark\"><img border=\"0\" class=\"helpicon\" alt=\"Help - What is this?\" src=\"https://focus.ti.com/graphics/shared/help-ico.gif\"></a>";
+    document.write(imageContent1);
+</script>
+<div class="clear"><!-- --></div>
+</div>
+
+<div id="newEmailSignupDiv">
+<noscript>
+<input tabindex="13" id="newmyTIEmailSignup" name="newmyTIEmailSignup" type="checkbox" value="check" checked title="I would like to receive personalized information by email from TI.">
+<label for="newmyTIEmailSignup" id="newEmailSignup">I would like to receive personalized information by email from TI.</label>
+</noscript>
+<script type="text/javascript" >
+    var inputContent2='<input tabindex=\"13\" id=\"newmyTIEmailSignup\" name=\"newmyTIEmailSignup\" type=\"checkbox\" value=\"check\" checked title=\"I would like to receive personalized information by email from TI.\" /> ';
+    document.write(inputContent2);
+    var labelContent7='<label for=\"newmyTIEmailSignup\" id=\"newEmailSignup\">I would like to receive personalized information by email from TI.</label>';
+    document.write(labelContent7);
+</script>
+<div class="clear"><!-- --></div>
+</div>
+
+
+<div id="registerDiv">
+
+<input tabindex="14" name="Register"  type="submit" onclick="_hbLink('en_US_myti _Default_register_btn_click');clearErrorMessage();"     value="Register and continue" class="btn3">
+
+<div class="clear"><!-- --></div>
+</div>
+</div>
+<br>
+<!-- Worldwide Form - End -->
+
+<!-- China Form - Start -->
+<div id="chinaForm">
+<div id="CNnewEmailDiv">
+
+<label for="CNnewmyTIEmailAddress" id="CNnewEmailAddress"><span>*</span>﻿您的电子邮件地址：</label>
+<input tabindex="6" type="text" id="CNnewmyTIEmailAddress" name="CNnewmyTIEmailAddress" maxlength="64" value="" title="﻿您的电子邮件地址：" class="formtip">
+    <div class="formtipbox">
+            <p>﻿请提供有效的电子邮件地址。 您的电子邮件地址将成为您的登录 ID。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="CNnewEmailAddressErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+
+</div>
+
+<div id="CNnewPasswordDiv">
+<label for="CNnewmyTIPassword" id="CNnewPassword"><span>*</span>﻿创建一个 my.TI 密码：</label>
+<input tabindex="7" type="password" id="CNnewmyTIPassword" name="CNnewmyTIPassword" value="" title="﻿创建一个 my.TI 密码：" class="formtip" maxlength="12">
+    <div class="formtipbox">
+            <p>﻿6-12 个字符；区分大小写。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="CNnewPasswordErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+
+    </div>
+</div>
+
+<div id="CNnewConfirmPasswordDiv">
+<label for="CNnewmyTIConfirmPassword" id="CNnewConfirmPassword"><span>*</span>﻿确认密码：</label>
+<input tabindex="8" type="password" id="CNnewmyTIConfirmPassword" name="CNnewmyTIConfirmPassword" value="" title="﻿确认密码：" class="formtip" maxlength="12">
+    <div class="formtipbox">
+            <p>﻿6-12 个字符；区分大小写。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="CNnewConfirmPasswordErr" class="hide" title="Error Message">
+
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="CNnewTitleDiv">
+<label for="CNnewmyTITitle" id="CNnewTitle"><span>*</span>称谓:</label>
+<input tabindex="9" name="CNnewmyTITitle" id="CNnewmyTITitle" type="radio" value="mr" title="先生" checked> 先生 &nbsp;&nbsp;<input tabindex="10" name="CNnewmyTITitle" type="radio" value="ms" title="小姐"> 小姐
+    <div class="formtipbox">
+            <p>Enter your First Name or Given Name.</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+</div>
+
+<div id="CNnewLastNameDiv">
+<label for="CNnewmyTILastName" id="CNnewLastName"><span>*</span>﻿姓氏：</label>
+<input tabindex="10" type="text" id="CNnewmyTILastName" name="CNnewmyTILastName" maxlength="30" value="" title="﻿姓氏：" class="formtip">
+    <div class="formtipbox">
+            <p>﻿请输入您的姓或家姓。</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="CNnewLastNameErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="CNnewFirstNameDiv">
+<label for="CNnewmyTIFirstName" id="CNnewFirstName"><span>*</span>﻿名字：</label>
+<input tabindex="11" type="text" id="CNnewmyTIFirstName" name="CNnewmyTIFirstName" maxlength="30" value="" title="﻿名字：" class="formtip">
+    <div class="formtipbox">
+            <p>﻿请输入您的名或教名。</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="CNnewFirstNameErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="CNnewCompanyDiv">
+<label for="CNnewmyTICompany" id="CNnewCompany"><span>*</span>﻿您的公司名称</label>
+<input tabindex="12" type="text" id="CNnewmyTICompany" name="CNnewmyTICompany" maxlength="50" value="" title="﻿您的公司名称" class="formtip">
+    <div class="formtipbox">
+            <p>请勿使用缩写</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="CNnewCompanyErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<h3>英文内容:</h3>
+
+<div id="CNnewLastNameDivEN">
+<label for="CNnewmyTILastNameEN" id="CNnewLastNameEN"><span>*</span>﻿Last Name （姓氏）:</label>
+
+<input tabindex="13" type="text" id="CNnewmyTILastNameEN" name="CNnewmyTILastNameEN" value="" title="﻿Last Name （姓氏）:" class="formtip">
+    <div class="formtipbox">
+         <p>﻿请以英文输入您的姓或家姓。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="CNnewLastNameENErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="CNnewFirstNameDivEN">
+
+<label for="CNnewmyTIFirstNameEN" id="CNewFirstNameEN"><span>*</span>﻿First Name （名字）:</label>
+<input tabindex="14" type="text" id="CNnewmyTIFirstNameEN" name="CNnewmyTIFirstNameEN" value="" title="﻿First Name （名字）:" class="formtip">
+    <div class="formtipbox">
+            <p>﻿请以英文输入您的名或教名。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="CNewFirstNameENErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+
+</div>
+
+<div id="CNnewCompanyDivEN">
+<label for="CNnewmyTICompanyEN" id="CNnewCompanyEN"><span>*</span>﻿Company （您的公司名称）:</label>
+<input tabindex="15" type="text" id="CNnewmyTICompanyEN" name="CNnewmyTICompanyEN" value="" title="﻿Company （您的公司名称）:" class="formtip">
+    <div class="formtipbox">
+            <p>﻿请以英文输入。 请勿使用缩写。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="CNnewCompanyENErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+<br>
+<div id="CNnewRememberDiv"><input tabindex="16" id="CNnewmyTIRememberMe" name="CNnewmyTIRememberMe" type="checkbox" value="check" checked title="记住密码"> <label for="CNnewmyTIRememberMe" id="CNnewRemember">记住密码</label> <a href="javascript:popWin('http://focus.ti.com.cn/cn/general/docs/staticcontent.tsp?contentId=29126','WhatThis','width=405,height=415')" name="&lid=zh_cn_myti_Default_remember_me_register_questionmark">这是什么？</a>
+<div class="clear"><!-- --></div>
+</div>
+
+<div id="CNnewEmailSignupDiv"><input tabindex="17" id="CNnewmyTIEmailSignup" name="CNnewmyTIEmailSignup" type="checkbox" value="check" checked title="﻿我愿意通过 TI 的电子邮件接收个性化信息。"> <label for="CNnewmyTIEmailSignup" id="CNnewEmailSignup">﻿我愿意通过 TI 的电子邮件接收个性化信息。</label>
+<div class="clear"><!-- --></div>
+</div>
+
+<div id="CNregisterDiv">
+<input tabindex="18" name="CNRegister" type="submit" onclick="_hbLink('zh_cn_myti_Default_register_btn_click');clearErrorMessage();" value="﻿注册并继续" class="btn3">
+<div class="clear"><!-- --></div>
+</div>
+</div>
+<br>
+<!-- China Form - End -->
+
+<!-- Japan Form - Start -->
+<div id="japanForm">
+<div id="JPnewEmailDiv">
+<label for="JPnewmyTIEmailAddress" id="JPnewEmailAddress"><span>*</span>eメール・アドレス</label>
+<input tabindex="6" type="text" id="JPnewmyTIEmailAddress" name="JPnewmyTIEmailAddress" maxlength="64" value="" title="eメール・アドレス" class="formtip">
+    <div class="formtipbox">
+            <p>eメール・アドレスを入力してください。</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="JPnewEmailAddressErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="JPnewPasswordDiv">
+<label for="JPnewmyTIPassword" id="JPnewPassword"><span>*</span>パスワード</label>
+<input tabindex="7" type="password" id="JPnewmyTIPassword" name="JPnewmyTIPassword" value="" title="パスワード" class="formtip" maxlength="12">
+    <div class="formtipbox">
+            <p>6 ～ 12 文字（大文字/小文字の区別あり）</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="JPnewPasswordErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="JPnewConfirmPasswordDiv">
+<label for="JPnewmyTIConfirmPassword" id="JPnewConfirmPassword"><span>*</span>パスワードの確認入力</label>
+<input tabindex="8" type="password" id="JPnewmyTIConfirmPassword" name="JPnewmyTIConfirmPassword" value="" title="パスワードの確認入力" class="formtip" maxlength="12">
+    <div class="formtipbox">
+            <p>6 ～ 12 文字（大文字/小文字の区別あり）</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="JPnewConfirmPasswordErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="JPnewLastNameDiv">
+<label for="JPnewmyTILastName" id="JPnewLastName"><span>*</span>﻿姓</label>
+<input tabindex="9" type="text" id="JPnewmyTILastName" name="JPnewmyTILastName" maxlength="30" value="" title="﻿姓" class="formtip">
+    <div class="formtipbox">
+            <p>﻿姓を入力してください。</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="JPnewLastNameErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="JPnewFirstNameDiv">
+<label for="JPnewmyTIFirstName" id="JPnewFirstName"><span>*</span>﻿名</label>
+<input tabindex="10" type="text" id="JPnewmyTIFirstName" name="JPnewmyTIFirstName" maxlength="25" value="" title="﻿名" class="formtip">
+    <div class="formtipbox">
+         <p>﻿名前を入力してください。</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="JPnewFirstNameErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="JPnewCompanyDiv">
+<label for="JPnewmyTICompany" id="JPnewCompany"><span>*</span>﻿会社名</label>
+<input tabindex="11" type="text" id="JPnewmyTICompany" name="JPnewmyTICompany" maxlength="50" value="" title="﻿会社名" class="formtip">
+    <div class="formtipbox">
+            <p>正式名称を入力してください</p>
+    </div>
+
+<div class="clear"><!-- --></div>
+    <div id="JPnewCompanyErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<h3>ローマ字で入力</h3>
+
+<div id="JPnewLastNameDivEN">
+<label for="JPnewmyTILastNameEN" id="JPnewLastNameEN"><span>*</span>﻿Last Name （姓）</label>
+
+<input tabindex="12" type="text" id="JPnewmyTILastNameEN" name="JPnewmyTILastNameEN" value="" title="﻿Last Name （姓）" class="formtip">
+    <div class="formtipbox">
+            <p>﻿姓を入力してください。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="JPnewLastNameENErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+</div>
+
+<div id="JPnewFirstNameDivEN">
+
+<label for="JPnewmyTIFirstNameEN" id="JPewFirstNameEN"><span>*</span>﻿First Name （名）</label>
+<input tabindex="13" type="text" id="JPnewmyTIFirstNameEN" name="JPnewmyTIFirstNameEN" value="" title="﻿First Name （名）" class="formtip">
+    <div class="formtipbox">
+            <p>﻿名前を入力してください。</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="JPewFirstNameENErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+    </div>
+
+</div>
+
+<div id="JPnewCompanyDivEN">
+<label for="JPnewmyTICompanyEN" id="JPnewCompanyEN"><span>*</span>﻿Company (会社名)</label>
+<input tabindex="14" type="text" id="JPnewmyTICompanyEN" name="JPnewmyTICompanyEN" value="" title="﻿Company (会社名)" class="formtip"> 
+    <div class="formtipbox">
+            <p>正式名称を入力してください</p>
+    </div>
+<div class="clear"><!-- --></div>
+    <div id="JPnewCompanyENErr" class="hide" title="Error Message">
+    <p>[Error message... ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo]</p>
+
+    </div>
+</div>
+<br>
+<div id="JPnewRememberDiv"><input tabindex="15" id="JPnewmyTIRememberMe" name="JPnewmyTIRememberMe" type="checkbox" value="check" checked title="登録情報を記録する"> <label for="JPnewmyTIRememberMe" id="JPnewRemember">登録情報を記録する</label> <a href="javascript:popWin('http://focus.tij.co.jp/jp/general/docs/staticcontent.tsp?contentId=29127','WhatThis','width=405,height=450')" name="&lid=ja_jp_myti_Default_remember_me_register_questionmark">ヘルプ</a>
+<div class="clear"><!-- --></div>
+</div>
+
+<div id="JPnewEmailSignupDiv"><input tabindex="16" id="JPnewmyTIEmailSignup" name="JPnewmyTIEmailSignup" type="checkbox" value="check" checked title="﻿興味のある製品に関する最新情報を e メールで受信する。"> <label for="JPnewmyTIEmailSignup" id="JPnewEmailSignup">﻿興味のある製品に関する最新情報を e メールで受信する。</label>
+<div class="clear"><!-- --></div>
+</div>
+
+<div id="JPregisterDiv">
+<input tabindex="17" name="JPRegister" type="submit" onclick="_hbLink('ja_jp_myti_Default_register_btn_click');clearErrorMessage();" value="﻿登録" class="btn3">
+<div class="clear"><!-- --></div>
+</div>
+</div>
+<br>
+<!-- Japan Form - End -->
+
+</div>
+</form>
+</div>
+<br style="clear:both">
+<br>
+
+<script type="text/javascript">
+   initErrors();
+</script>
+<!-- New User Registration - End -->
+
+
+
+
+  
+
+
+
+        
+      
+    
+  
+
+
+
+<!-- END RIGHT CHANNELS -->
+
+<!-- BEGIN FULL BOTTOM CHANNELS -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+
+    
+      
+      
+      
+
+
+      
+        
+
+
+
+
+
+  
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+<!-- Disclaimer Box - Start -->
+<div id="disclaimerInfo">
+
+<!-- Standard Disclaimer - End -->
+<!-- Resource Content - Start -->
+<div class="disclaimerCentered">
+<!-- Benefits - Resource Content - Start -->
+<div id="benefitsDiv">
+
+<h3>Benefits of my.TI</h3>
+<ul>
+<li>Order free samples</li>
+<li>Join TI E2E Community</li>
+<li>Sign up for product updates</li>
+<li>Manage newsletter subscriptions </li>
+
+	
+<li>Register for training and events</li>
+
+<li>Tag your favorite products</li>
+<li>Get personalized recommendations</li>
+
+</ul>
+<p><a href="http://focus.ti.com/general/docs/gencontent.tsp?contentId=29119" name="&lid=en_US_myti _Default_faq">my.TI frequently asked questions (FAQs)</a></p>
+</div>
+<!-- Benefits - Resource Content - End -->
+<!-- Privacy - Resource Content - Start -->
+<div id="privacyDiv">
+<h3>Cookies and privacy</h3>
+<p>To access your account, your browser must be set to accept temporary cookies. However, you do not need to accept cookies to view the rest of TI.com.</p>
+<ul>
+<li><a href="http://focus.ti.com/general/docs/gencontent.tsp?contentId=29124" name="&lid=en_US_myti _Default_cookies">How do I set my browser to accept cookies? </a></li>
+<li><a href="http://focus.ti.com/general/docs/gencontent.tsp?contentId=29146" name="&lid=en_US_myti _Default_privacy">What's your privacy policy?</a></li>
+</ul>
+
+<p>TI respects your privacy. Your personal information will be used to tailor communications and to provide you with personalized service.</p>
+
+<p>
+TI does not plan to share your information with other 3rd party companies unless deemed necessary as outlined in our privacy policy. You may
+<a href ="http://focus.ti.com/general/docs/gencontent.tsp?contentId=29146#OptOut" name="&lid=en_US_myti _Default_optout">opt out</a> of receiving emails anytime.
+</p>
+</div>
+<!-- Privacy - Resource Content - End -->
+<br style="clear:both">
+</div>
+<!-- Resource Content - End -->
+</div>
+<!-- Disclaimer Box - End -->
+
+
+
+
+  
+
+
+
+        
+      
+    
+  
+  <img src="/portal/images/spacer.gif" width="0" height="4" ALT=""><br>
+
+
+
+
+
+<!-- END BOTTOM CHANNELS -->
+
+
+
+
+
+  
+
+
+<br style="clear:both">
+</div>
+<!-- Middle - End -->
+</div>
+<!-- Page Margin - End -->
+<!-- TI Footer Start -->
+
+<script type="text/javascript" src="https://myportal.ti.com/loginportal/js/shared/jquery-myti-login-validation.js"></script> 
+    
+<!-- Modified for Kintana 38585 - start -->
+
+
+
+
+
+<!-- HitBox Sub accounts Code START -->
+<script language="JavaScript" src="https://focus.ti.com/en/js/shared/hbx/hbx.js" type="text/javascript"></script> -->
+<!-- HitBox Sub accounts Code END -->
+
+<div id="footer">
+    <p><a href="http://www.ti.com/footer_products"><b class="first_item">Products</b></a> | <a href="http://www.ti.com/footer_apps"><b>Applications</b></a> | <a href="http://www.ti.com/footer_support"><b>Design Support</b></a> | <a href="http://www.ti.com/footer_buy"><b>Sample &amp; Buy</b></a> <a href="http://www.ti.com/footer_rss"><img src="https://focus.ti.com/en/graphics/shared/rss.gif" alt="RSS" width="40" height="13" border="0" class="rss_ico"></a></p><p><a href="http://www.ti.com/footer_worldwide">TI Worldwide</a> | <a href="http://www.ti.com/footer_about_ti">About TI</a> | <a href="http://www.ti.com/footer_contact">Contact Us</a> | <a href="http://www.ti.com/footer_investor_relations">Investor Relations</a> | <a href="http://www.ti.com/footer_press">Press Center</a> | <a href="http://www.ti.com/footer_csr">Corporate Citizenship</a> | <a href="http://www.ti.com/footer_careers">Careers</a> | <a href="http://www.ti.com/footer_tags">Tags</a> |  <a href="http://www.ti.com/footer_myti">my.TI Login</a> | <a href="http://www.ti.com/footer_search">All Searches</a> | <a href="http://www.ti.com/footer_sitemap">Site Map</a></p><p class="disclaim"><a href="http://www.ti.com/footer_copyright">&copy; Copyright 1995-2012</a> Texas Instruments Incorporated. All rights reserved. <a href="http://www.ti.com/footer_trademarks">Trademarks</a> | <a href="http://www.ti.com/footer_privacy">Privacy Policy</a> | <a href="http://www.ti.com/footer_terms">Terms of Use</a> </p>
+</div>
+<!-- Modified for Kintana 38585 - end -->
+
+<!-- TI Footer End -->
+</body>
+</html>
+
+    
+
+    
+  
+
