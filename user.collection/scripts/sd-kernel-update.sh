@@ -8,6 +8,7 @@ FATDIR=/tmp/BOOT
 ROOTDIR=/tmp/ROOT
 
 XLOADER=MLO-overo
+BOOTSCR=boot.scr
 UBOOT=u-boot-overo.bin
 KERNELFILE=uImage-3.2-r103-overo.bin
 MODULEFILES=modules-3.2-r103-overo.tgz
