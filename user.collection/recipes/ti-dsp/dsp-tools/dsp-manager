@@ -1,0 +1,30 @@
+#!/bin/sh
+
+DAEMON=/usr/sbin/dsp-manager
+NAME=dsp-manager
+
+test -x "$DAEMON" || exit 0
+
+case "$1" in
+    start)
+	start-stop-daemon -S -b -x "$DAEMON"
+	echo "$NAME."
+	;;
+    stop)
+	start-stop-daemon -K -b -x "$DAEMON"
+	echo "$NAME."
+	;;
+    restart)
+	start-stop-daemon -K -b -x "$DAEMON"
+	sleep 1
+	start-stop-daemon -S -b -x "$DAEMON"
+	echo "$NAME."
+	;;
+    *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart}" >&2
+	exit 1;
+	;;
+esac
+
+exit 0

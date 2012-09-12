@@ -1,0 +1,1058 @@
+diff -ruN gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394.c gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394.c
+--- gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394.c	2010-10-19 19:00:12.000000000 +0200
++++ gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394.c	2012-01-31 17:30:44.804380741 +0100
+@@ -36,12 +36,15 @@
+ #include "config.h"
+ #endif
+ #include "gstdc1394.h"
++#include "gstdc1394utils.h"
+ #include <sys/time.h>
+ #include <time.h>
+ #include <string.h>
+ 
+ GST_DEBUG_CATEGORY (dc1394_debug);
+ #define GST_CAT_DEFAULT dc1394_debug
++gint pgr_cam=0;
++gint printcamcaps=1;
+ 
+ enum
+ {
+@@ -49,7 +52,16 @@
+   PROP_TIMESTAMP_OFFSET,
+   PROP_CAMNUM,
+   PROP_BUFSIZE,
+-  PROP_ISO_SPEED
++  PROP_ISO_SPEED,
++  PROP_BRIGHTNESS,
++  PROP_EXPOSURE,
++  PROP_WHITEBAL_BU,
++  PROP_WHITEBAL_RV,
++  PROP_GAMMA,
++  PROP_SHUTTER,
++  PROP_GAIN,
++  PROP_PGR,
++  PROP_CAMCAPSPRINT
+       /* FILL ME */
+ };
+ 
+@@ -155,6 +167,60 @@
+           "The iso bandwidth in Mbps (100, 200, 400, 800, 1600, 3200)", 100,
+           3200, 400, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+ 
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_BRIGHTNESS, g_param_spec_int ("brightness",
++          "Brightness ",
++          "Brightness", 0,
++          511, 60, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_EXPOSURE, g_param_spec_int ("exposure",
++          "Exposure",
++          "Exposure", -2,
++          1023, -1 , G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_WHITEBAL_BU, g_param_spec_int ("whitebal-bu",
++          "White balance B/U",
++          "White balance B/U", 0,
++          1024, 640, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_WHITEBAL_RV, g_param_spec_int ("whitebal-rv",
++          "White balance R/V",
++          "White balance R/V", 0,
++          1024, 530, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_GAMMA, g_param_spec_int ("gamma",
++          "Gamma",
++          "Gamma", 512,
++          4095, 1024, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_SHUTTER, g_param_spec_int ("shutter",
++          "Shutter",
++          "Shutter", -2,
++          543, -1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_GAIN, g_param_spec_int ("gain",
++          "Gain",
++          "Gain", -2,
++          3584, -1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_PGR, g_param_spec_int ("pgr-cam",
++          "PGR camera (MONO corresponds to bayer rggb)",
++          "PGR camera (MONO corresponds to bayer rggb)", 0,
++          1, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
++  g_object_class_install_property (G_OBJECT_CLASS (klass),
++      PROP_CAMCAPSPRINT, g_param_spec_int ("printcamcaps",
++          "print camera capabilities",
++          "print camera capabilities", 0,
++          1, 0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
+   gstbasesrc_class->get_caps = gst_dc1394_getcaps;
+   gstbasesrc_class->set_caps = gst_dc1394_setcaps;
+ 
+@@ -175,6 +241,14 @@
+   src->caps = gst_dc1394_get_all_dc1394_caps ();
+   src->bufsize = 10;
+   src->iso_speed = 400;
++  src->brightness = 60;
++  src->exposure = -1;
++  src->whitebal_bu = 640;
++  src->whitebal_rv = 530;
++  src->gamma = 1024;
++  src->shutter = -1;
++  src->gain = -1;
++  src->pgr = 0;
+   src->camnum = 0;
+   src->n_frames = 0;
+ 
+@@ -238,6 +312,33 @@
+               GST_ELEMENT_NAME (src), g_value_get_int (value));
+           break;
+       }
++    case PROP_BRIGHTNESS:
++      src->brightness= g_value_get_int (value);
++      break;
++    case PROP_EXPOSURE:
++      src->exposure= g_value_get_int (value);
++      break;
++    case PROP_WHITEBAL_BU:
++      src->whitebal_bu= g_value_get_int (value);
++      break;
++    case PROP_WHITEBAL_RV:
++      src->whitebal_rv= g_value_get_int (value);
++      break;
++    case PROP_GAMMA:
++      src->gamma= g_value_get_int (value);
++      break;
++    case PROP_SHUTTER:
++      src->shutter= g_value_get_int (value);
++      break;
++    case PROP_GAIN:
++      src->gain= g_value_get_int (value);
++      break;
++    case PROP_PGR:
++      pgr_cam=src->pgr= g_value_get_int (value);
++      break;
++    case PROP_CAMCAPSPRINT:
++      printcamcaps= g_value_get_int (value);
++      break;
+     default:
+       break;
+   }
+@@ -262,6 +363,33 @@
+     case PROP_ISO_SPEED:
+       g_value_set_int (value, src->iso_speed);
+       break;
++    case PROP_BRIGHTNESS:
++      g_value_set_int (value, src->brightness);
++      break;
++    case PROP_EXPOSURE:
++       g_value_set_int (value, src->exposure);
++      break;
++    case PROP_WHITEBAL_BU:
++      g_value_set_int (value, src->whitebal_bu);
++      break;
++    case PROP_WHITEBAL_RV:
++      g_value_set_int (value, src->whitebal_rv);
++      break;
++    case PROP_GAMMA:
++      g_value_set_int (value, src->gamma);
++      break;
++    case PROP_SHUTTER:
++      g_value_set_int (value, src->shutter);
++      break;
++    case PROP_GAIN:
++      g_value_set_int (value, src->gain);
++      break;
++    case PROP_PGR:
++      g_value_set_int (value, src->pgr);
++      break;
++    case PROP_CAMCAPSPRINT:
++      g_value_set_int (value, printcamcaps);
++      break;
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+       break;
+@@ -673,14 +801,27 @@
+           "green_mask", G_TYPE_INT, 0x00FF00,
+           "blue_mask", G_TYPE_INT, 0x0000FF, NULL);
+       break;
++       case DC1394_COLOR_CODING_RAW8:
++            gst_structure_set_name (gs, "video/x-raw-bayer");
++            gst_structure_set (gs, "bpp", G_TYPE_INT, 8, "depth", G_TYPE_INT, 8, NULL);
++            break;
++       case DC1394_COLOR_CODING_RAW16:
++            gst_structure_set_name (gs, "video/x-raw-bayer");
++            gst_structure_set (gs, "bpp", G_TYPE_INT, 16, "depth", G_TYPE_INT, 16, NULL);
++            break;
+     case DC1394_COLOR_CODING_MONO8:
+-      gst_structure_set_name (gs, "video/x-raw-gray");
++      if(pgr_cam)
++      	gst_structure_set_name (gs, "video/x-raw-bayer");
++      else
++	gst_structure_set_name (gs, "video/x-raw-gray");
+       gst_structure_set (gs,
+           "bpp", G_TYPE_INT, 8, "depth", G_TYPE_INT, 8, NULL);
+-
+       break;
+     case DC1394_COLOR_CODING_MONO16:
+-      gst_structure_set_name (gs, "video/x-raw-gray");
++      if(pgr_cam)
++      	gst_structure_set_name (gs, "video/x-raw-bayer");
++      else
++	gst_structure_set_name (gs, "video/x-raw-gray");
+       gst_structure_set (gs,
+           "bpp", G_TYPE_INT, 16, "depth", G_TYPE_INT, 16, NULL);
+       // there is no fourcc for this format
+@@ -868,6 +1009,9 @@
+   dc1394video_modes_t modes;
+   dc1394framerates_t framerates;
+   GstCaps *gcaps = NULL;
++  dc1394error_t err;
++  dc1394featureset_t features;
++
+ 
+   gcaps = gst_caps_new_empty ();
+ 
+@@ -906,9 +1050,25 @@
+     goto error;
+   }
+ 
++  if(printcamcaps)
++  {
++	  dc1394_camera_print_info(camera, stdout);
++	  err=dc1394_feature_get_all(camera,&features);
++	  if (err!=DC1394_SUCCESS) {
++		  dc1394_log_warning("Could not get feature set");
++	  } else {
++		  dc1394_feature_print_all(&features, stdout);
++	  }
++
++  }
+   for (i = modes.num - 1; i >= 0; i--) {
+     int m = modes.modes[i];
+ 
++  if(printcamcaps)
++  {
++	   printf("\t vmode=%d\n",modes.modes[i]);
++           print_video_mode_info(camera, modes.modes[i]);
++  }
+     if (m < DC1394_VIDEO_MODE_EXIF) {
+ 
+       GstStructure *gs = gst_structure_empty_new ("video");
+@@ -1038,6 +1198,82 @@
+   return retvalue;
+ }
+ 
++static gboolean
++gst_dc1394_set_feature(GstDc1394 * src,dc1394feature_t dc1394feature, gint value)
++{
++	int32_t min,max;
++	uint32_t bu,rv;
++	gint featureval;
++
++	switch(value)
++	{
++		case -1:
++  GST_LOG_OBJECT (src, "Setting mode auto");
++			//fprintf(stderr,"mode auto\n");
++			dc1394_feature_set_mode(src->camera,dc1394feature,DC1394_FEATURE_MODE_AUTO);
++			return TRUE;
++			break;
++		case -2:
++  GST_LOG_OBJECT (src, "Setting mode one-push");
++			dc1394_feature_set_mode(src->camera,dc1394feature,DC1394_FEATURE_MODE_ONE_PUSH_AUTO);
++			return TRUE;
++			break;
++		default:
++  GST_LOG_OBJECT (src, "Setting mode manual");
++			dc1394_feature_set_mode(src->camera,dc1394feature,DC1394_FEATURE_MODE_MANUAL);
++			break;
++	}
++	switch(dc1394feature)
++	{
++		case DC1394_FEATURE_BRIGHTNESS:
++ 		case DC1394_FEATURE_EXPOSURE:
++		case DC1394_FEATURE_GAMMA:
++		case DC1394_FEATURE_SHUTTER:
++		case DC1394_FEATURE_GAIN:
++			dc1394_feature_get_boundaries(src->camera,dc1394feature,((uint32_t *)&min),((uint32_t *)&max));
++			featureval=value<min?min:value;
++			featureval=featureval>max?max:featureval;
++  GST_LOG_OBJECT (src, "min=%d max=%d value=%d->%d",min,max,value,featureval);
++			dc1394_feature_set_value(src->camera,dc1394feature,value);	
++			break;
++		case DC1394_FEATURE_WHITE_BALANCE:
++			bu=value>>16;
++			rv=value&0xFFFF;
++  GST_LOG_OBJECT (src, "bu=%d rv=%d \n",bu,rv);
++			dc1394_feature_whitebalance_set_value(src->camera,bu,rv);
++
++			break;
++		default:
++    GST_ELEMENT_ERROR (src, RESOURCE, FAILED, ("Invalid feature"),("Invalid feature"));
++
++	}
++
++	return TRUE;
++}
++static gboolean
++gst_dc1394_set_exposure (GstDc1394 * src)
++{
++  GST_LOG_OBJECT (src, "Setting exposure settings for camera: %d", src->camnum);
++
++  gst_dc1394_set_feature(src,DC1394_FEATURE_BRIGHTNESS,src->brightness);
++  gst_dc1394_set_feature(src,DC1394_FEATURE_EXPOSURE,src->exposure);
++  gst_dc1394_set_feature(src,DC1394_FEATURE_WHITE_BALANCE,src->whitebal_bu<<16|src->whitebal_rv);
++//#gst_dc1394_set_feature(src,DC1394_FEATURE_BRIGHTNESS,src->whitebal_rv);
++  gst_dc1394_set_feature(src,DC1394_FEATURE_GAMMA,src->gamma);
++  gst_dc1394_set_feature(src,DC1394_FEATURE_SHUTTER,src->shutter);
++  gst_dc1394_set_feature(src,DC1394_FEATURE_GAIN,src->gain);
++  /*
++  switch(src->brightness);
++		  = 60;
++  src->exposure = -1;
++  src->whitebal_bu = 640;
++  src->whitebal_rv = 530;
++  src->gamma = 1024;
++  src->shutter = -1;
++  src->gain = -1;
++  */
++  return TRUE;
++}
+ 
+ static gboolean
+ gst_dc1394_open_cam_with_best_caps (GstDc1394 * src)
+@@ -1193,6 +1429,7 @@
+     }
+   }
+ 
++  gst_dc1394_set_exposure(src);
+ 
+   return TRUE;
+ 
+diff -ruN gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394.h gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394.h
+--- gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394.h	2010-08-06 12:41:24.000000000 +0200
++++ gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394.h	2012-01-31 17:30:44.804380741 +0100
+@@ -64,6 +64,16 @@
+   gint bufsize; 
+   gint iso_speed;
+ 
++  /* exposure settings */
++  gint brightness;
++  gint exposure;
++  gint whitebal_bu;
++  gint whitebal_rv;
++  gint gamma;
++  gint shutter;
++  gint gain;
++  gint pgr;
++
+   dc1394_t * dc1394;
+   dc1394camera_t * camera; 
+ 
+diff -ruN gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394utils.c gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394utils.c
+--- gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394utils.c	1970-01-01 01:00:00.000000000 +0100
++++ gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394utils.c	2012-01-31 17:30:44.804380741 +0100
+@@ -0,0 +1,537 @@
++/*
++ * Utility functions for working with pointgrey dc1394 cameras
++ *
++ * Written by John Stowers <john.stowers@gmail.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
++ */
++
++#include <inttypes.h>
++#include <stdlib.h>
++#include <stdio.h>
++
++#include "gstdc1394utils.h"
++
++#ifndef CLAMP
++#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
++#endif
++
++void cleanup_and_exit(dc1394camera_t *camera)
++{
++    dc1394_video_set_transmission(camera, DC1394_OFF);
++    dc1394_capture_stop(camera);
++    dc1394_camera_free(camera);
++    exit(1);
++}
++
++dc1394error_t setup_color_capture(
++                dc1394camera_t *camera, 
++                dc1394video_mode_t video_mode, 
++                dc1394color_coding_t color_coding)
++{
++    dc1394error_t err;
++#if 0
++    err=dc1394_video_set_mode(camera, video_mode);
++    DC1394_ERR_RTN(err,"Could not set video mode");
++
++    err=dc1394_format7_set_color_coding(camera, video_mode, color_coding);
++    DC1394_ERR_RTN(err,"Could not set color coding");
++
++    err=dc1394_capture_setup(camera, 4, DC1394_CAPTURE_FLAGS_DEFAULT);
++    DC1394_ERR_RTN(err,"Could not setup camera - make sure that the video is supported by your camera");
++#else
++    uint32_t packet_size, width, height;
++    dc1394_get_image_size_from_video_mode(camera, video_mode, &width, &height);
++
++    err=dc1394_camera_reset(camera);
++    DC1394_ERR_RTN(err, "Could not reset camera");
++
++    err = dc1394_video_set_iso_speed(camera, DC1394_ISO_SPEED_200);
++    DC1394_ERR_RTN(err,"Could not setup camera ISO speed");
++
++    err=dc1394_format7_get_recommended_packet_size (camera, video_mode, &packet_size);
++    DC1394_ERR_RTN(err,"Could not get recommended packet size");
++
++    err=dc1394_format7_set_roi(
++            camera,
++            video_mode,
++            color_coding,
++            packet_size,
++            0, 0,
++            width,
++            height);
++    DC1394_ERR_RTN(err,"Could not set roi");
++
++    err=dc1394_video_set_mode(camera, video_mode);
++    DC1394_ERR_CLN_RTN(err,cleanup_and_exit(camera),"Could not set video mode");
++
++    err=dc1394_capture_setup(camera, 4, DC1394_CAPTURE_FLAGS_DEFAULT);
++    DC1394_ERR_RTN(err,"Could not setup camera-\nmake sure that the video mode and framerate are\nsupported by your camera");
++
++#endif
++    return DC1394_SUCCESS;
++}
++
++dc1394error_t setup_gray_capture(
++                dc1394camera_t *camera, 
++                dc1394video_mode_t video_mode)
++{
++    dc1394error_t err;
++
++    err=dc1394_camera_reset(camera);
++    DC1394_ERR_RTN(err, "Could not reset camera");
++
++    err = dc1394_video_set_iso_speed(camera, DC1394_ISO_SPEED_200);
++    DC1394_ERR_RTN(err,"Could not setup camera ISO speed");
++
++    err=dc1394_video_set_mode(camera, video_mode);
++    DC1394_ERR_RTN(err,"Could not set video mode");
++
++    err=dc1394_capture_setup(camera, 4, DC1394_CAPTURE_FLAGS_DEFAULT);
++    DC1394_ERR_RTN(err,"Could not setup camera - make sure that the video mode is supported by your camera");
++
++    return DC1394_SUCCESS;
++}
++
++dc1394error_t setup_framerate(
++                dc1394camera_t *camera, 
++                float ff)
++{
++    dc1394error_t err;
++    dc1394framerate_t f;
++
++    if (ff == 1.875)
++        f = DC1394_FRAMERATE_1_875;
++    else if (ff == 3.75)
++        f = DC1394_FRAMERATE_3_75;
++    else if (ff == 7.5)
++        f = DC1394_FRAMERATE_7_5;
++    else if (ff == 15.0)
++        f = DC1394_FRAMERATE_15;
++    else if (ff == 30.0)
++        f = DC1394_FRAMERATE_30;
++    else if (ff == 60.0)
++        f = DC1394_FRAMERATE_60;
++    else if (ff == 120.0)
++        f = DC1394_FRAMERATE_120;
++    else if (ff == 240.0)
++        f = DC1394_FRAMERATE_240;
++    else
++        return DC1394_INVALID_FRAMERATE;
++
++   err = dc1394_video_set_framerate(camera, f);
++   DC1394_ERR_RTN(err,"Could not set framerate");
++        
++   return DC1394_SUCCESS;
++}
++
++dc1394error_t setup_exposure(
++                dc1394camera_t *camera, 
++                uint8_t manual,
++                uint32_t value)
++{
++    dc1394error_t err;
++
++    /* turn on the feature - dont know what this means?? */
++    err = dc1394_feature_set_power(camera, DC1394_FEATURE_EXPOSURE, DC1394_ON);
++    DC1394_ERR_RTN(err,"Could not turn on the exposure feature");
++
++    if (manual) {
++        uint32_t min, max;
++
++        /* turn off auto exposure */
++        err = dc1394_feature_set_mode(camera, DC1394_FEATURE_EXPOSURE, DC1394_FEATURE_MODE_MANUAL);
++        DC1394_ERR_RTN(err,"Could not turn off Auto-exposure");
++
++        /* get bounds and set */
++        err = dc1394_feature_get_boundaries(camera, DC1394_FEATURE_EXPOSURE, &min, &max);
++        DC1394_ERR_RTN(err,"Could not get bounds");
++
++        err = dc1394_feature_set_value(camera, DC1394_FEATURE_EXPOSURE, CLAMP(value, min, max));
++        DC1394_ERR_RTN(err,"Could not set value");
++    } else {
++        err = dc1394_feature_set_mode(camera, DC1394_FEATURE_EXPOSURE, DC1394_FEATURE_MODE_AUTO);
++        DC1394_ERR_RTN(err,"Could not turn off Auto-exposure");
++    }
++
++   return DC1394_SUCCESS;
++}
++
++dc1394error_t setup_brightness(
++                dc1394camera_t *camera, 
++                uint8_t manual,
++                uint32_t value)
++{
++    dc1394error_t err;
++
++    /* turn on the feature - dont know what this means?? */
++    err = dc1394_feature_set_power(camera, DC1394_FEATURE_BRIGHTNESS, DC1394_ON);
++    DC1394_ERR_RTN(err,"Could not turn on the brightness feature");
++
++    if (manual) {
++        uint32_t min, max;
++
++        /* turn off auto exposure */
++        err = dc1394_feature_set_mode(camera, DC1394_FEATURE_BRIGHTNESS, DC1394_FEATURE_MODE_MANUAL);
++        DC1394_ERR_RTN(err,"Could not turn off Auto-brightness");
++
++        /* get bounds and set */
++        err = dc1394_feature_get_boundaries(camera, DC1394_FEATURE_BRIGHTNESS, &min, &max);
++        DC1394_ERR_RTN(err,"Could not get bounds");
++
++        err = dc1394_feature_set_value(camera, DC1394_FEATURE_BRIGHTNESS, CLAMP(value, min, max));
++        DC1394_ERR_RTN(err,"Could not set value");
++    } else {
++        err = dc1394_feature_set_mode(camera, DC1394_FEATURE_BRIGHTNESS, DC1394_FEATURE_MODE_AUTO);
++        DC1394_ERR_RTN(err,"Could not turn off Auto-brightness");
++    }
++
++   return DC1394_SUCCESS;
++}
++
++dc1394error_t get_exposure_and_brightness(
++                dc1394camera_t *camera, 
++                uint32_t *exposure, uint32_t *minexposure, uint32_t *maxexposure,
++                uint32_t *brightness, uint32_t *minbrightness, uint32_t *maxbrightness)
++{
++   dc1394error_t err;
++
++    /* turn on the feature - dont know what this means?? */
++    err = dc1394_feature_set_power(camera, DC1394_FEATURE_EXPOSURE, DC1394_ON);
++    DC1394_ERR_RTN(err,"Could not turn on the exposure feature");
++    err = dc1394_feature_set_power(camera, DC1394_FEATURE_BRIGHTNESS, DC1394_ON);
++    DC1394_ERR_RTN(err,"Could not turn on the brightness feature");
++
++    err = dc1394_feature_get_value(camera, DC1394_FEATURE_EXPOSURE, exposure);
++    DC1394_ERR_RTN(err,"Could not get exposure");
++    if (minexposure != NULL && maxexposure != NULL) {
++        err = dc1394_feature_get_boundaries(camera, DC1394_FEATURE_EXPOSURE, minexposure, maxexposure);
++        DC1394_ERR_RTN(err,"Could not get exposure bounds");
++    }
++
++    err = dc1394_feature_get_value(camera, DC1394_FEATURE_BRIGHTNESS, brightness);
++    DC1394_ERR_RTN(err,"Could not get brightness");
++    if (minbrightness != NULL && maxbrightness != NULL) {
++        err = dc1394_feature_get_boundaries(camera, DC1394_FEATURE_BRIGHTNESS, minbrightness, maxbrightness);
++        DC1394_ERR_RTN(err,"Could not get brightness bounds");
++    }
++
++   return DC1394_SUCCESS;
++}
++
++dc1394error_t setup_from_command_line(
++                dc1394camera_t *camera, 
++                float framerate, 
++                int exposure,
++                int brightness)
++{
++    dc1394error_t err;
++    uint8_t eman, bman;
++
++    eman = (exposure >= 0 ? 1 : 0);
++    bman = (brightness >= 0 ? 1 : 0);
++
++    err = setup_framerate(camera, framerate);
++    if (err == DC1394_SUCCESS) {
++        err = setup_exposure(camera, eman, exposure);
++        if (err == DC1394_SUCCESS) {
++            err = setup_brightness(camera, bman, brightness);
++            return err;
++        }
++    }
++    return err;
++}
++
++#define print_case(A) case A: printf(#A ""); break;
++static void print_video_mode( uint32_t format )
++{
++    switch( format ) {
++        print_case(DC1394_VIDEO_MODE_160x120_YUV444);
++        print_case(DC1394_VIDEO_MODE_320x240_YUV422);
++        print_case(DC1394_VIDEO_MODE_640x480_YUV411);
++        print_case(DC1394_VIDEO_MODE_640x480_YUV422);
++        print_case(DC1394_VIDEO_MODE_640x480_RGB8);
++        print_case(DC1394_VIDEO_MODE_640x480_MONO8);
++        print_case(DC1394_VIDEO_MODE_640x480_MONO16);
++        print_case(DC1394_VIDEO_MODE_800x600_YUV422);
++        print_case(DC1394_VIDEO_MODE_800x600_RGB8);
++        print_case(DC1394_VIDEO_MODE_800x600_MONO8);
++        print_case(DC1394_VIDEO_MODE_1024x768_YUV422);
++        print_case(DC1394_VIDEO_MODE_1024x768_RGB8);
++        print_case(DC1394_VIDEO_MODE_1024x768_MONO8);
++        print_case(DC1394_VIDEO_MODE_800x600_MONO16);
++        print_case(DC1394_VIDEO_MODE_1024x768_MONO16);
++        print_case(DC1394_VIDEO_MODE_1280x960_YUV422);
++        print_case(DC1394_VIDEO_MODE_1280x960_RGB8);
++        print_case(DC1394_VIDEO_MODE_1280x960_MONO8);
++        print_case(DC1394_VIDEO_MODE_1600x1200_YUV422);
++        print_case(DC1394_VIDEO_MODE_1600x1200_RGB8);
++        print_case(DC1394_VIDEO_MODE_1600x1200_MONO8);
++        print_case(DC1394_VIDEO_MODE_1280x960_MONO16);
++        print_case(DC1394_VIDEO_MODE_1600x1200_MONO16);
++        print_case(DC1394_VIDEO_MODE_EXIF);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_0);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_1);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_2);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_3);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_4);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_5);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_6);
++        print_case(DC1394_VIDEO_MODE_FORMAT7_7);
++    default:
++        printf("Unknown (%i)\n", format);
++        break;
++    }
++
++}
++
++static void print_color_coding(dc1394color_coding_t color_id)
++{
++    switch( color_id ) {
++        print_case(DC1394_COLOR_CODING_MONO8);
++        print_case(DC1394_COLOR_CODING_YUV411);
++        print_case(DC1394_COLOR_CODING_YUV422);
++        print_case(DC1394_COLOR_CODING_YUV444);
++        print_case(DC1394_COLOR_CODING_RGB8);
++        print_case(DC1394_COLOR_CODING_MONO16);
++        print_case(DC1394_COLOR_CODING_RGB16);
++        print_case(DC1394_COLOR_CODING_MONO16S);
++        print_case(DC1394_COLOR_CODING_RGB16S);
++        print_case(DC1394_COLOR_CODING_RAW8);
++        print_case(DC1394_COLOR_CODING_RAW16);
++    default:
++        printf("Unknown (%d)\n",color_id);
++        break;
++    }
++}
++
++static void print_color_filter(dc1394color_filter_t color)
++{
++    switch ( color ) {
++        print_case(DC1394_COLOR_FILTER_RGGB);
++        print_case(DC1394_COLOR_FILTER_GBRG);
++        print_case(DC1394_COLOR_FILTER_GRBG);
++        print_case(DC1394_COLOR_FILTER_BGGR);
++    default:
++        printf("Unknown (%d)\n",color);
++        break;
++    }
++}
++
++void print_frame_info(dc1394video_frame_t *frame)
++{
++    dc1394video_mode_t mode = frame->video_mode;
++
++    printf("-------- Frame ---------\n");
++    printf("size:   %dw x %dh\n", frame->size[0], frame->size[1]);
++    printf("roi:    %d,%d\n", frame->position[0], frame->position[1]);
++    printf("bpp     %d\n", frame->data_depth);
++    printf("stride: %d\n", frame->stride);
++    printf("bytes:  %lld\n", frame->total_bytes);
++    printf("time:   %lld\n", frame->timestamp);
++
++    printf("video mode:\n        ");print_video_mode(mode);printf("\n");
++    printf("color coding:\n        ");print_color_coding(frame->color_coding);printf("\n");
++    if ((mode == DC1394_VIDEO_MODE_FORMAT7_0) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_1) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_2) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_3) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_4) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_5) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_6) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_7)) {
++        printf("color filter:\n        ");print_color_filter(frame->color_filter);printf("\n");
++    } else {
++        printf("color filter:\n        N/A\n");
++    }
++
++//    dc1394color_coding_t     color_coding;          /* the color coding used. This field is valid for all video modes. */
++//    dc1394color_filter_t     color_filter;          /* the color filter used. This field is valid only for RAW modes and IIDC 1.31 */
++//    uint32_t                 yuv_byte_order;        /* the order of the fields for 422 formats: YUYV or UYVY */
++//    uint32_t                 data_depth;            /* the number of bits per pixel. The number of grayscale levels is 2^(this_number).
++//                                                       This is independent from the colour coding */
++//    uint32_t                 stride;                /* the number of bytes per image line */
++//    dc1394video_mode_t       video_mode;            /* the video mode used for capturing this frame */
++//    uint64_t                 total_bytes;           /* the total size of the frame buffer in bytes. May include packet-
++//                                                       multiple padding and intentional padding (vendor specific) */
++//    uint32_t                 image_bytes;           /* the number of bytes used for the image (image data only, no padding) */
++//    uint32_t                 padding_bytes;         /* the number of extra bytes, i.e. total_bytes-image_bytes.  */
++//    uint32_t                 packet_size;           /* the size of a packet in bytes. (IIDC data) */
++//    uint32_t                 packets_per_frame;     /* the number of packets per frame. (IIDC data) */
++//    uint64_t                 timestamp;             /* the unix time [microseconds] at which the frame was captured in
++//                                                       the video1394 ringbuffer */
++//    uint32_t                 frames_behind;         /* the number of frames in the ring buffer that are yet to be accessed by the user */
++//    dc1394camera_t           *camera;               /* the parent camera of this frame */
++//    uint32_t                 id;                    /* the frame position in the ring buffer */
++//    uint64_t                 allocated_image_bytes; /* amount of memory allocated in for the *image field. */
++//    dc1394bool_t             little_endian;         /* DC1394_TRUE if little endian (16bpp modes only),
++//                                                       DC1394_FALSE otherwise */
++//    dc1394bool_t             data_in_padding;       /* DC1394_TRUE if data is present in the padding bytes in IIDC 1.32 format,
++//                                                       DC1394_FALSE otherwise */
++}
++
++void print_video_mode_info( dc1394camera_t *camera , dc1394video_mode_t mode)
++{
++    int j;
++    dc1394error_t err;
++
++    printf("Mode: ");
++    print_video_mode(mode);
++    printf("\n");
++
++    if ((mode == DC1394_VIDEO_MODE_FORMAT7_0) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_1) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_2) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_3) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_4) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_5) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_6) ||
++        (mode == DC1394_VIDEO_MODE_FORMAT7_7)) {
++        dc1394format7mode_t f7mode;
++
++        err=dc1394_format7_get_mode_info(camera, mode, &f7mode);
++        if (err) {
++            DC1394_ERR(err,"Could not format 7 information");
++        }
++        else {
++            printf( "Image Sizes:\n"
++                    "  size = %ix%i\n"
++                    "  max = %ix%i\n"
++                    "  pixels = %i\n", 
++                    f7mode.size_x, f7mode.size_y,
++                    f7mode.max_size_x, f7mode.max_size_y,
++                    f7mode.pixnum);
++
++            printf( "Color:\n");            
++            for (j=0; j<f7mode.color_codings.num; j++) {
++                printf("  [%d] coding = ", j);
++                print_color_coding(f7mode.color_codings.codings[j]);
++                printf("\n");
++            }
++            printf("  filter = ");
++            print_color_filter(f7mode.color_filter);
++            printf("\n");
++        }
++
++    } else {
++        dc1394framerates_t framerates;
++        err=dc1394_video_get_supported_framerates(camera,mode,&framerates);
++        if (err) {
++            DC1394_ERR(err,"Could not get frame rates");
++        } else {
++            printf("Frame Rates:\n");
++            for( j = 0; j < framerates.num; j++ ) {
++                uint32_t rate = framerates.framerates[j];
++                float f_rate;
++                dc1394_framerate_as_float(rate,&f_rate);
++                printf("  [%d] rate = %f\n",j,f_rate );
++            }
++        }
++    }
++
++}
++
++#define HEADER_SIZE                 \
++    (sizeof(uint32_t) * 2) +        \
++    sizeof(uint64_t) +              \
++    sizeof(dc1394video_mode_t) +    \
++    sizeof(dc1394color_coding_t) +  \
++    sizeof(dc1394color_filter_t) +  \
++    sizeof(uint32_t)
++
++
++long write_frame_binary_header(dc1394video_frame_t *frame, FILE *fp)
++{
++    long nbytes = HEADER_SIZE;
++
++    fwrite(frame->size, sizeof(uint32_t), 2, fp);
++    fwrite(&(frame->total_bytes), sizeof(uint64_t), 1, fp);
++    fwrite(&(frame->video_mode), sizeof(dc1394video_mode_t), 1, fp);
++    fwrite(&(frame->color_coding), sizeof(dc1394color_coding_t), 1, fp);
++    fwrite(&(frame->color_filter), sizeof(dc1394color_filter_t), 1, fp);
++    fwrite(&(frame->stride), sizeof(uint32_t), 1, fp);
++
++    print_frame_info(frame);
++    printf("Wrote %ld bytes\n", nbytes);
++
++    return nbytes;
++}
++
++long read_frame_binary_header(dc1394video_frame_t *frame, FILE *fp)
++{
++    long nbytes = HEADER_SIZE;
++
++    fread(frame->size, sizeof(uint32_t), 2, fp);
++    fread(&(frame->total_bytes), sizeof(uint64_t), 1, fp);
++    fread(&(frame->video_mode), sizeof(dc1394video_mode_t), 1, fp);
++    fread(&(frame->color_coding), sizeof(dc1394color_coding_t), 1, fp);
++    fread(&(frame->color_filter), sizeof(dc1394color_filter_t), 1, fp);
++    fread(&(frame->stride), sizeof(uint32_t), 1, fp);
++
++    return nbytes;
++}
++
++long write_frame(dc1394video_frame_t *frame, FILE *fp)
++{
++    fwrite(frame, sizeof(dc1394video_frame_t), 1, fp);
++    fwrite(frame->image, sizeof(unsigned char), frame->total_bytes, fp);
++    return sizeof(dc1394video_frame_t) + (sizeof(unsigned char) * frame->total_bytes);
++} 
++
++long read_frame(dc1394video_frame_t *frame, FILE *fp)
++{
++    fread(frame, sizeof(dc1394video_frame_t), 1, fp);
++    frame->image = (unsigned char *)malloc(frame->total_bytes*sizeof(unsigned char));
++    fread(frame->image, sizeof(unsigned char), frame->total_bytes, fp);
++    return sizeof(dc1394video_frame_t) + (sizeof(unsigned char) * frame->total_bytes);
++}
++
++long write_frame_with_extras(dc1394video_frame_t *frame, FILE *fp, uint8_t *extra, uint8_t nextra)
++{
++    fwrite(frame, sizeof(dc1394video_frame_t), 1, fp);
++    fwrite(frame->image, sizeof(unsigned char), frame->total_bytes, fp);
++    if (extra && nextra)
++        fwrite(extra, sizeof(uint8_t), nextra, fp);
++    else
++        nextra = 0;
++    return sizeof(dc1394video_frame_t) + (sizeof(unsigned char) * frame->total_bytes) + nextra;
++} 
++
++long read_frame_with_extras(dc1394video_frame_t *frame, FILE *fp, uint8_t *extra, uint8_t nextra)
++{
++    fread(frame, sizeof(dc1394video_frame_t), 1, fp);
++    frame->image = (unsigned char *)malloc(frame->total_bytes*sizeof(unsigned char));
++    fread(frame->image, sizeof(unsigned char), frame->total_bytes, fp);
++    if (extra && nextra)
++        fread(extra, sizeof(uint8_t), nextra, fp);
++    else
++        nextra = 0;
++    return sizeof(dc1394video_frame_t) + (sizeof(unsigned char) * frame->total_bytes) + nextra;
++}
++
++void app_exit(int code, GOptionContext *context, const char *msg)
++{
++    if (context && msg)
++        fprintf(stderr, "%s\n\n%s", msg, g_option_context_get_help(context, TRUE, NULL));
++    else if (msg)
++        fprintf(stderr, msg);
++    else if (context)
++        fprintf(stderr, "%s", g_option_context_get_help(context, TRUE, NULL));
++
++    exit(code);
++}
++
++
+diff -ruN gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394utils.h gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394utils.h
+--- gst-plugins-bad-0.10.21/ext/dc1394//gstdc1394utils.h	1970-01-01 01:00:00.000000000 +0100
++++ gst-plugins-bad-0.10.22/ext/dc1394//gstdc1394utils.h	2012-01-31 17:30:44.804380741 +0100
+@@ -0,0 +1,140 @@
++/*
++ * Utility functions for working with pointgrey dc1394 cameras
++ *
++ * Written by John Stowers <john.stowers@gmail.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
++ */
++
++#ifndef _UTILS_H_
++#define _UTILS_H_
++
++#include <inttypes.h>
++#include <stdio.h>
++#include <glib.h>
++#include <dc1394/dc1394.h>
++
++G_BEGIN_DECLS
++
++typedef enum {
++    GRAY =      'g',
++    COLOR =     'c',
++    FORMAT7 =   '7'
++} show_mode_t;
++
++/**
++ * Cleanup function
++ */
++void cleanup_and_exit(dc1394camera_t *camera);
++
++/**
++ * Sets the camera to record color frames at the given video mode and color coding
++ */
++dc1394error_t setup_color_capture(
++                dc1394camera_t *camera, 
++                dc1394video_mode_t video_mode, 
++                dc1394color_coding_t color_coding);
++
++/**
++ * Sets the camera to record gray frames at the given video mode
++ */
++dc1394error_t setup_gray_capture(
++                dc1394camera_t *camera, 
++                dc1394video_mode_t video_mode);
++
++/**
++ * Sets the camera framerate to the given floating point value, if supported
++ */
++dc1394error_t setup_framerate(
++                dc1394camera_t *camera, 
++                float framerate);
++
++/**
++ * If manual is TRUE then sets the camera exposure to value. If manual
++ * is FALSE then puts the camera into automatic exposure mode.
++ */
++dc1394error_t setup_exposure(
++                dc1394camera_t *camera, 
++                uint8_t manual,
++                uint32_t value);
++
++/**
++ * If manual is TRUE then sets the camera brightness to value. If manual
++ * is FALSE then puts the camera into automatic brightness mode.
++ */
++dc1394error_t setup_brightness(
++                dc1394camera_t *camera, 
++                uint8_t manual,
++                uint32_t value);
++
++/**
++ * Get camera exposure and brightness (and their ranges - if passing non-NULL to max/minXXX)
++ */
++dc1394error_t get_exposure_and_brightness(
++                dc1394camera_t *camera, 
++                uint32_t *exposure, uint32_t *minexposure, uint32_t *maxexposure,
++                uint32_t *brightness, uint32_t *minbrightness, uint32_t *maxbrightness);
++
++
++/**
++ * Function and macro to setup camera from GOption command line arguments
++ */
++#define GOPTION_ENTRY_FORMAT(_format)                                                           \
++      { "format", 'f', 0, G_OPTION_ARG_STRING, _format, "Format of image", "g,c,7" }
++#define GOPTION_ENTRY_GUID(_guid)                                                               \
++      { "guid", 'g', 0, G_OPTION_ARG_INT64, _guid, "Camera GUID", "0x456" }                     \
++
++#define GOPTION_ENTRY_CAMERA_SETUP_ARGUMENTS(_guid, _framerate, _exposure, _brightness)         \
++      { "guid", 'g', 0, G_OPTION_ARG_INT64, _guid, "Camera GUID", "0x456" },                    \
++      { "framerate", 'F', 0, G_OPTION_ARG_DOUBLE, _framerate, "Framerate", "15.0" },            \
++      { "exposure", 'e', 0, G_OPTION_ARG_INT, _exposure, "Exposure (<0 = Auto)", "13" },        \
++      { "brightness", 'b', 0, G_OPTION_ARG_INT, _brightness, "Brightness (<0 = Auto)", "34" }
++dc1394error_t setup_from_command_line(
++                dc1394camera_t *camera, 
++                float framerate, 
++                int exposure,
++                int brightness);
++
++/**
++ * Prints various information about the mode the camera is in
++ */
++void print_video_mode_info( dc1394camera_t *camera , dc1394video_mode_t mode);
++
++/**
++ * Foo
++ */
++long write_frame_binary_header(dc1394video_frame_t *frame, FILE *fp);
++
++/**
++ * Foo
++ */
++long read_frame_binary_header(dc1394video_frame_t *frame, FILE *fp);
++
++long write_frame(dc1394video_frame_t *frame, FILE *fp);
++
++long read_frame(dc1394video_frame_t *frame, FILE *fp);
++
++long write_frame_with_extras(dc1394video_frame_t *frame, FILE *fp, uint8_t *extra, uint8_t nextra);
++
++long read_frame_with_extras(dc1394video_frame_t *frame, FILE *fp, uint8_t *extra, uint8_t nextra);
++
++void print_frame_info(dc1394video_frame_t *frame);
++
++void app_exit(int code, GOptionContext *context, const char *msg);
++
++G_END_DECLS
++
++#endif
+diff -ruN gst-plugins-bad-0.10.21/ext/dc1394//Makefile.am gst-plugins-bad-0.10.22/ext/dc1394//Makefile.am
+--- gst-plugins-bad-0.10.21/ext/dc1394//Makefile.am	2010-08-06 12:41:05.000000000 +0200
++++ gst-plugins-bad-0.10.22/ext/dc1394//Makefile.am	2012-01-31 17:30:44.804380741 +0100
+@@ -1,8 +1,8 @@
+-plugindir = $(libdir)/gstreamer-@GST_MAJORMINOR@
+ 
+ plugin_LTLIBRARIES =	libgstdc1394.la
+ 
+-libgstdc1394_la_SOURCES =	gstdc1394.c 
++libgstdc1394_la_SOURCES =	gstdc1394.c \
++				gstdc1394utils.c
+ 
+ 
+ libgstdc1394_la_CFLAGS = 	$(GST_CFLAGS) \

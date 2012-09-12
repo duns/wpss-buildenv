@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: libbridge
+Description: Texas Instruments' DSP/BIOS bridge
+Version: 23.3.3
+Libs: -L${libdir} -lbridge
+Cflags: -I${includedir}/libbridge

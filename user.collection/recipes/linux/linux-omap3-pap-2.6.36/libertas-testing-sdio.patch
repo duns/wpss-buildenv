@@ -1,0 +1,1434 @@
+diff -urN git//drivers/net/wireless/libertas/cfg.c git-mod//drivers/net/wireless/libertas/cfg.c
+--- git//drivers/net/wireless/libertas/cfg.c	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/cfg.c	2012-01-31 07:15:05.220705611 +0100
+@@ -10,6 +10,7 @@
+ #include <linux/wait.h>
+ #include <linux/slab.h>
+ #include <linux/sched.h>
++#include <linux/wait.h>
+ #include <linux/ieee80211.h>
+ #include <net/cfg80211.h>
+ #include <asm/unaligned.h>
+@@ -480,7 +481,6 @@
+ 	struct cmd_ds_802_11_scan_rsp *scanresp = (void *)resp;
+ 	int bsssize;
+ 	const u8 *pos;
+-	u16 nr_sets;
+ 	const u8 *tsfdesc;
+ 	int tsfsize;
+ 	int i;
+@@ -489,12 +489,11 @@
+ 	lbs_deb_enter(LBS_DEB_CFG80211);
+ 
+ 	bsssize = get_unaligned_le16(&scanresp->bssdescriptsize);
+-	nr_sets = le16_to_cpu(scanresp->nr_sets);
+ 
+ 	lbs_deb_scan("scan response: %d BSSs (%d bytes); resp size %d bytes\n",
+-			nr_sets, bsssize, le16_to_cpu(resp->size));
++			scanresp->nr_sets, bsssize, le16_to_cpu(resp->size));
+ 
+-	if (nr_sets == 0) {
++	if (scanresp->nr_sets == 0) {
+ 		ret = 0;
+ 		goto done;
+ 	}
+@@ -526,20 +525,31 @@
+ 
+ 	pos = scanresp->bssdesc_and_tlvbuffer;
+ 
++	lbs_deb_hex(LBS_DEB_SCAN, "SCAN_RSP", scanresp->bssdesc_and_tlvbuffer,
++			scanresp->bssdescriptsize);
++
+ 	tsfdesc = pos + bsssize;
+ 	tsfsize = 4 + 8 * scanresp->nr_sets;
++	lbs_deb_hex(LBS_DEB_SCAN, "SCAN_TSF", (u8 *) tsfdesc, tsfsize);
+ 
+ 	/* Validity check: we expect a Marvell-Local TLV */
+ 	i = get_unaligned_le16(tsfdesc);
+ 	tsfdesc += 2;
+-	if (i != TLV_TYPE_TSFTIMESTAMP)
++	if (i != TLV_TYPE_TSFTIMESTAMP) {
++		lbs_deb_scan("scan response: invalid TSF Timestamp %d\n", i);
+ 		goto done;
++	}
++
+ 	/* Validity check: the TLV holds TSF values with 8 bytes each, so
+ 	 * the size in the TLV must match the nr_sets value */
+ 	i = get_unaligned_le16(tsfdesc);
+ 	tsfdesc += 2;
+-	if (i / 8 != scanresp->nr_sets)
++	if (i / 8 != scanresp->nr_sets) {
++		lbs_deb_scan("scan response: invalid number of TSF timestamp "
++			     "sets (expected %d got %d)\n", scanresp->nr_sets,
++			     i / 8);
+ 		goto done;
++	}
+ 
+ 	for (i = 0; i < scanresp->nr_sets; i++) {
+ 		const u8 *bssid;
+@@ -581,8 +591,11 @@
+ 			id = *pos++;
+ 			elen = *pos++;
+ 			left -= 2;
+-			if (elen > left || elen == 0)
++			if (elen > left || elen == 0) {
++				lbs_deb_scan("scan response: invalid IE fmt\n");
+ 				goto done;
++			}
++
+ 			if (id == WLAN_EID_DS_PARAMS)
+ 				chan_no = *pos;
+ 			if (id == WLAN_EID_SSID) {
+@@ -613,7 +626,9 @@
+ 					capa, intvl, ie, ielen,
+ 					LBS_SCAN_RSSI_TO_MBM(rssi),
+ 					GFP_KERNEL);
+-		}
++		} else
++			lbs_deb_scan("scan response: missing BSS channel IE\n");
++
+ 		tsfdesc += 8;
+ 	}
+ 	ret = 0;
+@@ -1103,7 +1118,7 @@
+ 	lbs_deb_hex(LBS_DEB_ASSOC, "Common Rates", tmp, pos - tmp);
+ 
+ 	/* add auth type TLV */
+-	if (priv->fwrelease >= 0x09000000)
++	if (MRVL_FW_MAJOR_REV(priv->fwrelease) >= 9)
+ 		pos += lbs_add_auth_type_tlv(pos, sme->auth_type);
+ 
+ 	/* add WPA/WPA2 TLV */
+@@ -1114,6 +1129,9 @@
+ 		(u16)(pos - (u8 *) &cmd->iebuf);
+ 	cmd->hdr.size = cpu_to_le16(len);
+ 
++	lbs_deb_hex(LBS_DEB_ASSOC, "ASSOC_CMD", (u8 *) cmd,
++			le16_to_cpu(cmd->hdr.size));
++
+ 	/* store for later use */
+ 	memcpy(priv->assoc_bss, bss->bssid, ETH_ALEN);
+ 
+@@ -1121,14 +1139,28 @@
+ 	if (ret)
+ 		goto done;
+ 
+-
+ 	/* generate connect message to cfg80211 */
+ 
+ 	resp = (void *) cmd; /* recast for easier field access */
+ 	status = le16_to_cpu(resp->statuscode);
+ 
+-	/* Convert statis code of old firmware */
+-	if (priv->fwrelease < 0x09000000)
++	/* Older FW versions map the IEEE 802.11 Status Code in the association
++	 * response to the following values returned in resp->statuscode:
++	 *
++	 *    IEEE Status Code                Marvell Status Code
++	 *    0                       ->      0x0000 ASSOC_RESULT_SUCCESS
++	 *    13                      ->      0x0004 ASSOC_RESULT_AUTH_REFUSED
++	 *    14                      ->      0x0004 ASSOC_RESULT_AUTH_REFUSED
++	 *    15                      ->      0x0004 ASSOC_RESULT_AUTH_REFUSED
++	 *    16                      ->      0x0004 ASSOC_RESULT_AUTH_REFUSED
++	 *    others                  ->      0x0003 ASSOC_RESULT_REFUSED
++	 *
++	 * Other response codes:
++	 *    0x0001 -> ASSOC_RESULT_INVALID_PARAMETERS (unused)
++	 *    0x0002 -> ASSOC_RESULT_TIMEOUT (internal timer expired waiting for
++	 *                                    association response from the AP)
++	 */
++	if (MRVL_FW_MAJOR_REV(priv->fwrelease) <= 8) {
+ 		switch (status) {
+ 		case 0:
+ 			break;
+@@ -1150,11 +1182,16 @@
+ 			break;
+ 		default:
+ 			lbs_deb_assoc("association failure %d\n", status);
+-			status = WLAN_STATUS_UNSPECIFIED_FAILURE;
++			/* v5 OLPC firmware does return the AP status code if
++			 * it's not one of the values above.  Let that through.
++			 */
++			break;
++		}
+ 	}
+ 
+-	lbs_deb_assoc("status %d, capability 0x%04x\n", status,
+-		      le16_to_cpu(resp->capability));
++	lbs_deb_assoc("status %d, statuscode 0x%04x, capability 0x%04x, "
++		      "aid 0x%04x\n", status, le16_to_cpu(resp->statuscode),
++		      le16_to_cpu(resp->capability), le16_to_cpu(resp->aid));
+ 
+ 	resp_ie_len = le16_to_cpu(resp->hdr.size)
+ 		- sizeof(resp->hdr)
+@@ -1174,7 +1211,6 @@
+ 			netif_tx_wake_all_queues(priv->dev);
+ 	}
+ 
+-
+ done:
+ 	lbs_deb_leave_args(LBS_DEB_CFG80211, "ret %d", ret);
+ 	return ret;
+diff -urN git//drivers/net/wireless/libertas/decl.h git-mod//drivers/net/wireless/libertas/decl.h
+--- git//drivers/net/wireless/libertas/decl.h	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/decl.h	2012-01-31 07:15:05.220705611 +0100
+@@ -8,7 +8,14 @@
+ #define _LBS_DECL_H_
+ 
+ #include <linux/netdevice.h>
++#include <linux/firmware.h>
+ 
++/* Should be terminated by a NULL entry */
++struct lbs_fw_table {
++	int model;
++	const char *helper;
++	const char *fwname;
++};
+ 
+ struct lbs_private;
+ struct sk_buff;
+@@ -53,4 +60,10 @@
+ u32 lbs_fw_index_to_data_rate(u8 index);
+ u8 lbs_data_rate_to_fw_index(u32 rate);
+ 
++int lbs_get_firmware(struct device *dev, const char *user_helper,
++			const char *user_mainfw, u32 card_model,
++			const struct lbs_fw_table *fw_table,
++			const struct firmware **helper,
++			const struct firmware **mainfw);
++
+ #endif
+diff -urN git//drivers/net/wireless/libertas/if_cs.c git-mod//drivers/net/wireless/libertas/if_cs.c
+--- git//drivers/net/wireless/libertas/if_cs.c	2012-01-31 07:11:47.796707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_cs.c	2012-01-31 07:15:05.220705611 +0100
+@@ -48,7 +48,6 @@
+ MODULE_AUTHOR("Holger Schurig <hs4233@mail.mn-solutions.de>");
+ MODULE_DESCRIPTION("Driver for Marvell 83xx compact flash WLAN cards");
+ MODULE_LICENSE("GPL");
+-MODULE_FIRMWARE("libertas_cs_helper.fw");
+ 
+ 
+ 
+@@ -61,9 +60,34 @@
+ 	struct lbs_private *priv;
+ 	void __iomem *iobase;
+ 	bool align_regs;
++	u32 model;
+ };
+ 
+ 
++enum {
++	MODEL_UNKNOWN = 0x00,
++	MODEL_8305 = 0x01,
++	MODEL_8381 = 0x02,
++	MODEL_8385 = 0x03
++};
++
++static const struct lbs_fw_table fw_table[] = {
++	{ MODEL_8305, "libertas/cf8305.bin", NULL },
++	{ MODEL_8305, "libertas_cs_helper.fw", NULL },
++	{ MODEL_8381, "libertas/cf8381_helper.bin", "libertas/cf8381.bin" },
++	{ MODEL_8381, "libertas_cs_helper.fw", "libertas_cs.fw" },
++	{ MODEL_8385, "libertas/cf8385_helper.bin", "libertas/cf8385.bin" },
++	{ MODEL_8385, "libertas_cs_helper.fw", "libertas_cs.fw" },
++	{ 0, NULL, NULL }
++};
++MODULE_FIRMWARE("libertas/cf8305.bin");
++MODULE_FIRMWARE("libertas/cf8381_helper.bin");
++MODULE_FIRMWARE("libertas/cf8381.bin");
++MODULE_FIRMWARE("libertas/cf8385_helper.bin");
++MODULE_FIRMWARE("libertas/cf8385.bin");
++MODULE_FIRMWARE("libertas_cs_helper.fw");
++MODULE_FIRMWARE("libertas_cs.fw");
++
+ 
+ /********************************************************************/
+ /* Hardware access                                                  */
+@@ -289,22 +313,19 @@
+ #define CF8385_MANFID		0x02df
+ #define CF8385_CARDID		0x8103
+ 
+-static inline int if_cs_hw_is_cf8305(struct pcmcia_device *p_dev)
+-{
+-	return (p_dev->manf_id == CF8305_MANFID &&
+-		p_dev->card_id == CF8305_CARDID);
+-}
+-
+-static inline int if_cs_hw_is_cf8381(struct pcmcia_device *p_dev)
+-{
+-	return (p_dev->manf_id == CF8381_MANFID &&
+-		p_dev->card_id == CF8381_CARDID);
+-}
+-
+-static inline int if_cs_hw_is_cf8385(struct pcmcia_device *p_dev)
++/* FIXME: just use the 'driver_info' field of 'struct pcmcia_device_id' when
++ * that gets fixed.  Currently there's no way to access it from the probe hook.
++ */
++static inline u32 get_model(u16 manf_id, u16 card_id)
+ {
+-	return (p_dev->manf_id == CF8385_MANFID &&
+-		p_dev->card_id == CF8385_CARDID);
++	/* NOTE: keep in sync with if_cs_ids */
++	if (manf_id == CF8305_MANFID && card_id == CF8305_CARDID)
++		return MODEL_8305;
++	else if (manf_id == CF8381_MANFID && card_id == CF8381_CARDID)
++		return MODEL_8381;
++	else if (manf_id == CF8385_MANFID && card_id == CF8385_CARDID)
++		return MODEL_8385;
++	return MODEL_UNKNOWN;
+ }
+ 
+ /********************************************************************/
+@@ -558,12 +579,11 @@
+  *
+  * Return 0 on success
+  */
+-static int if_cs_prog_helper(struct if_cs_card *card)
++static int if_cs_prog_helper(struct if_cs_card *card, const struct firmware *fw)
+ {
+ 	int ret = 0;
+ 	int sent = 0;
+ 	u8  scratch;
+-	const struct firmware *fw;
+ 
+ 	lbs_deb_enter(LBS_DEB_CS);
+ 
+@@ -589,14 +609,6 @@
+ 		goto done;
+ 	}
+ 
+-	/* TODO: make firmware file configurable */
+-	ret = request_firmware(&fw, "libertas_cs_helper.fw",
+-		&card->p_dev->dev);
+-	if (ret) {
+-		lbs_pr_err("can't load helper firmware\n");
+-		ret = -ENODEV;
+-		goto done;
+-	}
+ 	lbs_deb_cs("helper size %td\n", fw->size);
+ 
+ 	/* "Set the 5 bytes of the helper image to 0" */
+@@ -635,7 +647,7 @@
+ 		if (ret < 0) {
+ 			lbs_pr_err("can't download helper at 0x%x, ret %d\n",
+ 				sent, ret);
+-			goto err_release;
++			goto done;
+ 		}
+ 
+ 		if (count == 0)
+@@ -644,17 +656,14 @@
+ 		sent += count;
+ 	}
+ 
+-err_release:
+-	release_firmware(fw);
+ done:
+ 	lbs_deb_leave_args(LBS_DEB_CS, "ret %d", ret);
+ 	return ret;
+ }
+ 
+ 
+-static int if_cs_prog_real(struct if_cs_card *card)
++static int if_cs_prog_real(struct if_cs_card *card, const struct firmware *fw)
+ {
+-	const struct firmware *fw;
+ 	int ret = 0;
+ 	int retry = 0;
+ 	int len = 0;
+@@ -662,21 +671,13 @@
+ 
+ 	lbs_deb_enter(LBS_DEB_CS);
+ 
+-	/* TODO: make firmware file configurable */
+-	ret = request_firmware(&fw, "libertas_cs.fw",
+-		&card->p_dev->dev);
+-	if (ret) {
+-		lbs_pr_err("can't load firmware\n");
+-		ret = -ENODEV;
+-		goto done;
+-	}
+ 	lbs_deb_cs("fw size %td\n", fw->size);
+ 
+ 	ret = if_cs_poll_while_fw_download(card, IF_CS_SQ_READ_LOW,
+ 		IF_CS_SQ_HELPER_OK);
+ 	if (ret < 0) {
+ 		lbs_pr_err("helper firmware doesn't answer\n");
+-		goto err_release;
++		goto done;
+ 	}
+ 
+ 	for (sent = 0; sent < fw->size; sent += len) {
+@@ -691,7 +692,7 @@
+ 		if (retry > 20) {
+ 			lbs_pr_err("could not download firmware\n");
+ 			ret = -ENODEV;
+-			goto err_release;
++			goto done;
+ 		}
+ 		if (retry) {
+ 			sent -= len;
+@@ -710,7 +711,7 @@
+ 			IF_CS_BIT_COMMAND);
+ 		if (ret < 0) {
+ 			lbs_pr_err("can't download firmware at 0x%x\n", sent);
+-			goto err_release;
++			goto done;
+ 		}
+ 	}
+ 
+@@ -718,9 +719,6 @@
+ 	if (ret < 0)
+ 		lbs_pr_err("firmware download failed\n");
+ 
+-err_release:
+-	release_firmware(fw);
+-
+ done:
+ 	lbs_deb_leave_args(LBS_DEB_CS, "ret %d", ret);
+ 	return ret;
+@@ -824,6 +822,8 @@
+ 	unsigned int prod_id;
+ 	struct lbs_private *priv;
+ 	struct if_cs_card *card;
++	const struct firmware *helper = NULL;
++	const struct firmware *mainfw = NULL;
+ 
+ 	lbs_deb_enter(LBS_DEB_CS);
+ 
+@@ -843,7 +843,6 @@
+ 		goto out1;
+ 	}
+ 
+-
+ 	/*
+ 	 * Allocate an interrupt line.  Note that this does not assign
+ 	 * a handler to the interrupt, unless the 'Handler' member of
+@@ -881,34 +880,47 @@
+ 	 */
+ 	card->align_regs = 0;
+ 
++	card->model = get_model(p_dev->manf_id, p_dev->card_id);
++	if (card->model == MODEL_UNKNOWN) {
++		lbs_pr_err("unsupported manf_id 0x%04x / card_id 0x%04x\n",
++			   p_dev->manf_id, p_dev->card_id);
++		goto out2;
++	}
++
+ 	/* Check if we have a current silicon */
+ 	prod_id = if_cs_read8(card, IF_CS_PRODUCT_ID);
+-	if (if_cs_hw_is_cf8305(p_dev)) {
++	if (card->model == MODEL_8305) {
+ 		card->align_regs = 1;
+ 		if (prod_id < IF_CS_CF8305_B1_REV) {
+-			lbs_pr_err("old chips like 8305 rev B3 "
+-				"aren't supported\n");
++			lbs_pr_err("8305 rev B0 and older are not supported\n");
+ 			ret = -ENODEV;
+ 			goto out2;
+ 		}
+ 	}
+ 
+-	if (if_cs_hw_is_cf8381(p_dev) && prod_id < IF_CS_CF8381_B3_REV) {
+-		lbs_pr_err("old chips like 8381 rev B3 aren't supported\n");
++	if ((card->model == MODEL_8381) && prod_id < IF_CS_CF8381_B3_REV) {
++		lbs_pr_err("8381 rev B2 and older are not supported\n");
+ 		ret = -ENODEV;
+ 		goto out2;
+ 	}
+ 
+-	if (if_cs_hw_is_cf8385(p_dev) && prod_id < IF_CS_CF8385_B1_REV) {
+-		lbs_pr_err("old chips like 8385 rev B1 aren't supported\n");
++	if ((card->model == MODEL_8385) && prod_id < IF_CS_CF8385_B1_REV) {
++		lbs_pr_err("8385 rev B0 and older are not supported\n");
+ 		ret = -ENODEV;
+ 		goto out2;
+ 	}
+ 
++	ret = lbs_get_firmware(&p_dev->dev, NULL, NULL, card->model,
++				&fw_table[0], &helper, &mainfw);
++	if (ret) {
++		lbs_pr_err("failed to find firmware (%d)\n", ret);
++		goto out2;
++	}
++
+ 	/* Load the firmware early, before calling into libertas.ko */
+-	ret = if_cs_prog_helper(card);
+-	if (ret == 0 && !if_cs_hw_is_cf8305(p_dev))
+-		ret = if_cs_prog_real(card);
++	ret = if_cs_prog_helper(card, helper);
++	if (ret == 0 && (card->model != MODEL_8305))
++		ret = if_cs_prog_real(card, mainfw);
+ 	if (ret)
+ 		goto out2;
+ 
+@@ -957,6 +969,11 @@
+ out1:
+ 	pcmcia_disable_device(p_dev);
+ out:
++	if (helper)
++		release_firmware(helper);
++	if (mainfw)
++		release_firmware(mainfw);
++
+ 	lbs_deb_leave_args(LBS_DEB_CS, "ret %d", ret);
+ 	return ret;
+ }
+@@ -993,6 +1010,7 @@
+ 	PCMCIA_DEVICE_MANF_CARD(CF8305_MANFID, CF8305_CARDID),
+ 	PCMCIA_DEVICE_MANF_CARD(CF8381_MANFID, CF8381_CARDID),
+ 	PCMCIA_DEVICE_MANF_CARD(CF8385_MANFID, CF8385_CARDID),
++	/* NOTE: keep in sync with get_model() */
+ 	PCMCIA_DEVICE_NULL,
+ };
+ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+diff -urN git//drivers/net/wireless/libertas/if_sdio.c git-mod//drivers/net/wireless/libertas/if_sdio.c
+--- git//drivers/net/wireless/libertas/if_sdio.c	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_sdio.c	2012-01-31 07:15:05.220705611 +0100
+@@ -76,36 +76,32 @@
+ 
+ MODULE_DEVICE_TABLE(sdio, if_sdio_ids);
+ 
+-struct if_sdio_model {
+-	int model;
+-	const char *helper;
+-	const char *firmware;
+-};
+-
+-static struct if_sdio_model if_sdio_models[] = {
+-	{
+-		/* 8385 */
+-		.model = IF_SDIO_MODEL_8385,
+-		.helper = "sd8385_helper.bin",
+-		.firmware = "sd8385.bin",
+-	},
+-	{
+-		/* 8686 */
+-		.model = IF_SDIO_MODEL_8686,
+-		.helper = "sd8686_helper.bin",
+-		.firmware = "sd8686.bin",
+-	},
+-	{
+-		/* 8688 */
+-		.model = IF_SDIO_MODEL_8688,
+-		.helper = "sd8688_helper.bin",
+-		.firmware = "sd8688.bin",
+-	},
++#define MODEL_8385	0x04
++#define MODEL_8686	0x0b
++#define MODEL_8688	0x10
++
++static const struct lbs_fw_table fw_table[] = {
++	{ MODEL_8385, "libertas/sd8385_helper.bin", "libertas/sd8385.bin" },
++	{ MODEL_8385, "sd8385_helper.bin", "sd8385.bin" },
++	{ MODEL_8686, "libertas/sd8686_v9_helper.bin", "libertas/sd8686_v9.bin" },
++	{ MODEL_8686, "libertas/sd8686_v8_helper.bin", "libertas/sd8686_v8.bin" },
++	{ MODEL_8686, "sd8686_helper.bin", "sd8686.bin" },
++	{ MODEL_8688, "libertas/sd8688_helper.bin", "libertas/sd8688.bin" },
++	{ MODEL_8688, "sd8688_helper.bin", "sd8688.bin" },
++	{ 0, NULL, NULL }
+ };
++MODULE_FIRMWARE("libertas/sd8385_helper.bin");
++MODULE_FIRMWARE("libertas/sd8385.bin");
+ MODULE_FIRMWARE("sd8385_helper.bin");
+ MODULE_FIRMWARE("sd8385.bin");
++MODULE_FIRMWARE("libertas/sd8686_v9_helper.bin");
++MODULE_FIRMWARE("libertas/sd8686_v9.bin");
++MODULE_FIRMWARE("libertas/sd8686_v8_helper.bin");
++MODULE_FIRMWARE("libertas/sd8686_v8.bin");
+ MODULE_FIRMWARE("sd8686_helper.bin");
+ MODULE_FIRMWARE("sd8686.bin");
++MODULE_FIRMWARE("libertas/sd8688_helper.bin");
++MODULE_FIRMWARE("libertas/sd8688.bin");
+ MODULE_FIRMWARE("sd8688_helper.bin");
+ MODULE_FIRMWARE("sd8688.bin");
+ 
+@@ -187,11 +183,11 @@
+ 	u16 rx_len;
+ 
+ 	switch (card->model) {
+-	case IF_SDIO_MODEL_8385:
+-	case IF_SDIO_MODEL_8686:
++	case MODEL_8385:
++	case MODEL_8686:
+ 		rx_len = if_sdio_read_scratch(card, &ret);
+ 		break;
+-	case IF_SDIO_MODEL_8688:
++	case MODEL_8688:
+ 	default: /* for newer chipsets */
+ 		rx_len = sdio_readb(card->func, IF_SDIO_RX_LEN, &ret);
+ 		if (!ret)
+@@ -288,7 +284,7 @@
+ 
+ 	lbs_deb_enter(LBS_DEB_SDIO);
+ 
+-	if (card->model == IF_SDIO_MODEL_8385) {
++	if (card->model == MODEL_8385) {
+ 		event = sdio_readb(card->func, IF_SDIO_EVENT, &ret);
+ 		if (ret)
+ 			goto out;
+@@ -466,10 +462,10 @@
+ 
+ #define FW_DL_READY_STATUS (IF_SDIO_IO_RDY | IF_SDIO_DL_RDY)
+ 
+-static int if_sdio_prog_helper(struct if_sdio_card *card)
++static int if_sdio_prog_helper(struct if_sdio_card *card,
++				const struct firmware *fw)
+ {
+ 	int ret;
+-	const struct firmware *fw;
+ 	unsigned long timeout;
+ 	u8 *chunk_buffer;
+ 	u32 chunk_size;
+@@ -478,16 +474,10 @@
+ 
+ 	lbs_deb_enter(LBS_DEB_SDIO);
+ 
+-	ret = request_firmware(&fw, card->helper, &card->func->dev);
+-	if (ret) {
+-		lbs_pr_err("can't load helper firmware\n");
+-		goto out;
+-	}
+-
+ 	chunk_buffer = kzalloc(64, GFP_KERNEL);
+ 	if (!chunk_buffer) {
+ 		ret = -ENOMEM;
+-		goto release_fw;
++		goto out;
+ 	}
+ 
+ 	sdio_claim_host(card->func);
+@@ -562,22 +552,19 @@
+ release:
+ 	sdio_release_host(card->func);
+ 	kfree(chunk_buffer);
+-release_fw:
+-	release_firmware(fw);
+ 
+ out:
+ 	if (ret)
+ 		lbs_pr_err("failed to load helper firmware\n");
+ 
+ 	lbs_deb_leave_args(LBS_DEB_SDIO, "ret %d", ret);
+-
+ 	return ret;
+ }
+ 
+-static int if_sdio_prog_real(struct if_sdio_card *card)
++static int if_sdio_prog_real(struct if_sdio_card *card,
++				const struct firmware *fw)
+ {
+ 	int ret;
+-	const struct firmware *fw;
+ 	unsigned long timeout;
+ 	u8 *chunk_buffer;
+ 	u32 chunk_size;
+@@ -586,16 +573,10 @@
+ 
+ 	lbs_deb_enter(LBS_DEB_SDIO);
+ 
+-	ret = request_firmware(&fw, card->firmware, &card->func->dev);
+-	if (ret) {
+-		lbs_pr_err("can't load firmware\n");
+-		goto out;
+-	}
+-
+ 	chunk_buffer = kzalloc(512, GFP_KERNEL);
+ 	if (!chunk_buffer) {
+ 		ret = -ENOMEM;
+-		goto release_fw;
++		goto out;
+ 	}
+ 
+ 	sdio_claim_host(card->func);
+@@ -685,15 +666,12 @@
+ release:
+ 	sdio_release_host(card->func);
+ 	kfree(chunk_buffer);
+-release_fw:
+-	release_firmware(fw);
+ 
+ out:
+ 	if (ret)
+ 		lbs_pr_err("failed to load firmware\n");
+ 
+ 	lbs_deb_leave_args(LBS_DEB_SDIO, "ret %d", ret);
+-
+ 	return ret;
+ }
+ 
+@@ -701,6 +679,8 @@
+ {
+ 	int ret;
+ 	u16 scratch;
++	const struct firmware *helper = NULL;
++	const struct firmware *mainfw = NULL;
+ 
+ 	lbs_deb_enter(LBS_DEB_SDIO);
+ 
+@@ -718,11 +698,18 @@
+ 		goto success;
+ 	}
+ 
+-	ret = if_sdio_prog_helper(card);
++	ret = lbs_get_firmware(&card->func->dev, lbs_helper_name, lbs_fw_name,
++				card->model, &fw_table[0], &helper, &mainfw);
++	if (ret) {
++		lbs_pr_err("failed to find firmware (%d)\n", ret);
++		goto out;
++	}
++
++	ret = if_sdio_prog_helper(card, helper);
+ 	if (ret)
+ 		goto out;
+ 
+-	ret = if_sdio_prog_real(card);
++	ret = if_sdio_prog_real(card, mainfw);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -733,8 +720,12 @@
+ 	ret = 0;
+ 
+ out:
+-	lbs_deb_leave_args(LBS_DEB_SDIO, "ret %d", ret);
++	if (helper)
++		release_firmware(helper);
++	if (mainfw)
++		release_firmware(mainfw);
+ 
++	lbs_deb_leave_args(LBS_DEB_SDIO, "ret %d", ret);
+ 	return ret;
+ }
+ 
+@@ -938,7 +929,7 @@
+ 				"ID: %x", &model) == 1)
+ 			break;
+ 		if (!strcmp(func->card->info[i], "IBIS Wireless SDIO Card")) {
+-			model = IF_SDIO_MODEL_8385;
++			model = MODEL_8385;
+ 			break;
+ 		}
+ 	}
+@@ -956,13 +947,13 @@
+ 	card->model = model;
+ 
+ 	switch (card->model) {
+-	case IF_SDIO_MODEL_8385:
++	case MODEL_8385:
+ 		card->scratch_reg = IF_SDIO_SCRATCH_OLD;
+ 		break;
+-	case IF_SDIO_MODEL_8686:
++	case MODEL_8686:
+ 		card->scratch_reg = IF_SDIO_SCRATCH;
+ 		break;
+-	case IF_SDIO_MODEL_8688:
++	case MODEL_8688:
+ 	default: /* for newer chipsets */
+ 		card->scratch_reg = IF_SDIO_FW_STATUS;
+ 		break;
+@@ -972,49 +963,17 @@
+ 	card->workqueue = create_workqueue("libertas_sdio");
+ 	INIT_WORK(&card->packet_worker, if_sdio_host_to_card_worker);
+ 
+-	for (i = 0;i < ARRAY_SIZE(if_sdio_models);i++) {
+-		if (card->model == if_sdio_models[i].model)
++	/* Check if we support this card */
++	for (i = 0; i < ARRAY_SIZE(fw_table); i++) {
++		if (card->model == fw_table[i].model)
+ 			break;
+ 	}
+-
+-	if (i == ARRAY_SIZE(if_sdio_models)) {
++	if (i == ARRAY_SIZE(fw_table)) {
+ 		lbs_pr_err("unknown card model 0x%x\n", card->model);
+ 		ret = -ENODEV;
+ 		goto free;
+ 	}
+ 
+-	card->helper = if_sdio_models[i].helper;
+-	card->firmware = if_sdio_models[i].firmware;
+-
+-	kparam_block_sysfs_write(helper_name);
+-	if (lbs_helper_name) {
+-		char *helper = kstrdup(lbs_helper_name, GFP_KERNEL);
+-		if (!helper) {
+-			kparam_unblock_sysfs_write(helper_name);
+-			ret = -ENOMEM;
+-			goto free;
+-		}
+-		lbs_deb_sdio("overriding helper firmware: %s\n",
+-			lbs_helper_name);
+-		card->helper = helper;
+-		card->helper_allocated = true;
+-	}
+-	kparam_unblock_sysfs_write(helper_name);
+-
+-	kparam_block_sysfs_write(fw_name);
+-	if (lbs_fw_name) {
+-		char *fw_name = kstrdup(lbs_fw_name, GFP_KERNEL);
+-		if (!fw_name) {
+-			kparam_unblock_sysfs_write(fw_name);
+-			ret = -ENOMEM;
+-			goto free;
+-		}
+-		lbs_deb_sdio("overriding firmware: %s\n", lbs_fw_name);
+-		card->firmware = fw_name;
+-		card->firmware_allocated = true;
+-	}
+-	kparam_unblock_sysfs_write(fw_name);
+-
+ 	sdio_claim_host(func);
+ 
+ 	ret = sdio_enable_func(func);
+@@ -1028,7 +987,7 @@
+ 	/* For 1-bit transfers to the 8686 model, we need to enable the
+ 	 * interrupt flag in the CCCR register. Set the MMC_QUIRK_LENIENT_FN0
+ 	 * bit to allow access to non-vendor registers. */
+-	if ((card->model == IF_SDIO_MODEL_8686) &&
++	if ((card->model == MODEL_8686) &&
+ 	    (host->caps & MMC_CAP_SDIO_IRQ) &&
+ 	    (host->ios.bus_width == MMC_BUS_WIDTH_1)) {
+ 		u8 reg;
+@@ -1091,8 +1050,8 @@
+ 	 * Get rx_unit if the chip is SD8688 or newer.
+ 	 * SD8385 & SD8686 do not have rx_unit.
+ 	 */
+-	if ((card->model != IF_SDIO_MODEL_8385)
+-			&& (card->model != IF_SDIO_MODEL_8686))
++	if ((card->model != MODEL_8385)
++			&& (card->model != MODEL_8686))
+ 		card->rx_unit = if_sdio_read_rx_unit(card);
+ 	else
+ 		card->rx_unit = 0;
+@@ -1108,7 +1067,7 @@
+ 	/*
+ 	 * FUNC_INIT is required for SD8688 WLAN/BT multiple functions
+ 	 */
+-	if (card->model == IF_SDIO_MODEL_8688) {
++	if (card->model == MODEL_8688) {
+ 		struct cmd_header cmd;
+ 
+ 		memset(&cmd, 0, sizeof(cmd));
+@@ -1165,7 +1124,7 @@
+ 
+ 	card = sdio_get_drvdata(func);
+ 
+-	if (user_rmmod && (card->model == IF_SDIO_MODEL_8688)) {
++	if (user_rmmod && (card->model == MODEL_8688)) {
+ 		/*
+ 		 * FUNC_SHUTDOWN is required for SD8688 WLAN/BT
+ 		 * multiple functions
+diff -urN git//drivers/net/wireless/libertas/if_sdio.h git-mod//drivers/net/wireless/libertas/if_sdio.h
+--- git//drivers/net/wireless/libertas/if_sdio.h	2012-01-31 07:11:47.796707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_sdio.h	2012-01-31 07:15:05.220705611 +0100
+@@ -12,10 +12,6 @@
+ #ifndef _LBS_IF_SDIO_H
+ #define _LBS_IF_SDIO_H
+ 
+-#define IF_SDIO_MODEL_8385	0x04
+-#define IF_SDIO_MODEL_8686	0x0b
+-#define IF_SDIO_MODEL_8688	0x10
+-
+ #define IF_SDIO_IOPORT		0x00
+ 
+ #define IF_SDIO_H_INT_MASK	0x04
+diff -urN git//drivers/net/wireless/libertas/if_spi.c git-mod//drivers/net/wireless/libertas/if_spi.c
+--- git//drivers/net/wireless/libertas/if_spi.c	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_spi.c	2012-01-31 07:15:05.220705611 +0100
+@@ -39,9 +39,6 @@
+ 	struct lbs_private		*priv;
+ 	struct libertas_spi_platform_data *pdata;
+ 
+-	char				helper_fw_name[IF_SPI_FW_NAME_MAX];
+-	char				main_fw_name[IF_SPI_FW_NAME_MAX];
+-
+ 	/* The card ID and card revision, as reported by the hardware. */
+ 	u16				card_id;
+ 	u8				card_rev;
+@@ -70,10 +67,28 @@
+ 	kfree(card);
+ }
+ 
+-static struct chip_ident chip_id_to_device_name[] = {
+-	{ .chip_id = 0x04, .name = 8385 },
+-	{ .chip_id = 0x0b, .name = 8686 },
++#define MODEL_8385	0x04
++#define MODEL_8686	0x0b
++#define MODEL_8688	0x10
++
++static const struct lbs_fw_table fw_table[] = {
++	{ MODEL_8385, "libertas/gspi8385_helper.bin", "libertas/gspi8385.bin" },
++	{ MODEL_8385, "libertas/gspi8385_hlp.bin", "libertas/gspi8385.bin" },
++	{ MODEL_8686, "libertas/gspi8686_v9_helper.bin", "libertas/gspi8686_v9.bin" },
++	{ MODEL_8686, "libertas/gspi8686_hlp.bin", "libertas/gspi8686.bin" },
++	{ MODEL_8688, "libertas/gspi8688_helper.bin", "libertas/gspi8688.bin" },
++	{ 0, NULL, NULL }
+ };
++MODULE_FIRMWARE("libertas/gspi8385_helper.bin");
++MODULE_FIRMWARE("libertas/gspi8385_hlp.bin");
++MODULE_FIRMWARE("libertas/gspi8385.bin");
++MODULE_FIRMWARE("libertas/gspi8686_v9_helper.bin");
++MODULE_FIRMWARE("libertas/gspi8686_v9.bin");
++MODULE_FIRMWARE("libertas/gspi8686_hlp.bin");
++MODULE_FIRMWARE("libertas/gspi8686.bin");
++MODULE_FIRMWARE("libertas/gspi8688_helper.bin");
++MODULE_FIRMWARE("libertas/gspi8688.bin");
++
+ 
+ /*
+  * SPI Interface Unit Routines
+@@ -399,26 +414,20 @@
+  * Firmware Loading
+  */
+ 
+-static int if_spi_prog_helper_firmware(struct if_spi_card *card)
++static int if_spi_prog_helper_firmware(struct if_spi_card *card,
++					const struct firmware *firmware)
+ {
+ 	int err = 0;
+-	const struct firmware *firmware = NULL;
+ 	int bytes_remaining;
+ 	const u8 *fw;
+ 	u8 temp[HELPER_FW_LOAD_CHUNK_SZ];
+-	struct spi_device *spi = card->spi;
+ 
+ 	lbs_deb_enter(LBS_DEB_SPI);
+ 
+ 	err = spu_set_interrupt_mode(card, 1, 0);
+ 	if (err)
+ 		goto out;
+-	/* Get helper firmware image */
+-	err = request_firmware(&firmware, card->helper_fw_name, &spi->dev);
+-	if (err) {
+-		lbs_pr_err("request_firmware failed with err = %d\n", err);
+-		goto out;
+-	}
++
+ 	bytes_remaining = firmware->size;
+ 	fw = firmware->data;
+ 
+@@ -429,13 +438,13 @@
+ 		err = spu_write_u16(card, IF_SPI_SCRATCH_1_REG,
+ 					HELPER_FW_LOAD_CHUNK_SZ);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 
+ 		err = spu_wait_for_u16(card, IF_SPI_HOST_INT_STATUS_REG,
+ 					IF_SPI_HIST_CMD_DOWNLOAD_RDY,
+ 					IF_SPI_HIST_CMD_DOWNLOAD_RDY);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 
+ 		/* Feed the data into the command read/write port reg
+ 		 * in chunks of 64 bytes */
+@@ -446,16 +455,16 @@
+ 		err = spu_write(card, IF_SPI_CMD_RDWRPORT_REG,
+ 					temp, HELPER_FW_LOAD_CHUNK_SZ);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 
+ 		/* Interrupt the boot code */
+ 		err = spu_write_u16(card, IF_SPI_HOST_INT_STATUS_REG, 0);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 		err = spu_write_u16(card, IF_SPI_CARD_INT_CAUSE_REG,
+ 				       IF_SPI_CIC_CMD_DOWNLOAD_OVER);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 		bytes_remaining -= HELPER_FW_LOAD_CHUNK_SZ;
+ 		fw += HELPER_FW_LOAD_CHUNK_SZ;
+ 	}
+@@ -465,18 +474,16 @@
+ 	 * bootloader. This completes the helper download. */
+ 	err = spu_write_u16(card, IF_SPI_SCRATCH_1_REG, FIRMWARE_DNLD_OK);
+ 	if (err)
+-		goto release_firmware;
++		goto out;
+ 	err = spu_write_u16(card, IF_SPI_HOST_INT_STATUS_REG, 0);
+ 	if (err)
+-		goto release_firmware;
++		goto out;
+ 	err = spu_write_u16(card, IF_SPI_CARD_INT_CAUSE_REG,
+ 				IF_SPI_CIC_CMD_DOWNLOAD_OVER);
+-		goto release_firmware;
++		goto out;
+ 
+ 	lbs_deb_spi("waiting for helper to boot...\n");
+ 
+-release_firmware:
+-	release_firmware(firmware);
+ out:
+ 	if (err)
+ 		lbs_pr_err("failed to load helper firmware (err=%d)\n", err);
+@@ -523,13 +530,12 @@
+ 	return len;
+ }
+ 
+-static int if_spi_prog_main_firmware(struct if_spi_card *card)
++static int if_spi_prog_main_firmware(struct if_spi_card *card,
++					const struct firmware *firmware)
+ {
+ 	int len, prev_len;
+ 	int bytes, crc_err = 0, err = 0;
+-	const struct firmware *firmware = NULL;
+ 	const u8 *fw;
+-	struct spi_device *spi = card->spi;
+ 	u16 num_crc_errs;
+ 
+ 	lbs_deb_enter(LBS_DEB_SPI);
+@@ -538,19 +544,11 @@
+ 	if (err)
+ 		goto out;
+ 
+-	/* Get firmware image */
+-	err = request_firmware(&firmware, card->main_fw_name, &spi->dev);
+-	if (err) {
+-		lbs_pr_err("%s: can't get firmware '%s' from kernel. "
+-			"err = %d\n", __func__, card->main_fw_name, err);
+-		goto out;
+-	}
+-
+ 	err = spu_wait_for_u16(card, IF_SPI_SCRATCH_1_REG, 0, 0);
+ 	if (err) {
+ 		lbs_pr_err("%s: timed out waiting for initial "
+ 			   "scratch reg = 0\n", __func__);
+-		goto release_firmware;
++		goto out;
+ 	}
+ 
+ 	num_crc_errs = 0;
+@@ -560,7 +558,7 @@
+ 	while ((len = if_spi_prog_main_firmware_check_len(card, &crc_err))) {
+ 		if (len < 0) {
+ 			err = len;
+-			goto release_firmware;
++			goto out;
+ 		}
+ 		if (bytes < 0) {
+ 			/* If there are no more bytes left, we would normally
+@@ -575,7 +573,7 @@
+ 				lbs_pr_err("Too many CRC errors encountered "
+ 					   "in firmware load.\n");
+ 				err = -EIO;
+-				goto release_firmware;
++				goto out;
+ 			}
+ 		} else {
+ 			/* Previous transfer succeeded. Advance counters. */
+@@ -590,15 +588,15 @@
+ 
+ 		err = spu_write_u16(card, IF_SPI_HOST_INT_STATUS_REG, 0);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 		err = spu_write(card, IF_SPI_CMD_RDWRPORT_REG,
+ 				card->cmd_buffer, len);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 		err = spu_write_u16(card, IF_SPI_CARD_INT_CAUSE_REG ,
+ 					IF_SPI_CIC_CMD_DOWNLOAD_OVER);
+ 		if (err)
+-			goto release_firmware;
++			goto out;
+ 		prev_len = len;
+ 	}
+ 	if (bytes > prev_len) {
+@@ -611,12 +609,9 @@
+ 					SUCCESSFUL_FW_DOWNLOAD_MAGIC);
+ 	if (err) {
+ 		lbs_pr_err("failed to confirm the firmware download\n");
+-		goto release_firmware;
++		goto out;
+ 	}
+ 
+-release_firmware:
+-	release_firmware(firmware);
+-
+ out:
+ 	if (err)
+ 		lbs_pr_err("failed to load firmware (err=%d)\n", err);
+@@ -800,14 +795,16 @@
+ 			goto err;
+ 		}
+ 
+-		if (hiStatus & IF_SPI_HIST_CMD_UPLOAD_RDY)
++		if (hiStatus & IF_SPI_HIST_CMD_UPLOAD_RDY) {
+ 			err = if_spi_c2h_cmd(card);
+ 			if (err)
+ 				goto err;
+-		if (hiStatus & IF_SPI_HIST_RX_UPLOAD_RDY)
++		}
++		if (hiStatus & IF_SPI_HIST_RX_UPLOAD_RDY) {
+ 			err = if_spi_c2h_data(card);
+ 			if (err)
+ 				goto err;
++		}
+ 
+ 		/* workaround: in PS mode, the card does not set the Command
+ 		 * Download Ready bit, but it sets TX Download Ready. */
+@@ -886,37 +883,16 @@
+  * SPI callbacks
+  */
+ 
+-static int if_spi_calculate_fw_names(u16 card_id,
+-			      char *helper_fw, char *main_fw)
+-{
+-	int i;
+-	for (i = 0; i < ARRAY_SIZE(chip_id_to_device_name); ++i) {
+-		if (card_id == chip_id_to_device_name[i].chip_id)
+-			break;
+-	}
+-	if (i == ARRAY_SIZE(chip_id_to_device_name)) {
+-		lbs_pr_err("Unsupported chip_id: 0x%02x\n", card_id);
+-		return -EAFNOSUPPORT;
+-	}
+-	snprintf(helper_fw, IF_SPI_FW_NAME_MAX, "libertas/gspi%d_hlp.bin",
+-		 chip_id_to_device_name[i].name);
+-	snprintf(main_fw, IF_SPI_FW_NAME_MAX, "libertas/gspi%d.bin",
+-		 chip_id_to_device_name[i].name);
+-	return 0;
+-}
+-MODULE_FIRMWARE("libertas/gspi8385_hlp.bin");
+-MODULE_FIRMWARE("libertas/gspi8385.bin");
+-MODULE_FIRMWARE("libertas/gspi8686_hlp.bin");
+-MODULE_FIRMWARE("libertas/gspi8686.bin");
+-
+ static int __devinit if_spi_probe(struct spi_device *spi)
+ {
+ 	struct if_spi_card *card;
+ 	struct lbs_private *priv = NULL;
+ 	struct libertas_spi_platform_data *pdata = spi->dev.platform_data;
+-	int err = 0;
++	int err = 0, i;
+ 	u32 scratch;
+ 	struct sched_param param = { .sched_priority = 1 };
++	const struct firmware *helper = NULL;
++	const struct firmware *mainfw = NULL;
+ 
+ 	lbs_deb_enter(LBS_DEB_SPI);
+ 
+@@ -961,10 +937,25 @@
+ 		lbs_deb_spi("Firmware is already loaded for "
+ 			    "Marvell WLAN 802.11 adapter\n");
+ 	else {
+-		err = if_spi_calculate_fw_names(card->card_id,
+-				card->helper_fw_name, card->main_fw_name);
+-		if (err)
++		/* Check if we support this card */
++		for (i = 0; i < ARRAY_SIZE(fw_table); i++) {
++			if (card->card_id == fw_table[i].model)
++				break;
++		}
++		if (i == ARRAY_SIZE(fw_table)) {
++			lbs_pr_err("Unsupported chip_id: 0x%02x\n",
++					card->card_id);
++			err = -ENODEV;
+ 			goto free_card;
++		}
++
++		err = lbs_get_firmware(&card->spi->dev, NULL, NULL,
++					card->card_id, &fw_table[0], &helper,
++					&mainfw);
++		if (err) {
++			lbs_pr_err("failed to find firmware (%d)\n", err);
++			goto free_card;
++		}
+ 
+ 		lbs_deb_spi("Initializing FW for Marvell WLAN 802.11 adapter "
+ 				"(chip_id = 0x%04x, chip_rev = 0x%02x) "
+@@ -973,10 +964,10 @@
+ 				card->card_id, card->card_rev,
+ 				spi->master->bus_num, spi->chip_select,
+ 				spi->max_speed_hz);
+-		err = if_spi_prog_helper_firmware(card);
++		err = if_spi_prog_helper_firmware(card, helper);
+ 		if (err)
+ 			goto free_card;
+-		err = if_spi_prog_main_firmware(card);
++		err = if_spi_prog_main_firmware(card, mainfw);
+ 		if (err)
+ 			goto free_card;
+ 		lbs_deb_spi("loaded FW for Marvell WLAN 802.11 adapter\n");
+@@ -1044,6 +1035,11 @@
+ free_card:
+ 	free_if_spi_card(card);
+ out:
++	if (helper)
++		release_firmware(helper);
++	if (mainfw)
++		release_firmware(mainfw);
++
+ 	lbs_deb_leave_args(LBS_DEB_SPI, "err %d\n", err);
+ 	return err;
+ }
+diff -urN git//drivers/net/wireless/libertas/if_spi.h git-mod//drivers/net/wireless/libertas/if_spi.h
+--- git//drivers/net/wireless/libertas/if_spi.h	2012-01-31 07:11:47.796707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_spi.h	2012-01-31 07:15:05.220705611 +0100
+@@ -25,11 +25,6 @@
+ 
+ #define IF_SPI_FW_NAME_MAX 30
+ 
+-struct chip_ident {
+-	u16 chip_id;
+-	u16 name;
+-};
+-
+ #define MAX_MAIN_FW_LOAD_CRC_ERR 10
+ 
+ /* Chunk size when loading the helper firmware */
+diff -urN git//drivers/net/wireless/libertas/if_usb.c git-mod//drivers/net/wireless/libertas/if_usb.c
+--- git//drivers/net/wireless/libertas/if_usb.c	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_usb.c	2012-01-31 07:15:05.220705611 +0100
+@@ -26,15 +26,25 @@
+ 
+ #define MESSAGE_HEADER_LEN	4
+ 
+-static char *lbs_fw_name = "usb8388.bin";
++static char *lbs_fw_name = NULL;
+ module_param_named(fw_name, lbs_fw_name, charp, 0644);
+ 
++MODULE_FIRMWARE("libertas/usb8388_v9.bin");
++MODULE_FIRMWARE("libertas/usb8388_v5.bin");
++MODULE_FIRMWARE("libertas/usb8388.bin");
++MODULE_FIRMWARE("libertas/usb8682.bin");
+ MODULE_FIRMWARE("usb8388.bin");
+ 
++enum {
++	MODEL_UNKNOWN = 0x0,
++	MODEL_8388 = 0x1,
++	MODEL_8682 = 0x2
++};
++
+ static struct usb_device_id if_usb_table[] = {
+ 	/* Enter the device signature inside */
+-	{ USB_DEVICE(0x1286, 0x2001) },
+-	{ USB_DEVICE(0x05a3, 0x8388) },
++	{ USB_DEVICE(0x1286, 0x2001), .driver_info = MODEL_8388 },
++	{ USB_DEVICE(0x05a3, 0x8388), .driver_info = MODEL_8388 },
+ 	{}	/* Terminating entry */
+ };
+ 
+@@ -66,6 +76,8 @@
+ 	struct if_usb_card *cardp = priv->card;
+ 	int ret;
+ 
++	BUG_ON(buf == NULL);
++
+ 	ret = if_usb_prog_firmware(cardp, buf, BOOT_CMD_UPDATE_FW);
+ 	if (ret == 0)
+ 		return count;
+@@ -91,6 +103,8 @@
+ 	struct if_usb_card *cardp = priv->card;
+ 	int ret;
+ 
++	BUG_ON(buf == NULL);
++
+ 	ret = if_usb_prog_firmware(cardp, buf, BOOT_CMD_UPDATE_BOOT2);
+ 	if (ret == 0)
+ 		return count;
+@@ -244,6 +258,7 @@
+ 	init_waitqueue_head(&cardp->fw_wq);
+ 
+ 	cardp->udev = udev;
++	cardp->model = (uint32_t) id->driver_info;
+ 	iface_desc = intf->cur_altsetting;
+ 
+ 	lbs_deb_usbd(&udev->dev, "bcdUSB = 0x%X bDeviceClass = 0x%X"
+@@ -924,6 +939,38 @@
+ 	return ret;
+ }
+ 
++/* table of firmware file names */
++static const struct {
++	u32 model;
++	const char *fwname;
++} fw_table[] = {
++	{ MODEL_8388, "libertas/usb8388_v9.bin" },
++	{ MODEL_8388, "libertas/usb8388_v5.bin" },
++	{ MODEL_8388, "libertas/usb8388.bin" },
++	{ MODEL_8388, "usb8388.bin" },
++	{ MODEL_8682, "libertas/usb8682.bin" }
++};
++
++static int get_fw(struct if_usb_card *cardp, const char *fwname)
++{
++	int i;
++
++	/* Try user-specified firmware first */
++	if (fwname)
++		return request_firmware(&cardp->fw, fwname, &cardp->udev->dev);
++
++	/* Otherwise search for firmware to use */
++	for (i = 0; i < ARRAY_SIZE(fw_table); i++) {
++		if (fw_table[i].model != cardp->model)
++			continue;
++		if (request_firmware(&cardp->fw, fw_table[i].fwname,
++					&cardp->udev->dev) == 0)
++			return 0;
++	}
++
++	return -ENOENT;
++}
++
+ static int __if_usb_prog_firmware(struct if_usb_card *cardp,
+ 					const char *fwname, int cmd)
+ {
+@@ -933,10 +980,9 @@
+ 
+ 	lbs_deb_enter(LBS_DEB_USB);
+ 
+-	ret = request_firmware(&cardp->fw, fwname, &cardp->udev->dev);
+-	if (ret < 0) {
+-		lbs_pr_err("request_firmware() failed with %#x\n", ret);
+-		lbs_pr_err("firmware %s not found\n", fwname);
++	ret = get_fw(cardp, fwname);
++	if (ret) {
++		lbs_pr_err("failed to find firmware (%d)\n", ret);
+ 		goto done;
+ 	}
+ 
+diff -urN git//drivers/net/wireless/libertas/if_usb.h git-mod//drivers/net/wireless/libertas/if_usb.h
+--- git//drivers/net/wireless/libertas/if_usb.h	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/if_usb.h	2012-01-31 07:15:05.220705611 +0100
+@@ -43,6 +43,7 @@
+ /** USB card description structure*/
+ struct if_usb_card {
+ 	struct usb_device *udev;
++	uint32_t model;  /* MODEL_* */
+ 	struct urb *rx_urb, *tx_urb;
+ 	struct lbs_private *priv;
+ 
+diff -urN git//drivers/net/wireless/libertas/main.c git-mod//drivers/net/wireless/libertas/main.c
+--- git//drivers/net/wireless/libertas/main.c	2012-01-31 07:11:47.792707348 +0100
++++ git-mod//drivers/net/wireless/libertas/main.c	2012-01-31 07:15:05.220705611 +0100
+@@ -1047,6 +1047,111 @@
+ }
+ EXPORT_SYMBOL_GPL(lbs_notify_command_response);
+ 
++/**
++ *  @brief Retrieves two-stage firmware
++ *
++ *  @param dev     	A pointer to device structure
++ *  @param user_helper	User-defined helper firmware file
++ *  @param user_mainfw	User-defined main firmware file
++ *  @param card_model	Bus-specific card model ID used to filter firmware table
++ *                         elements
++ *  @param fw_table	Table of firmware file names and device model numbers
++ *                         terminated by an entry with a NULL helper name
++ *  @param helper	On success, the helper firmware; caller must free
++ *  @param mainfw	On success, the main firmware; caller must free
++ *
++ *  @return		0 on success, non-zero on failure
++ */
++int lbs_get_firmware(struct device *dev, const char *user_helper,
++			const char *user_mainfw, u32 card_model,
++			const struct lbs_fw_table *fw_table,
++			const struct firmware **helper,
++			const struct firmware **mainfw)
++{
++	const struct lbs_fw_table *iter;
++	int ret;
++
++	BUG_ON(helper == NULL);
++	BUG_ON(mainfw == NULL);
++
++	/* Try user-specified firmware first */
++	if (user_helper) {
++		ret = request_firmware(helper, user_helper, dev);
++		if (ret) {
++			lbs_pr_err("couldn't find helper firmware %s",
++					user_helper);
++			goto fail;
++		}
++	}
++	if (user_mainfw) {
++		ret = request_firmware(mainfw, user_mainfw, dev);
++		if (ret) {
++			lbs_pr_err("couldn't find main firmware %s",
++					user_mainfw);
++			goto fail;
++		}
++	}
++
++	if (*helper && *mainfw)
++		return 0;
++
++	/* Otherwise search for firmware to use.  If neither the helper or
++	 * the main firmware were specified by the user, then we need to
++	 * make sure that found helper & main are from the same entry in
++	 * fw_table.
++	 */
++	iter = fw_table;
++	while (iter && iter->helper) {
++		if (iter->model != card_model)
++			goto next;
++
++		if (*helper == NULL) {
++			ret = request_firmware(helper, iter->helper, dev);
++			if (ret)
++				goto next;
++
++			/* If the device has one-stage firmware (ie cf8305) and
++			 * we've got it then we don't need to bother with the
++			 * main firmware.
++			 */
++			if (iter->fwname == NULL)
++				return 0;
++		}
++
++		if (*mainfw == NULL) {
++			ret = request_firmware(mainfw, iter->fwname, dev);
++			if (ret && !user_helper) {
++				/* Clear the helper if it wasn't user-specified
++				 * and the main firmware load failed, to ensure
++				 * we don't have mismatched firmware pairs.
++				 */
++				release_firmware(*helper);
++				*helper = NULL;
++			}
++		}
++
++		if (*helper && *mainfw)
++			return 0;
++
++  next:
++		iter++;
++	}
++
++  fail:
++	/* Failed */
++	if (*helper) {
++		release_firmware(*helper);
++		*helper = NULL;
++	}
++	if (*mainfw) {
++		release_firmware(*mainfw);
++		*mainfw = NULL;
++	}
++
++	return -ENOENT;
++}
++EXPORT_SYMBOL_GPL(lbs_get_firmware);
++
+ static int __init lbs_init_module(void)
+ {
+ 	lbs_deb_enter(LBS_DEB_MAIN);
+diff -urN git//drivers/net/wireless/libertas/mesh.c git-mod//drivers/net/wireless/libertas/mesh.c
+--- git//drivers/net/wireless/libertas/mesh.c	2012-01-31 07:11:47.796707348 +0100
++++ git-mod//drivers/net/wireless/libertas/mesh.c	2012-01-31 07:15:05.220705611 +0100
+@@ -574,7 +574,7 @@
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.hdr.size = cpu_to_le16(sizeof(cmd));
+ 	cmd.action = cpu_to_le16(CMD_ACT_BT_ACCESS_SET_INVERT);
+-	cmd.id = !!inverted;
++	cmd.id = cpu_to_le32(!!inverted);
+ 
+ 	ret = lbs_cmd_with_response(priv, CMD_BT_ACCESS, &cmd);
+ 
