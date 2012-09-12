@@ -29,6 +29,8 @@ require recipes/images/omap3-console-image.bb
 #  networkmanager \
 
 IMAGE_INSTALL += " \
+  kernel-module-twl4030-pwrbutton \
+  kernel-module-gpio-keys \
   libgsm \
   linphone \
   linphonec \
@@ -43,6 +45,7 @@ IMAGE_INSTALL += " \
   gstreamer-ti \
   gst-omapfb \
   gsl-dev \
+  gst-rtsp \
   task-native-sdk \
   task-gstreamer-ti \
   pkgconfig \
@@ -63,7 +66,7 @@ IMAGE_INSTALL += " \
   openvpn \
   ifplugd \
   v4l-utils \
-  acpid \
+  linux-input \
   ptu-software \
  "
 

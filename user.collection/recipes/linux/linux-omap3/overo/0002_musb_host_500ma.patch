@@ -19,7 +19,7 @@
  static inline void __init overo_init_musb(void)
  {
 -	usb_musb_init(NULL);
-+	usb_musb_init(&musb_board_data);
++	usb_musb_init(NULL/*&musb_board_data*/);
  }
  #else
  static inline void __init overo_init_musb(void) { return; }

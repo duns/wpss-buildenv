@@ -17,6 +17,7 @@ packages=( ti-dsplib \
 )
 
 ASD="
+sysvinit-2.86 \
 gstreamer-ti \
 ti-c6accel-apps \
 ti-c6accel \

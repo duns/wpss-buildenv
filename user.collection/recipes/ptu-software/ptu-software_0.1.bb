@@ -5,11 +5,13 @@ RDEPENDS="sed"
 
 #FILES_${PN} = "${bindir}/autologin"
 FILES_${PN} += "/etc/* \
+	       /etc/modutils/* \
+	       /etc/profile.d/* \
 	       /usr/local/bin/* \
 	       /usr/local/sbin/* \
 		"
 #SRC_URI = "git://chpap.dyndns.org:20480/git/PTU-software.git;protocol=http \
-SRC_URI = "git://10.8.1.1/git/ptu-software.git;tag=master;protocol=http \
+SRC_URI = "git://10.8.1.6/git/ptu-software.git;tag=master;protocol=http \
 "
 
 #SRC_URI = "git://git@10.8.1.1/srv/git/PTU-software.git;protocol=ssh \
@@ -39,6 +41,9 @@ do_install () {
 	  install -d ${D}/etc/modprobe.d/
 	  install -d ${D}/etc/init.d/
 	  install -d ${D}/usr/local/sbin/
+	  install -d ${D}/etc/modutils/
+	  install -m 0644 ${S}/conf/wpss-modules ${D}/etc/modutils/
+	  install -m 0644 ${S}/conf/wpss-modules.conf ${D}/etc/modutils/
 	  install -m 0644 ${S}/conf/libertas.conf ${D}/etc/modprobe.d/
 	  install -m 0644 ${S}/conf/wpa_supplicant_wpss.conf ${D}/etc/
 	  install -m 0755 ${S}/scripts/wpss-system.sh ${D}/usr/local/sbin/
@@ -48,13 +53,13 @@ do_install () {
 	  install -d ${D}/boot/
 	  install -m 0644 ${S}/conf/boot.scr ${D}/boot/
 	  install -m 0644 ${S}/src/*/ptu_forwarder.conf  ${D}/etc/
-	  oe_runmake  install DESTDIR=${D}/usr/local
-	  install -m 0755 ${D}/usr/local/etc/init.d/*  ${D}/etc/init.d/
+	  oe_runmake  install DESTDIR=${D}
 }
 
 pkg_postinst_${PN} () {
-	sed 's_ttyS2_ttyO2_' /etc/inittab > inittab.tmp
-	mv inittab.tmp /etc/inittab
+	sed -i 's_#PermitEmptyPasswords no_PermitEmptyPasswords yes_' /etc/ssh/sshd_config 
+#	sed 's_ttyS2_ttyO2_' /etc/inittab > inittab.tmp
+#	mv inittab.tmp /etc/inittab
 #	cp /boot/boot.scr /media/mmcblk0p1/
 #	passwd -d root
 	cp /etc/wpa_supplicant.conf /etc/wpa_supplicant.conf.orig
@@ -70,12 +75,16 @@ iface wlan0 inet dhcp
 	' >> /etc/network/interfaces
 	init q
 	update-rc.d ptu_forwarder defaults 99 1
+	update-rc.d commandserver defaults 99 1
+	update-modules
 }
 
 pkg_postrm_${PN}() {
 	mv /etc/wpa_supplicant.conf.orig /etc/wpa_supplicant.conf
 	mv /etc/network/interfaces.orig /etc/network/interfaces
 	update-rc.d ptu_forwarder remove
+	update-rc.d commandserver remove
+	update-modules
 }
 #pkg_prerm_${PN} () {
 #}
