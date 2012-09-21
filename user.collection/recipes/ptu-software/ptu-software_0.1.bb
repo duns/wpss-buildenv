@@ -9,7 +9,8 @@ FILES_${PN} += "/etc/* \
 	       /usr/local/sbin/* \
 		"
 #SRC_URI = "git://chpap.dyndns.org:20480/git/PTU-software.git;protocol=http \
-SRC_URI = "git://10.8.1.1/git/ptu-software.git;tag=master;protocol=http \
+SRCREV = HEAD
+SRC_URI = "git://github.com/chpap/ptu-software.git;branch=master;protocol=git \
 "
 
 #SRC_URI = "git://git@10.8.1.1/srv/git/PTU-software.git;protocol=ssh \

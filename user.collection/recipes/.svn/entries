@@ -1,86 +1,0 @@
-10
-
-dir
-11
-svn+ssh://chpap@localhost/var/svn-repos/overo-oe/user.collection/recipes
-svn+ssh://chpap@localhost/var/svn-repos/overo-oe
-
-
-
-2011-10-03T03:35:29.173491Z
-11
-chpap
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-8e858737-5c57-4c4f-8d60-9b84e776ba8a
-
-linux
-dir
-
-images
-dir
-
-econ-v4l2
-dir
-
-gstreamer
-dir
-
-opencv
-dir
-
-pixhawk
-dir
-
-linphone
-dir
-
-gst-plugins-package.inc
-file
-12
-
-
-
-2012-01-22T20:57:51.829759Z
-1828cd4930177784b67fb3c1f6bede10
-2012-01-22T22:12:26.932217Z
-12
-chpap
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1503
-
-libdc1394
-dir
-
