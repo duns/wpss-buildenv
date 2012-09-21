@@ -5,3 +5,5 @@ sources/
 meego-multimedia/
 marmita/
 bitbake/
+*.sw?
+.svn/*
