@@ -1,6 +1,13 @@
---- git/board/overo/overo.h.orig	2012-09-06 22:43:48.167859176 +0200
-+++ git/board/overo/overo.h	2012-09-06 22:49:00.603856430 +0200
-@@ -298,7 +298,7 @@
+--- git/board/overo/overo.h.orig	2012-09-06 22:56:19.839852567 +0200
++++ git/board/overo/overo.h	2012-10-07 20:02:24.824388708 +0200
+@@ -292,13 +292,13 @@
+ 	MUX_VAL(CP(SYS_OFF_MODE),	(IEN  | PTD | DIS | M0)) /*SYS_OFF_MODE*/\
+ 	MUX_VAL(CP(SYS_CLKOUT1),	(IEN  | PTU | EN  | M4)) /*GPIO_10*/\
+ 	MUX_VAL(CP(SYS_CLKOUT2),	(IEN  | PTU | EN  | M4)) /*GPIO_186*/\
+-	MUX_VAL(CP(ETK_CLK_ES2),	(IEN  | PTU | EN  | M2)) /*MMC3_CLK*/\
++	MUX_VAL(CP(ETK_CLK_ES2),	(IEN  | PTU | DIS  | M4)) /*WPSS BUTTON_PANIC*/\
+ 	MUX_VAL(CP(ETK_CTL_ES2),	(IEN  | PTU | EN  | M2)) /*MMC3_CMD*/\
+ 	MUX_VAL(CP(ETK_D0_ES2),		(IEN  | PTU | EN  | M4)) /*GPIO_14*/\
  	MUX_VAL(CP(ETK_D1_ES2),		(IEN  | PTD | EN  | M4)) /*GPIO_15 - X_GATE*/\
  	MUX_VAL(CP(ETK_D2_ES2),		(IEN  | PTU | EN  | M4)) /*GPIO_16*/\
  								 /* - W2W_NRESET*/\
