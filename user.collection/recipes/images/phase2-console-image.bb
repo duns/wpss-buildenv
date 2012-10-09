@@ -69,7 +69,7 @@ IMAGE_INSTALL += " \
   linux-input \
   ptu-software \
   boost \
-  gst-testsource \
+  tcpvideosource \
  "
 
 export IMAGE_BASENAME = "phase2-console-image"
