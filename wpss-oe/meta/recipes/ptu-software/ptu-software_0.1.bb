@@ -1,7 +1,7 @@
 DESCRIPTION = "Software and configuration package for WPSS phase2"
 PACKAGES ="${PN}"
 PR="r0"
-RDEPENDS="sed"
+RDEPENDS="sed start-stop-daemon"
 LICENSE = "LGPLv2"
 
 #FILES_${PN} = "${bindir}/autologin"
@@ -17,14 +17,14 @@ LIC_FILES_CHKSUM = "file://README.md;md5=0cf88e25d6f970bc6d959af1763e288c"
 
 S = "${WORKDIR}/git"
 
-#INITSCRIPT_PACKAGES="ptuforwarder startstopscripts"
-#INITSCRIPT_NAME_ptuforwarder="ptu_forwarder"
-#INITSCRIPT_PARAMS_ptuforwarder="defaults 99 1"
-#INITSCRIPT_NAME_startstopscripts="startstopscripts"
-#INITSCRIPT_PARAMS_startstopscripts="defaults 98 2"
+INITSCRIPT_PACKAGES="ptuforwarder startstopscripts"
+INITSCRIPT_NAME_ptuforwarder="ptu_forwarder"
+INITSCRIPT_PARAMS_ptuforwarder="defaults 99 1"
+INITSCRIPT_NAME_startstopscripts="startstopscripts"
+INITSCRIPT_PARAMS_startstopscripts="defaults 98 2"
 
-INITSCRIPT_NAME="startstopscripts"
-INITSCRIPT_PARAMS="defaults 98 2"
+#INITSCRIPT_NAME="startstopscripts"
+#INITSCRIPT_PARAMS="defaults 98 2"
 inherit autotools update-rc.d
 
 
@@ -55,31 +55,31 @@ do_install () {
 }
 #	  oe_runmake  install DESTDIR=${D}
 
-pkg_postinst_${PN} () {
-	sed 's_ttyS2_ttyO2_' /etc/inittab > inittab.tmp
-	mv inittab.tmp /etc/inittab
+pkg_postinst_${PN}_append () {
+#	sed 's_ttyS2_ttyO2_' /etc/inittab > inittab.tmp
+#	mv inittab.tmp /etc/inittab
 #	cp /boot/boot.scr /media/mmcblk0p1/
 #	passwd -d root
-	cp /etc/wpa_supplicant.conf /etc/wpa_supplicant.conf.orig
-	cp /etc/network/interfaces /etc/network/interfaces.orig
+#	cp /etc/wpa_supplicant.conf /etc/wpa_supplicant.conf.orig
+#	cp /etc/network/interfaces /etc/network/interfaces.orig
 
-	cp /etc/wpa_supplicant_wpss.conf /etc/wpa_supplicant.conf
-	echo 'allow-hotplug wlan0
-iface wlan0 inet dhcp
-      pre-up ifconfig wlan0 up
-      pre-up iwlist wlan0 scan
-      pre-up wpa_supplicant -Dwext -iwlan0 -c/etc/wpa_supplicant.conf -B
-      down killall wpa_supplicant
-	' >> /etc/network/interfaces
-	init q
-	update-rc.d ptu_forwarder defaults 99 1
+#	cp /etc/wpa_supplicant_wpss.conf /etc/wpa_supplicant.conf
+#	echo 'allow-hotplug wlan0
+#iface wlan0 inet dhcp
+#      pre-up ifconfig wlan0 up
+#      pre-up iwlist wlan0 scan
+#      pre-up wpa_supplicant -Dwext -iwlan0 -c/etc/wpa_supplicant.conf -B
+#      down killall wpa_supplicant
+#	' >> /etc/network/interfaces
+#	init q
+#	update-rc.d ptu_forwarder defaults 99 1
 }
 
-pkg_postrm_${PN}() {
-	mv /etc/wpa_supplicant.conf.orig /etc/wpa_supplicant.conf
-	mv /etc/network/interfaces.orig /etc/network/interfaces
-	update-rc.d ptu_forwarder remove
-}
+#pkg_postrm_${PN}() {
+#	mv /etc/wpa_supplicant.conf.orig /etc/wpa_supplicant.conf
+#	mv /etc/network/interfaces.orig /etc/network/interfaces
+#	update-rc.d ptu_forwarder remove
+#}
 #pkg_prerm_${PN} () {
 #}
 

@@ -1,0 +1,17 @@
+[connection]
+id=wpssconfig
+uuid=8111d1ce-1da3-40ce-ab6f-1c60b90d2ff5
+type=802-11-wireless
+autoconnect=false
+
+[802-11-wireless]
+ssid=wpssconfig
+mode=infrastructure
+
+[ipv6]
+method=ignore
+
+[ipv4]
+method=auto
+dhcp-send-hostname=true
+

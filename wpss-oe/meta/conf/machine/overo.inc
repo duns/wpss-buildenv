@@ -43,3 +43,5 @@ MACHINE_FEATURES = "kernel26 alsa apm ext3 screen usbgadget usbhost vfat wifi"
 TOOLCHAIN_PATH ?= "${STAGING_DIR_NATIVE}${prefix_native}/bin/${TUNE_PKGARCH}${HOST_VENDOR}-${HOST_OS}" 
 TOOLCHAIN_SYSPATH ?= "${TOOLCHAIN_PATH}/${TARGET_SYS}"
 PREFERRED_PROVIDER_udev                  = "systemd"
+
+BBMASK = "(.*/meta-ti/recipes-misc|.*meta-gumstix/recipes-connectivity/networkmanager)"
