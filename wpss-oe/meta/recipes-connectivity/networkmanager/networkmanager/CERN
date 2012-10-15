@@ -1,0 +1,17 @@
+[connection]
+id=CERN
+uuid=5bf9df70-8c73-4e4f-91ba-79f8068a68d0
+type=802-11-wireless
+autoconnect=true
+
+[802-11-wireless]
+ssid=CERN
+mode=infrastructure
+
+[ipv6]
+method=ignore
+
+[ipv4]
+method=auto
+dhcp-send-hostname=true
+
