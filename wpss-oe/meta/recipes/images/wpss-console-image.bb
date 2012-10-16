@@ -60,7 +60,6 @@ IMAGE_INSTALL += " \
   php-pear \
   openvpn \
   v4l-utils \
-  ptu-software \
   boost \
   linphone \
   linphonec \
@@ -69,6 +68,11 @@ IMAGE_INSTALL += " \
   ifplugd \
   usbutils \
   tcpvideosource \
+  busybox \
+ptu-forwarder-dev \
+  ptu-software-systemd \
+ptu-forwarder-systemd \
+ wpssconf-systemd \
  "
 #  gst-omapfb \
 #  gsl-dev \

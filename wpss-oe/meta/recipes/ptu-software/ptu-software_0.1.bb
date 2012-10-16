@@ -1,27 +1,52 @@
 DESCRIPTION = "Software and configuration package for WPSS phase2"
 PACKAGES ="${PN}"
-PR="r0"
-RDEPENDS="sed start-stop-daemon"
+PACKAGES += " ptu-forwarder wpssconf ptu-forwarder-dev"
+PR="r1"
+DEPENDS="start-stop-daemon"
+RDEPENDS="start-stop-daemon"
 LICENSE = "LGPLv2"
 
 #FILES_${PN} = "${bindir}/autologin"
-FILES_${PN} += "/etc/* \
-	       /usr/local/bin/* \
-	       /usr/local/sbin/* \
-		/boot/* \
+FILES_${PN} = " ${sbindir}/commandserver \
+		${sysconfdir}/commandserver.conf \
+		${sysconfdir}/init.d/commandserver \
 		"
+
+FILES_wpssconf = "${sysconfdir}/profile.d/* \
+		${sbindir}/wpss-system.sh \
+		/boot/boot.scr \
+		${sysconfdir}/init.d/startstopscripts \
+		"
+
+FILES_ptu-forwarder = "${bindir}/PTU_forwarder_TCP_RS232 \
+		${sysconfdir}/ptu_forwarder.conf \
+		${sysconfdir}/init.d/ptu_forwarder \
+		"
+
+FILES_ptu-forwarder-dev = " /usr/src/* "
+
 SRCREV =  "${AUTOREV}"
 SRC_URI = "git://github.com/chpap/ptu-software.git;branch=master;protocol=git \
+	file://ptu_forwarder.service \
+	file://commandserver.service \
+	file://wpssconf.service \
 "
 LIC_FILES_CHKSUM = "file://README.md;md5=0cf88e25d6f970bc6d959af1763e288c"
 
 S = "${WORKDIR}/git"
 
-INITSCRIPT_PACKAGES="ptuforwarder startstopscripts"
-INITSCRIPT_NAME_ptuforwarder="ptu_forwarder"
-INITSCRIPT_PARAMS_ptuforwarder="defaults 99 1"
-INITSCRIPT_NAME_startstopscripts="startstopscripts"
-INITSCRIPT_PARAMS_startstopscripts="defaults 98 2"
+inherit systemd
+
+INITSCRIPT_PACKAGES="ptu-forwarder wpssconf"
+INITSCRIPT_NAME_ptu-forwarder="ptu_forwarder"
+INITSCRIPT_PARAMS_ptu-forwarder="defaults 99 1"
+INITSCRIPT_NAME_wpssconf="startstopscripts"
+INITSCRIPT_PARAMS_wpssconf="defaults 98 2"
+
+SYSTEMD_PACKAGES="${PN}-systemd ptu-forwarder-systemd wpssconf-systemd"
+SYSTEMD_SERVICE_${PN}-systemd="commandserver.service"
+SYSTEMD_SERVICE_ptu-forwarder-systemd="ptu_forwarder.service"
+SYSTEMD_SERVICE_wpssconf-systemd="wpssconf.service"
 
 #INITSCRIPT_NAME="startstopscripts"
 #INITSCRIPT_PARAMS="defaults 98 2"
@@ -36,24 +61,33 @@ do_compile () {
 }
 
 do_install () {
-	  install -d ${D}/etc/profile.d/
-	  install -d ${D}/etc/modprobe.d/
-	  install -d ${D}/etc/init.d/
-	  install -d ${D}/usr/local/sbin/
+	  oe_runmake  install DESTDIR=${D}/usr
+	  install -d ${D}${sysconfdir}/profile.d/
+	  install -d ${D}${sysconfdir}/init.d/
+	  install -d ${D}${sbindir}
+	  install -d ${D}${bindir}
+
+#wpssconf
 # needed to overcome slow loading in kernel 3.2
+#	  install -d ${D}/etc/modprobe.d/
 #	  install -m 0644 ${S}/conf/libertas.conf ${D}/etc/modprobe.d/
-	  install -m 0644 ${S}/conf/wpa_supplicant_wpss.conf ${D}/etc/
-	  install -m 0755 ${S}/scripts/wpss-system.sh ${D}/usr/local/sbin/
-	  install -m 0755 ${S}/scripts/startstopscripts ${D}/etc/init.d/
-	  install -m 0755 ${S}/conf/pinouts.sh ${D}/etc/profile.d/
-	  install -m 0755 ${S}/scripts/gpio_functions.sh ${D}/etc/profile.d/
+	  install -m 0644 ${S}/conf/wpa_supplicant_wpss.conf ${D}${sysconfdir}/
+	  install -m 0755 ${S}/scripts/wpss-system.sh ${D}${sbindir}/
+	  install -m 0755 ${S}/scripts/startstopscripts ${D}${sysconfdir}/init.d/
+	  install -m 0755 ${S}/conf/pinouts.sh ${D}${sysconfdir}/profile.d/
+	  install -m 0755 ${S}/scripts/gpio_functions.sh ${D}${sysconfdir}/profile.d/
 	  install -d ${D}/boot/
 	  install -m 0644 ${S}/conf/boot.scr ${D}/boot/
-	  install -m 0644 ${S}/src/*/ptu_forwarder.conf  ${D}/etc/
-	  oe_runmake  install DESTDIR=${D}/usr/local
-	  install -m 0755 ${D}/usr/local/etc/init.d/*  ${D}/etc/init.d/
+
+#ptu-forwarder
+	  install -m 0644 ${S}/src/*/ptu_forwarder.conf  ${D}${sysconfdir}/
+	  install -m 0755 ${S}/src/PTU_forwarder_TCP_RS232/ptu_forwarder  ${D}${sysconfdir}/init.d/
+
+
+#commandserver
+	  install -m 0755 ${S}/src/commandserver/commandserver.conf ${D}${sysconfdir}/
+	  install -m 0755 ${S}/src/commandserver/commandserver-initscript ${D}${sysconfdir}/init.d/commandserver
 }
-#	  oe_runmake  install DESTDIR=${D}
 
 pkg_postinst_${PN}_append () {
 #	sed 's_ttyS2_ttyO2_' /etc/inittab > inittab.tmp
