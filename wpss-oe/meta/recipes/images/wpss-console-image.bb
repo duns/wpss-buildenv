@@ -62,13 +62,13 @@ IMAGE_INSTALL += " \
   v4l-utils \
   ptu-software \
   boost \
-  gst-testsource \
   linphone \
   linphonec \
   ti-linuxutils \
   gstreamer-ti \
   ifplugd \
   usbutils \
+  tcpvideosource \
  "
 #  gst-omapfb \
 #  gsl-dev \
