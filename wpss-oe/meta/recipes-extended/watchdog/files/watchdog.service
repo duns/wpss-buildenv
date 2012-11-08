@@ -1,0 +1,12 @@
+[Unit]
+Description=Watchdog Daemon
+
+[Service]
+Type=forking
+PIDFile=/var/run/watchdog.pid
+ExecStart=/usr/sbin/watchdog
+ExecStopPost=/bin/touch /dev/watchdog
+
+[Install]
+WantedBy=multi-user.target
+
