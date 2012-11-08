@@ -2,10 +2,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
 #FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 #PRINC = "1"
-PRINC := "${@int(PRINC) + 1}"
-SRC_URI += "file://functions.sh  \
-	file://wpa_action  \
-	file://wpa_roam.conf \ 
+PRINC := "${@int(PRINC) + 2}"
+SRC_URI += " file://wpa_action  \
 	file://ifupdown.rules \ 
 	file://wpa_supplicant.conf"
 
@@ -20,10 +18,4 @@ do_install_append() {
         install -d  ${D}/${sysconfdir}/udev/rules.d
   	install -m 0644 ${WORKDIR}/ifupdown.rules ${D}${sysconfdir}/udev/rules.d/
 }
-
-CFLAGS_append = " -lguile -lgmp -lcrypt -lm -lltdl"
-
-FILES_${PN}-doc += " ${datadir}/gnome/help"
-FILES_${PN}-dbg += " ${bindir}/.debug ${libdir}/gnome-games/.debug"
-
 
