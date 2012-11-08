@@ -4,3 +4,26 @@
 auto lo
 iface lo inet loopback
 
+#auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet manual
+#   wpa-driver wext
+#   wpa-conf /etc/wpa_supplicant.conf
+   pre-up /usr/sbin/wpa_supplicant -B -P /var/run/wpa_supplicant.wlan0.pid -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -Dwext
+   up /sbin/udhcpc -i wlan0 -b -p /var/run/udhcpc.wlan0.pid
+   up /usr/sbin/wpa_cli -a /sbin/wpa_action -B -P /var/run/wpa_cli.wlan0.pid
+   up /bin/systemctl  start network.target
+   down kill `cat /var/run/udhcpc.wlan0.pid`
+   down kill `cat /var/run/wpa_cli.wlan0.pid`
+   down kill `cat /var/run/wpa_supplicant.wlan0.pid`
+   down /bin/systemctl  stop network.target
+#iface wlan0 inet dhcp
+#        wireless_mode managed
+#        wireless_essid any
+#	pre-up ifconfig wlan0 up
+#	pre-up iwlist wlan0 scan > /dev/null
+#	pre-up wpa_supplicant -P /var/run/wpa_supplicant.wlan0.pid -Dwext -iwlan0 -c/etc/wpa_roam.conf -B
+     # 	down killall wpa_supplicant
+#        wpa-driver wext
+#        wpa-conf /etc/wpa_roam.conf
+

@@ -9,7 +9,10 @@ UBOOT_MACHINE = "omap3_overo_config"
 UBOOT_BINARY = "u-boot.bin"
 UBOOT_IMAGE = "u-boot-${MACHINE}-${PV}-${PR}.bin"
 
+#PREFERRED_VERSION_gstreamer = "0.10.32"
+
 #PREFERRED_PROVIDER_virtual/kernel = "linux-omap3"
+PREFERRED_PROVIDER_opkg-collateral = "wpss-feed-conf"
 PREFERRED_PROVIDER_ntp = "ntp"
 #PREFERRED_PROVIDER_virtual/kernel = "linux-sakoman"  
 #PREFERRED_VERSION_linux-sakoman= "3.2"  
@@ -28,7 +31,7 @@ PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
 
 SERIAL_CONSOLE = "115200 ttyO2"
 
-IMAGE_FSTYPES += "tar.bz2"
+IMAGE_FSTYPES += "tar.bz2 ubi"
 
 MKUBIFS_ARGS = "-m 2048 -e 129024 -c 4044"
 UBINIZE_ARGS = "-m 2048 -p 128KiB -s 512"
@@ -44,4 +47,4 @@ TOOLCHAIN_PATH ?= "${STAGING_DIR_NATIVE}${prefix_native}/bin/${TUNE_PKGARCH}${HO
 TOOLCHAIN_SYSPATH ?= "${TOOLCHAIN_PATH}/${TARGET_SYS}"
 PREFERRED_PROVIDER_udev                  = "systemd"
 
-BBMASK = "(.*/meta-ti/recipes-misc|.*meta-gumstix/recipes-connectivity/networkmanager)"
+BBMASK = "(.*/meta-ti/recipes-misc|.*meta-gumstix/recipes-connectivity/networkmanager|.*/meta-ti/recipes-core)"

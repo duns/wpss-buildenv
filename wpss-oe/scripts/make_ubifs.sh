@@ -4,26 +4,27 @@
 # This script flashes an image onto a connected SDHC card
 #
 RANDN=`echo $RANDOM|md5sum|awk '{print $1}'`
-DEVICE=/dev/sdc
 FATDIR=/tmp/BOOT-$RANDN
 ROOTDIR=/tmp/ROOT-$RANDN
 
 KERNELFILE=uImage-3.2-r103-overo.bin
 MODULEFILES=modules-3.2-r103-overo.tgz
-UBIIMG=phase2-console-image-overo.ubi
-ROOTTAR=phase2-console-image-overo.tar.bz2
-UBICFG=ubinize.cfg
+UBIIMGBNAME=wpss-console-image-overo.ubi
+ROOTTARBNAME=wpss-console-image-overo.tar.bz2
+IMAGEDIR=/mnt/datadisk0/phase2/wpss-buildenv/poky-overo/tmp/deploy/images
+DESTDIR=/mnt/datadisk0/phase2/wpss-buildenv/poky-overo/tmp/deploy/images
+UBICFG=/tmp/ubinize.cfg
 
-IMAGEDIR=$OVEROTOP/tmp/deploy/glibc/images/overo
-LOADERDIR=$OVEROTOP/tmp/deploy/glibc/images/overo
 #LOADERDIR=$OVEROTOP/user.collection/loaders
-IMAGEDIR=/tmp/tmp/overo
-LOADERDIR=/tmp/tmp/overo
+UBIIMG=${DESTDIR}/${UBIIMGBNAME}
+ROOTTAR=${IMAGEDIR}/${ROOTTARBNAME}
+[ -n "$1" ] && ROOTTAR="$1"
+[ -n "$2" ] && UBIIMG="$2"
 
 echo untaring root dir
 sudo mkdir -p  ${ROOTDIR}
 echo untaring the root file system
-sudo tar xjf ${IMAGEDIR}/${ROOTTAR} -C ${ROOTDIR}
+sudo tar xjf ${ROOTTAR} -C ${ROOTDIR}
 cat > $UBICFG << EOF
 [ubifs] 
 mode=ubi
@@ -31,11 +32,12 @@ image=${UBIIMG}.img
 vol_id=0 
 vol_type=dynamic 
 vol_name=rootfs 
-echo vol_flags=autoresize 
+vol_flags=autoresize 
+vol_size=250MiB
 EOF
 
-mkfs.ubifs -m 2048 -e 129024 -c 4000 -o $UBIIMG.img -r $ROOTDIR
-ubinize -o $UBIIMG -m 2048 -p 128KiB -s 512 $UBICFG
+sudo mkfs.ubifs -m 2048 -e 129024 -c 4000 -o $UBIIMG.img -r $ROOTDIR
+sudo ubinize -o $UBIIMG -m 2048 -p 128KiB -s 512 $UBICFG
 
 sudo rm -rf ${ROOTDIR}
 exit

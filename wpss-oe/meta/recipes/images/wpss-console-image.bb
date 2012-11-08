@@ -58,14 +58,13 @@ IMAGE_INSTALL += " \
   php-cgi \
   php-cli \
   php-pear \
-  openvpn \
+  openvpn-systemd \
   v4l-utils \
   boost \
   linphone \
   linphonec \
   ti-linuxutils \
   gstreamer-ti \
-  ifplugd \
   usbutils \
   tcpvideosource \
   busybox \
@@ -73,6 +72,13 @@ ptu-forwarder-dev \
   ptu-software-systemd \
 ptu-forwarder-systemd \
  wpssconf-systemd \
+libertas-wpss-config-systemd \
+wlan-network-connected-systemd  \
+wpss-pwm \
+mtd-utils \
+wpss-feed-conf \
+cronie-systemd \
+watchdog \
  "
 #  gst-omapfb \
 #  gsl-dev \
