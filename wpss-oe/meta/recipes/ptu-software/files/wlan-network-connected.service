@@ -1,0 +1,14 @@
+[Unit]
+Description=Wlan online service
+#Requisite=libertas-module.service
+#After=libertas-module.service
+Requires=network.target
+Wants=network.target
+Before=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sleep 20
+
+[Install]
+WantedBy=network.target
