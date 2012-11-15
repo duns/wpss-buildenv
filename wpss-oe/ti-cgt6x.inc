@@ -1,1 +1,0 @@
-../org.openembedded.dev/recipes/ti/ti-cgt6x.inc

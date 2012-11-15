@@ -1,0 +1,10 @@
+[Unit]
+Description=WPSS commandserver
+After=network.target
+
+[Service]
+PIDFile=/var/run/commandserver.pid
+ExecStart=/usr/sbin/commandserver /etc/commandserver.conf
+
+[Install]
+WantedBy=multi-user.target

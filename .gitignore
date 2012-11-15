@@ -1,9 +1,6 @@
 tmp/
-org.openembedded.dev/
-ai.openembedded.dev/
 sources/
-meego-multimedia/
-marmita/
+build/
 bitbake/
 *.sw?
 .svn/*

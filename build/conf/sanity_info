@@ -1,0 +1,3 @@
+SANITY_VERSION 1
+TMPDIR /mnt/datadisk0/phase2/wpss-buildenv/build/tmp
+SSTATE_DIR /mnt/datadisk0/phase2/wpss-buildenv/build/sstate-cache

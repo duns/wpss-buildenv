@@ -1,0 +1,14 @@
+[Unit]
+Description=WPSS system initialisation
+ConditionPathExists=|/sys/class/gpio
+#Wants=network.target
+#Before=network.target
+#After=remount-rootfs.service
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/usr/sbin/wpss-system.sh start
+ExecStop=/usr/sbin/wpss-system.sh stop
+
+[Install]
+WantedBy=multi-user.target

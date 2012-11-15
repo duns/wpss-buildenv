@@ -1,0 +1,11 @@
+[Unit]
+Description=Prisma TCP PTU sensor forwarder
+Requires=network.target
+After=network.target
+
+[Service]
+PIDFile=/var/run/ptu-forwarder.pid
+ExecStart=/usr/bin/PTU_forwarder_TCP_RS232
+
+[Install]
+WantedBy=multi-user.target

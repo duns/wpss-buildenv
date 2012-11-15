@@ -1,0 +1,71 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 13 (0xd)
+        Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=CH, ST=Geneve, L=Geneve, O=CERN, OU=WPSS, CN=pcatlaswpss02/emailAddress=me@myhost.mydomain
+        Validity
+            Not Before: Oct 31 02:32:01 2012 GMT
+            Not After : Oct 29 02:32:01 2022 GMT
+        Subject: C=CH, ST=Geneve, L=Geneve, O=CERN, CN=wpss-ovpn-client/emailAddress=me@myhost.mydomain
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:af:b2:38:ae:42:f4:95:6b:4f:41:3f:4f:c1:6e:
+                    5f:ae:85:52:61:a3:d2:b1:60:9e:2a:29:f1:e1:e8:
+                    a6:b0:0b:7c:ae:2d:9a:24:df:a3:5b:37:a1:8a:8c:
+                    b9:2e:34:56:39:1b:1a:87:2b:c3:36:5f:78:d4:ef:
+                    17:b4:2f:3e:70:03:ca:b0:cd:60:ee:ed:30:7f:b7:
+                    57:37:f6:a0:32:7b:60:ed:d5:40:40:93:37:fe:0f:
+                    fe:8e:19:9c:f3:f1:b6:dd:c7:d3:3c:86:85:07:0f:
+                    98:91:d1:dc:ce:aa:92:b5:5d:e0:ae:49:4d:96:fb:
+                    5c:28:31:57:c7:6d:26:38:3b
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                5A:C2:0D:5A:E0:3A:0D:8B:90:48:E4:07:73:07:09:90:24:14:01:58
+            X509v3 Authority Key Identifier: 
+                keyid:25:92:6B:33:9E:7A:3F:AD:DE:80:BC:BA:A8:16:03:C6:E4:C1:91:FC
+                DirName:/C=CH/ST=Geneve/L=Geneve/O=CERN/OU=WPSS/CN=pcatlaswpss02/emailAddress=me@myhost.mydomain
+                serial:DE:EC:84:56:B8:66:A9:A4
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+        a3:46:be:67:7e:f9:91:6c:34:b7:d9:aa:8c:4a:8a:6c:0d:0b:
+        90:78:49:af:af:3b:48:22:d5:4d:0f:a6:d5:b7:da:3e:b0:0a:
+        25:fb:44:2a:e2:84:fc:8d:c2:13:29:b0:04:7a:94:97:2f:c6:
+        15:5c:4a:79:6a:eb:be:70:f4:0f:51:ca:cd:ca:cb:14:6a:c1:
+        63:da:26:d6:2b:48:bd:8d:64:53:9a:c2:de:f2:13:ba:aa:b5:
+        9e:13:63:d0:16:b5:45:d5:12:ab:f7:d9:a5:b5:c1:01:ea:55:
+        20:c2:95:f9:2d:42:f0:cb:60:79:21:b2:a5:2b:ca:ee:7b:d9:
+        e4:be
+-----BEGIN CERTIFICATE-----
+MIIDvDCCAyWgAwIBAgIBDTANBgkqhkiG9w0BAQUFADCBiDELMAkGA1UEBhMCQ0gx
+DzANBgNVBAgTBkdlbmV2ZTEPMA0GA1UEBxMGR2VuZXZlMQ0wCwYDVQQKEwRDRVJO
+MQ0wCwYDVQQLEwRXUFNTMRYwFAYDVQQDEw1wY2F0bGFzd3BzczAyMSEwHwYJKoZI
+hvcNAQkBFhJtZUBteWhvc3QubXlkb21haW4wHhcNMTIxMDMxMDIzMjAxWhcNMjIx
+MDI5MDIzMjAxWjB8MQswCQYDVQQGEwJDSDEPMA0GA1UECBMGR2VuZXZlMQ8wDQYD
+VQQHEwZHZW5ldmUxDTALBgNVBAoTBENFUk4xGTAXBgNVBAMTEHdwc3Mtb3Zwbi1j
+bGllbnQxITAfBgkqhkiG9w0BCQEWEm1lQG15aG9zdC5teWRvbWFpbjCBnzANBgkq
+hkiG9w0BAQEFAAOBjQAwgYkCgYEAr7I4rkL0lWtPQT9PwW5froVSYaPSsWCeKinx
+4eimsAt8ri2aJN+jWzehioy5LjRWORsahyvDNl941O8XtC8+cAPKsM1g7u0wf7dX
+N/agMntg7dVAQJM3/g/+jhmc8/G23cfTPIaFBw+YkdHczqqStV3grklNlvtcKDFX
+x20mODsCAwEAAaOCAT8wggE7MAkGA1UdEwQCMAAwLQYJYIZIAYb4QgENBCAWHkVh
+c3ktUlNBIEdlbmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQUWsINWuA6DYuQ
+SOQHcwcJkCQUAVgwgb0GA1UdIwSBtTCBsoAUJZJrM556P63egLy6qBYDxuTBkfyh
+gY6kgYswgYgxCzAJBgNVBAYTAkNIMQ8wDQYDVQQIEwZHZW5ldmUxDzANBgNVBAcT
+BkdlbmV2ZTENMAsGA1UEChMEQ0VSTjENMAsGA1UECxMEV1BTUzEWMBQGA1UEAxMN
+cGNhdGxhc3dwc3MwMjEhMB8GCSqGSIb3DQEJARYSbWVAbXlob3N0Lm15ZG9tYWlu
+ggkA3uyEVrhmqaQwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCwYDVR0PBAQDAgeAMA0G
+CSqGSIb3DQEBBQUAA4GBAKNGvmd++ZFsNLfZqoxKimwNC5B4Sa+vO0gi1U0PptW3
+2j6wCiX7RCrihPyNwhMpsAR6lJcvxhVcSnlq675w9A9Rys3KyxRqwWPaJtYrSL2N
+ZFOawt7yE7qqtZ4TY9AWtUXVEqv32aW1wQHqVSDClfktQvDLYHkhsqUryu572eS+
+-----END CERTIFICATE-----
