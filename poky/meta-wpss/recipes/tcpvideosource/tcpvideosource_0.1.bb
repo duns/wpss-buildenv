@@ -14,7 +14,9 @@ DEPENDS="boost \
 SRCREV =  "${AUTOREV}"
 SRC_URI = "git://github.com/chpap/ptu-software.git;branch=develop;protocol=git \
 	file://videosrcloop.sh \
-	file://videosource.service "
+	file://videosource.service \
+	file://webcam.rules \
+	file://vsource.conf"
 
 S = "${WORKDIR}/git/src/videosource"
 
@@ -25,9 +27,16 @@ SYSTEMD_PACKAGES="${PN}-systemd"
 SYSTEMD_SERVICE_${PN}-systemd="videosource.service"
 SYSTEMD_AUTO_ENABLE_${PN}-systemd = "disable"
 
+FILES_${PN} += " ${sysconfdir}/videosource/vsource.conf ${sysconfdir}/udev/rules.d/webcam.rules"
+CONFFILES_${PN} += " ${sysconfdir}/videosource/vsource.conf"
+
 do_install_append () {
         install -d ${D}${bindir}
         install -m 0755 ${WORKDIR}/videosrcloop.sh ${D}${bindir}
+        install -d ${D}${sysconfdir}/videosource
+        install -m 0644 ${WORKDIR}/vsource.conf ${D}${sysconfdir}/videosource
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/webcam.rules ${D}${sysconfdir}/udev/rules.d
 }
 
 #pkg_postinst_${PN}-systemd_append () {

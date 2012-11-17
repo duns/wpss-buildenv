@@ -1,6 +1,6 @@
 #!/bin/sh
 while true
 do
-videosource --config-path=/etc/videostream.conf/vsource.conf
+videosource --config-path=/etc/videosource/vsource.conf
 sleep 2
 done
