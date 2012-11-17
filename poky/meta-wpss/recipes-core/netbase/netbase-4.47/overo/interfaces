@@ -4,19 +4,22 @@
 auto lo
 iface lo inet loopback
 
-#auto wlan0
 allow-hotplug wlan0
 iface wlan0 inet manual
 #   wpa-driver wext
 #   wpa-conf /etc/wpa_supplicant.conf
-   pre-up /usr/sbin/wpa_supplicant -B -P /var/run/wpa_supplicant.wlan0.pid -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -Dwext
-   up /sbin/udhcpc -i wlan0 -b -p /var/run/udhcpc.wlan0.pid
-   up /usr/sbin/wpa_cli -a /sbin/wpa_action -B -P /var/run/wpa_cli.wlan0.pid
-   up /bin/systemctl  start network.target
-   down kill `cat /var/run/udhcpc.wlan0.pid`
-   down kill `cat /var/run/wpa_cli.wlan0.pid`
-   down kill `cat /var/run/wpa_supplicant.wlan0.pid`
-   down /bin/systemctl  stop network.target
+   pre-up /usr/sbin/wpa_supplicant -P/var/run/wpa_supplicant.wlan0.pid -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -Dwext -B
+#	up /bin/sleep 1
+#	up /sbin/dhclient  wlan0  -nw  -pf /var/run/udhcpc.wlan0.pid -q
+   up /sbin/udhcpc -i wlan0 -b -p /var/run/udhcpc.wlan0.pid -R
+   up /usr/sbin/wpa_cli -a /usr/sbin/wpa_action -P/var/run/wpa_cli.wlan0.pid -B
+#   up /sbin/ifconfig wlan0 up
+#   up /bin/systemctl  start network.target
+   down kill `cat /var/run/udhcpc.wlan0.pid` || true
+   down kill `cat /var/run/wpa_cli.wlan0.pid` || true
+#   down kill `cat /var/run/wpa_supplicant.wlan0.pid`
+   down killall wpa_supplicant || true
+#   down /bin/systemctl  stop network.target
 #iface wlan0 inet dhcp
 #        wireless_mode managed
 #        wireless_essid any
@@ -26,4 +29,17 @@ iface wlan0 inet manual
      # 	down killall wpa_supplicant
 #        wpa-driver wext
 #        wpa-conf /etc/wpa_roam.conf
+
+auto tap0
+iface tap0 inet manual
+	pre-up openvpn --mktun --dev tap0	
+	pre-up ifconfig tap0 hw ether `ifconfig wlan0|awk '/HWadd/{print $5}'` 2> /dev/null  || true
+	up /sbin/udhcpc -i tap0 -b -p /var/run/udhcpc.tap0.pid -R -t 1
+	up systemctl start openvpn@pcatlaswpss02.service
+#	up /bin/sleep 1
+#	up /sbin/dhclient  tap0  -nw  -pf /var/run/udhcpc.tap0.pid -q
+	down systemctl stop openvpn@pcatlaswpss02.service
+   	down kill `cat /var/run/udhcpc.tap0.pid` || true
+	down openvpn --rmtun --dev tap0	
+	
 
