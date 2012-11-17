@@ -11,5 +11,4 @@ ExecStart=/sbin/modprobe libertas_sdio
 ExecStop=/sbin/modprobe -r libertas_sdio
 
 [Install]
-#WantedBy=multi-user.target
 WantedBy=network.target

@@ -15,7 +15,7 @@ FILES_${PN} = " ${sbindir}/commandserver \
 FILES_libertas-wpss-config = "${sysconfdir}/modprobe.d/* \
 		"
 
-#FILES_wlan-network-connected = " "
+FILES_wlan-network-connected = " "
 
 FILES_wpssconf = "${sysconfdir}/profile.d/* \
 		${sbindir}/wpss-system.sh \
@@ -63,6 +63,8 @@ SYSTEMD_SERVICE_wlan-network-connected-systemd="wlan-network-connected.service"
 #INITSCRIPT_PARAMS="defaults 98 2"
 inherit autotools update-rc.d
 
+DEPENDS_wlan-network-connected-systemd= " systemd-systemctl-native"
+RDEPENDS_wlan-network-connected-systemd= " systemd"
 
 do_compile () {
 	make
