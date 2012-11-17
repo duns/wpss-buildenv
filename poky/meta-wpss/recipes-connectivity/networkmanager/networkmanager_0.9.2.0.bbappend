@@ -30,4 +30,11 @@ do_install_append () {
 FILES_${PN} += "${libdir}/NetworkManager/*.so*"
 
 RDEPENDS_${PN} += "dnsmasq iptables util-linux-uuidgen"
+SYSTEMD_AUTO_ENABLE_${PN} = "disable"
+#RDEPENDS_${PN} += " systemd"
+
+#pkg_postinst_${PN} ()
+#{
+#	systemctl disable NetworkManager.service
+#}
 
