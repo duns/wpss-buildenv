@@ -10,6 +10,10 @@ ec_tail_len=60
 ec_frame_size=128
 mic_gain=1.0
 playback_gain_db=0.0
+noisegate=0
+ng_thres=0.05
+ng_floorgain=0.0005
+agc=1
 
 [video]
 display=0
