@@ -66,7 +66,7 @@ IMAGE_INSTALL += " \
   ti-linuxutils \
   gstreamer-ti \
   usbutils \
-  tcpvideosource \
+  tcpvideosource-systemd \
   busybox \
 ptu-forwarder-dev \
   ptu-software-systemd \
@@ -79,6 +79,7 @@ mtd-utils \
 wpss-feed-conf \
 cronie-systemd \
 watchdog \
+wpss-vpn-keys-systemd \
  "
 #  gst-omapfb \
 #  gsl-dev \
