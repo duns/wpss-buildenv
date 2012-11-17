@@ -1,0 +1,14 @@
+[Unit]
+Description=videoserver daemon
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+Restart=always
+#ExecStart=/usr/bin/videosource --config-path=/etc/videostream.conf/vsource.conf
+ExecStart=/usr/bin/videosrcloop.sh
+
+[Install]
+WantedBy=multi-user.target
