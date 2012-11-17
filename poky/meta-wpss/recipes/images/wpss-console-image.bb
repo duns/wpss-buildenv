@@ -150,8 +150,7 @@ IMAGE_INSTALL += " \
   openvpn-systemd \
   v4l-utils \
   boost \
-  linphone \
-  linphonec \
+  linphonec-systemd \
   ti-linuxutils \
   gstreamer-ti \
   usbutils \
