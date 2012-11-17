@@ -25,6 +25,10 @@ SRC_URI = "http://download.savannah.nongnu.org/releases/linphone/3.1.x/sources/l
 	file://b64_assert.patch \
 	file://preferences-segv.patch \
 	file://alsac.patch \
+	file://linphone.conf \
+	file://linphonerc \
+	file://linphone.service \
+	file://asound.state \
 	"
 #	file://config.patch \
 
@@ -50,6 +54,10 @@ PARALLEL_MAKE = ""
 
 do_install(){
 	autotools_do_install
+	install -d ${D}${sysconfdir}/linphone
+        install -m 0755 ${WORKDIR}/linphonerc ${D}${sysconfdir}/linphone
+        install -m 0755 ${WORKDIR}/linphone.conf ${D}${sysconfdir}/linphone
+        install -m 0755 ${WORKDIR}/asound.state ${D}${sysconfdir}/linphone
 }
 #deprecated staging
 do_dstage() {
@@ -88,7 +96,7 @@ FILES_${PN} = "${bindir}/linphone-3 \
 	    ${datadir}/sounds/linphone/hello16000.wav \
 	    ${datadir}/images/nowebcamCIF.jpg \
 	    "
-FILES_${PN}c = "${bindir}/linphonec ${bindir}/linphonecsh ${bindir}/sipomatic ${datadir}/sounds/linphone/ringback.wav"
+FILES_${PN}c = "${bindir}/linphonec ${bindir}/linphonecsh ${bindir}/sipomatic ${datadir}/sounds/linphone/ringback.wav ${sysconfdir}/linphone/linphone.conf ${sysconfdir}/linphone/linphonerc ${sysconfdir}/linphone/asound.state"
 FILES_${PN}-rings = "${datadir}/sounds/linphone/rings"
 FILES_liblinphone = "${libdir}/liblinphone.so.*"
 #FILES_libquickstream = "${libdir}/libquickstream.so.*"
@@ -96,6 +104,21 @@ FILES_libmediastreamer = "${libdir}/libmediastreamer.so.* /usr/libexec/mediastre
 FILES_libortp = "${libdir}/libortp.so.*"
 FILES_${PN}-dev += "${libdir}/*.a ${libdir}/*.la ${libdir}/pkgconfig ${includedir}"
 
+inherit  systemd
+SYSTEMD_PACKAGES="${PN}c-systemd"
+SYSTEMD_SERVICE_${PN}c-systemd="linphone.service"
+SYSTEMD_AUTO_ENABLE_${PN}c-systemd = "enable"
 
 SRC_URI[md5sum] = "ed40cf4088c306400b005bbd63ac36be"
 SRC_URI[sha256sum] = "e41e99925e8c81a9e6c7f4cf399da1d9f571927413196898af46ecbebee6a91b"
+RDEPENDS_${PN}c += " alsa-utils-alsactl"
+pkg_postinst_${PN}c_append () {
+if [ x"$D" = "x" ]; then
+        # Actions to carry out on the device go here
+	alsactl -f /etc/linphone/asound.state restore 0
+	alsactl store 0
+else
+        exit 1
+fi
+}
+                
