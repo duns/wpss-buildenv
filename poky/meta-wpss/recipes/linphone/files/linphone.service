@@ -10,10 +10,10 @@ ExecStart=/usr/bin/linphonecsh init -c /etc/linphone/linphonerc
 #ExecStartPost=/bin/sleep 1
 #ExecStartPost=/bin/sh -c '/usr/bin/linphonecsh register --host `/bin/sed -n  s/host://p /etc/linphone/linphone.conf` --username `/bin/sed -n  s/user://p /etc/linphone/linphone.conf` --password `/bin/sed -n  s/pass://p /etc/linphone/linphone.conf`'
 #ExecStartPost=/bin/sh -c 'echo /usr/bin/linphonecsh register --host `/bin/sed -n  s/host://p /etc/linphone/linphone.conf` --username `/bin/sed -n  s/user://p /etc/linphone/linphone.conf` --password `/bin/sed -n  s/pass://p /etc/linphone/linphone.conf` > /tmp/tt'
-ExecStartPost=/bin/sleep 0.5
+ExecStartPost=/bin/sleep 2
 ExecStartPost=/usr/bin/linphonecsh generic 'autoanswer enable'
-ExecStartPost=/bin/sleep 0.5
 ExecStartPost=/usr/bin/linphonecsh generic 'autoanswer enable'
+##ExecStartPost=/usr/bin/linphonecsh generic 'register'
 ExecStop=/usr/bin/linphonecsh exit
 
 [Install]
