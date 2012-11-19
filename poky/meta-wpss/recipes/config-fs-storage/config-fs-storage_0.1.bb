@@ -4,8 +4,9 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=3f40d7994397109285ec7b81fdeb3b58"
 PACKAGES += " ${PN}-systemd"
 
+DEPENDS_${PN} += " bzip2 dosfstools"
 RDEPENDS_${PN} += " rsync "
-RDEPENDS_${PN}-systemd += " rsync "
+RDEPENDS_${PN}-systemd += " ${PN} rsync "
 
 
 SRC_URI = " file://fstab \
@@ -30,7 +31,7 @@ RDEPENDS_${PN} += " bzip2"
 do_compile() {
 	dd if=/dev/zero bs=512 count=32768 of=blankfilesystem.img
 	dd if=/dev/zero bs=512 count=32760 of=part.img
-	echo 'x\ns\n8\nh\n16\nc\n256\nr\nc\nn\np\n1\n\n\nt\nb\nw\n' | fdisk blankfilesystem.img
+	/bin/echo -e  'x\ns\n8\nh\n16\nc\n256\nr\nc\nn\np\n1\n\n\nt\nb\nw\n' | fdisk blankfilesystem.img
 	mkfs.msdos -n WPSS-CONFIG  part.img
 	dd if=blankfilesystem.img of=filesystem.img bs=512 count=8
 	dd if=part.img >> filesystem.img
