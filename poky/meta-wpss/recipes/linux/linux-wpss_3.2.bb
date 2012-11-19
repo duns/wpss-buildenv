@@ -9,7 +9,7 @@ COMPATIBLE_MACHINE = "overo"
 
 BOOT_SPLASH ?= "logo_linux_clut224-generic.ppm"
 PV = "3.2"
-PR = "r1"
+PR = "r2"
 
 S = "${WORKDIR}/git"
 
