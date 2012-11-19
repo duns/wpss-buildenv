@@ -2,9 +2,10 @@ DESCRIPTION="Configuration through USB mass storage"
 PR="r1"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=3f40d7994397109285ec7b81fdeb3b58"
+PACKAGES += " ${PN}-systemd"
 
-#DEPENDS_${PN} +=" rsync "
 RDEPENDS_${PN} += " rsync "
+RDEPENDS_${PN}-systemd += " rsync "
 
 
 SRC_URI = " file://fstab \
@@ -14,12 +15,13 @@ SRC_URI = " file://fstab \
 
 #S = "${WORKDIR}/git/src/videosource"
 
-inherit  systemd
-SYSTEMD_PACKAGES="${PN}-systemd"
-SYSTEMD_SERVICE_${PN}-systemd="config-fs-storage.service"
-SYSTEMD_AUTO_ENABLE_${PN}-systemd = "disable"
+#inherit  systemd
+#SYSTEMD_PACKAGES="${PN}-systemd"
+#SYSTEMD_SERVICE_${PN}-systemd="config-fs-storage.service"
+#SYSTEMD_AUTO_ENABLE_${PN}-systemd = "disable"
 
 FILES_${PN} += " ${sysconfdir}/fstab.orig /mnt/config ${sysconfdir}/modprobe.d/g_mass_storage.conf "
+FILES_${PN}-systemd += " ${systemd_unitdir}/system/config-fs-storage.service "
 CONFFILES_${PN} += " ${sysconfdir}/modprobe.d/g_mass_storage.conf" 
 #CONFFILES_${PN} += " ${sysconfdir}/fstab.orig "
 DEPENDS_${PN} += " bzip2"
@@ -46,6 +48,8 @@ do_install() {
         install -m 0644 ${S}/filesystem.img.bz2 ${D}/var/local/config-fs-storage
         install -d ${D}${sysconfdir}/modprobe.d
 	install -m 0644 ${WORKDIR}/g_mass_storage.conf  ${D}${sysconfdir}/modprobe.d/g_mass_storage.conf
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/config-fs-storage.service  ${D}${systemd_unitdir}/system/config-fs-storage.service
 }
 
 pkg_prerm_${PN}_prepend () {
