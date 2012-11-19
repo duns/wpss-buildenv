@@ -1,0 +1,31 @@
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=sync config files to RAM
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=shutdown.target
+After=local-fs-pre.target local-fs.target shutdown.target
+Wants=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mount /mnt/config 
+#ExecStart=/bin/sh -c '/bin/cp -R /mnt/config/* /media/ram || /bin/true'
+ExecStart=/bin/sh -c '/usr/bin/rsync -ac  /mnt/config/* /media/ram/ '
+#ExecStart=/bin/touch /media/ram/synced
+ExecStart=/bin/umount /mnt/config
+ExecStart=/sbin/modprobe g_mass_storage
+ExecStop=/sbin/modprobe -r  g_mass_storage
+#ExecStop=/bin/mount /mnt/config 
+#ExecStop=/bin/sh -c '/bin/cp -R /media/ram/* /mnt/config/  || /bin/true'
+#ExecStop=/bin/umount /mnt/config
+
+[Install]
+WantedBy=local-fs.target

@@ -168,6 +168,7 @@ wpss-feed-conf \
 cronie-systemd \
 watchdog \
 wpss-vpn-keys-systemd \
+config-fs-storage-systemd \
  "
 #  gst-omapfb \
 #  gsl-dev \
