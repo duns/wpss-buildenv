@@ -16,11 +16,12 @@ Wants=local-fs.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/mount /mnt/config 
+ExecStart=/bin/mount /etc
+ExecStart=/bin/sh -c '/bin/mount /mnt/config || bzip2 -d -c /var/local/config-fs-storage/filesystem.img.bz2 > /var/local/config-fs-storage/filesystem.img' 
 #ExecStart=/bin/sh -c '/bin/cp -R /mnt/config/* /media/ram || /bin/true'
-ExecStart=/bin/sh -c '/usr/bin/rsync -ac  /mnt/config/* /media/ram/ '
+ExecStart=/bin/sh -c '/usr/bin/rsync -ac  /mnt/config/ /media/ram/ '
 #ExecStart=/bin/touch /media/ram/synced
-ExecStart=/bin/umount /mnt/config
+ExecStart=/bin/sh -c '/bin/umount /mnt/config || true'
 ExecStart=/sbin/modprobe g_mass_storage
 ExecStop=/sbin/modprobe -r  g_mass_storage
 #ExecStop=/bin/mount /mnt/config 

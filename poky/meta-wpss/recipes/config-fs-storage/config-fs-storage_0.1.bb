@@ -3,8 +3,8 @@ PR="r1"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=3f40d7994397109285ec7b81fdeb3b58"
 
-DEPENDS=" "
-RDEPENDS += " rsync"
+#DEPENDS_${PN} +=" rsync "
+RDEPENDS_${PN} += " rsync "
 
 
 SRC_URI = " file://fstab \
@@ -17,7 +17,7 @@ SRC_URI = " file://fstab \
 inherit  systemd
 SYSTEMD_PACKAGES="${PN}-systemd"
 SYSTEMD_SERVICE_${PN}-systemd="config-fs-storage.service"
-#SYSTEMD_AUTO_ENABLE_${PN}-systemd = "disable"
+SYSTEMD_AUTO_ENABLE_${PN}-systemd = "disable"
 
 FILES_${PN} += " ${sysconfdir}/fstab.orig /mnt/config ${sysconfdir}/modprobe.d/g_mass_storage.conf "
 CONFFILES_${PN} += " ${sysconfdir}/modprobe.d/g_mass_storage.conf" 
@@ -33,6 +33,7 @@ do_compile() {
 	dd if=blankfilesystem.img of=filesystem.img bs=512 count=8
 	dd if=part.img >> filesystem.img
 	rm -f part.img blankfilesystem.img
+	rm -f filesystem.img.bz2
 	bzip2 filesystem.img
 }
 
@@ -68,15 +69,14 @@ pkg_postinst_${PN}_prepend () {
 	cp "$D"${sysconfdir}/fstab "$D"${sysconfdir}/fstab."$RND"-tmp
 	mv "$D"${sysconfdir}/fstab.orig "$D"${sysconfdir}/fstab 
 	mv "$D"${sysconfdir}/fstab."$RND"-tmp "$D"${sysconfdir}/fstab.orig 
-	[ ! -e "$D"/var/local/config-fs-storage/filesystem.img ] && bzip2 -d  "$D"/var/local/config-fs-storage/filesystem.img.bz2
+	[ ! -e "$D"/var/local/config-fs-storage/filesystem.img ] && bzip2 -d -c  "$D"/var/local/config-fs-storage/filesystem.img.bz2 > "$D"/var/local/config-fs-storage/filesystem.img
 	true
 }
-#pkg_postinst_${PN}-systemd_append () {
-# if [ x"$D" = "x" ]; then
-#	systemctl disable videosource.service
-#        # Actions to carry out on the device go here
-#else
-#        exit 1
-#fi
-#
-#}
+pkg_postinst_${PN}-systemd_append () {
+ if [ x"$D" = "x" ]; then
+	systemctl enable config-fs-storage.service
+else
+        exit 1
+fi
+
+}
