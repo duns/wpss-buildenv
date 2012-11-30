@@ -11,8 +11,9 @@ KERNELFILE=uImage-3.2-r103-overo.bin
 MODULEFILES=modules-3.2-r103-overo.tgz
 UBIIMGBNAME=wpss-console-image-overo.ubi
 ROOTTARBNAME=wpss-console-image-overo.tar.bz2
-IMAGEDIR=/mnt/datadisk0/phase2/wpss-buildenv/poky-overo/tmp/deploy/images
+IMAGEDIR=/mnt/datadisk0/phase2/wpss-buildenv/build/tmp/deploy/images
 DESTDIR=/mnt/datadisk0/phase2/wpss-buildenv/poky-overo/tmp/deploy/images
+DESTDIR=/tmp/
 UBICFG=/tmp/ubinize.cfg
 
 #LOADERDIR=$OVEROTOP/user.collection/loaders
