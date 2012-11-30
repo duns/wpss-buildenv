@@ -1,0 +1,63 @@
+diff --git a/packages/gnu/targets/ITarget.xs b/packages/gnu/targets/ITarget.xs
+index 9dce48b..671d99c 100644
+--- a/packages/gnu/targets/ITarget.xs
++++ b/packages/gnu/targets/ITarget.xs
+@@ -286,7 +286,7 @@ function _initVers(target)
+ 
+     function askLd(target)
+     {
+-        var ldCmd = target.rootDir + "/" + target.GCCTARG + "-ld";
++        var ldCmd = target.rootDir + "/" + target.GCCTARG + "-ld";       
+         /* If the ld executable cannot be found, and the prefix is not used,
+          * it's probably a misspelled directory path.
+          */
+@@ -524,7 +524,7 @@ function _mkCmds(target)
+     tool2cmd["link"] = cmd;
+ 
+     /* define the ar command template */
+-    cmd  = prefix + target.GCCTARG + "-ar"
++    cmd  = prefix + target.ar.cmd
+         + " $(AROPTS_P) " + target.ar.opts
+         + " $@ $(AROPTS_S) $(aropts) $(files)";
+     tool2cmd["ar"] = cmd;
+diff --git a/packages/gnu/targets/arm/linkcmd.xdt b/packages/gnu/targets/arm/linkcmd.xdt
+index d14386a..b17c21f 100644
+--- a/packages/gnu/targets/arm/linkcmd.xdt
++++ b/packages/gnu/targets/arm/linkcmd.xdt
+@@ -35,6 +35,7 @@ INPUT(
+ )
+ %}
+ 
++/*
+ %if ("BINVERS" in prog.build.target) {
+ %    var _utils = xdc.loadCapsule("gnu/targets/linkUtils.xs");
+ SECTIONS {
+@@ -53,6 +54,8 @@ ASSERT(ADDR(xdc.noload) + SIZEOF(xdc.noload) < ADDR(.rodata)
+     "Sections .rodata and xdc.noload overlap. See xdc.runtime.Text.isLoaded for more.")
+ %    }
+ %}
++*/
++
+ %%{
+ /*
+  * @(#) gnu.targets.arm; 1, 0, 0, 0,324; 11-11-2011 10:33:05; /db/ztree/library/trees/xdctargets/xdctargets-f12x/src/ xlibrary
+diff --git a/packages/gnu/targets/linkcmd.xdt b/packages/gnu/targets/linkcmd.xdt
+index 84d614a..3ad3c94 100644
+--- a/packages/gnu/targets/linkcmd.xdt
++++ b/packages/gnu/targets/linkcmd.xdt
+@@ -49,6 +49,7 @@ INPUT(
+ )
+ %}
+ 
++/*
+ %var _utils = xdc.loadCapsule("gnu/targets/linkUtils.xs");
+ %/* Mingw compilers (4.4.0 for example) ignore COPY. */
+ %if (prog.build.target.$name != "gnu.targets.Mingw") {
+@@ -67,6 +68,7 @@ ASSERT(ADDR(xdc.noload) + SIZEOF(xdc.noload) < ADDR(.rodata)
+     "Sections .rodata and xdc.noload overlap. See xdc.runtime.Text.isLoaded for more.")
+ %}
+ %} // end of the workaround for Mingw
++*/
+ 
+ %%{
+ /*
