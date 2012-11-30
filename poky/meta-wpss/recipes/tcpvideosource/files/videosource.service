@@ -8,7 +8,8 @@ User=root
 Group=root
 Restart=always
 #ExecStart=/usr/bin/videosource --config-path=/etc/videostream.conf/vsource.conf
-ExecStart=/usr/bin/videosrcloop.sh
+#ExecStart=/usr/bin/videosrcloop.sh
+ExecStart=/bin/sh -c '. /etc/profile ; /usr/bin/videosrcloop.sh'
 
 [Install]
 WantedBy=multi-user.target
