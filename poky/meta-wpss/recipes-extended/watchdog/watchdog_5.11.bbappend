@@ -17,6 +17,6 @@ do_install_append(){
 	install -d ${D}${sysconfdir}	
 	install -m 644 ${WORKDIR}/watchdog.conf ${D}${sysconfdir}/	
 	install -d ${D}${sbindir}	
-	install -m 644 ${WORKDIR}/repair.sh ${D}${sbindir}/	
-	install -m 644 ${WORKDIR}/sanity-check.sh ${D}${sbindir}/	
+	install -m 755 ${WORKDIR}/repair.sh ${D}${sbindir}/	
+	install -m 755 ${WORKDIR}/sanity-check.sh ${D}${sbindir}/	
 }
