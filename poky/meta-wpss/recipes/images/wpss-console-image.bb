@@ -110,7 +110,18 @@ remove_blacklist_files() {
 
 }
 
-ROOTFS_POSTPROCESS_COMMAND =+ "remove_blacklist_files ; "
+MODULES_START_AT_BOOT= " ehci_hcd \
+"
+
+add_modules_at_boot() {
+	mkdir -p ${IMAGE_ROOTFS}/etc/modules-load.d
+	for i in ${MODULES_START_AT_BOOT}; do
+		[ ! -e ${IMAGE_ROOTFS}/etc/modules-load.d/$i.conf ] && echo $i > ${IMAGE_ROOTFS}/etc/modules-load.d/$i.conf 
+	done
+	true
+
+}
+ROOTFS_POSTPROCESS_COMMAND =+ "remove_blacklist_files ; add_modules_at_boot ; "
 
 
 LICENSE = "LGPLv2"
@@ -169,6 +180,7 @@ cronie-systemd \
 watchdog \
 wpss-vpn-keys-systemd \
 config-fs-storage-systemd \
+tzdata \
  "
 #  gst-omapfb \
 #  gsl-dev \
