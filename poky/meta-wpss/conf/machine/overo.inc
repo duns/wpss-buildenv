@@ -18,6 +18,10 @@ PREFERRED_PROVIDER_ntp = "ntp"
 #PREFERRED_VERSION_linux-sakoman= "3.2"  
 PREFERRED_PROVIDER_virtual/kernel = "linux-wpss"  
 PREFERRED_VERSION_linux-wpss= "3.2"  
+PREFERRED_VERSION_ti-c6accel= "1_01_00_02"  
+PREFERRED_VERSION_ti-xdctools= "3_16_03_36"  
+PREFERRED_VERSION_ti-dspbios= "5_41_03_17"  
+PREFERRED_VERSION_ti-cgt6x= "6_1_14"  
 
 PREFERRED_PROVIDER_virtual/xserver = "xserver-xorg"
 XSERVER = "xserver-xorg \
