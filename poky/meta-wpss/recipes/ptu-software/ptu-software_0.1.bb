@@ -37,8 +37,10 @@ SRC_URI = "git://github.com/chpap/ptu-software.git;branch=master;protocol=git \
 	file://wpssconf.service \
 	file://libertas-module.service \
 	file://wlan-network-connected.service \
+	file://ptu_forwarder.conf \
 	file://blacklist.conf \
 	file://libertas.conf \
+	file://timezone.sh \
 "
 LIC_FILES_CHKSUM = "file://README.md;md5=0cf88e25d6f970bc6d959af1763e288c"
 
@@ -88,12 +90,14 @@ do_install () {
 	  install -m 0644 ${S}/conf/wpa_supplicant_wpss.conf ${D}${sysconfdir}/
 	  install -m 0755 ${S}/scripts/wpss-system.sh ${D}${sbindir}/
 	  install -m 0755 ${S}/scripts/wpssconf ${D}${sysconfdir}/init.d/
+	  install -m 0755 ${WORKDIR}/timezone.sh ${D}${sysconfdir}/profile.d/
 	  install -m 0755 ${S}/conf/pinouts.sh ${D}${sysconfdir}/profile.d/
 	  install -m 0755 ${S}/scripts/gpio_functions.sh ${D}${sysconfdir}/profile.d/
 	  install -d ${D}/boot/
 	  install -m 0644 ${S}/conf/boot.scr ${D}/boot/
 #ptu-forwarder
-	  install -m 0644 ${S}/src/*/ptu_forwarder.conf  ${D}${sysconfdir}/
+	  install -m 0644 ${WORKDIR}/ptu_forwarder.conf  ${D}${sysconfdir}/
+#	  install -m 0644 ${S}/src/*/ptu_forwarder.conf  ${D}${sysconfdir}/
 	  install -m 0755 ${S}/src/PTU_forwarder_TCP_RS232/ptu_forwarder  ${D}${sysconfdir}/init.d/
 #commandserver
 	  install -m 0755 ${S}/src/commandserver/commandserver.conf ${D}${sysconfdir}/
