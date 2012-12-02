@@ -140,6 +140,7 @@ IMAGE_INSTALL += " \
   gst-plugins-base-meta \
   gst-plugins-good-meta \
   gst-plugins-ugly-meta \
+  gst-plugins-bad-meta \
   gst-plugins-base-apps \
   gst-plugins-good-apps \
   gst-plugins-ugly-apps \
@@ -163,7 +164,7 @@ IMAGE_INSTALL += " \
   boost \
   linphonec-systemd \
   ti-linuxutils \
-  gstreamer-ti \
+  gstreamer-ti-3730 \
   usbutils \
   tcpvideosource-systemd \
   busybox \
