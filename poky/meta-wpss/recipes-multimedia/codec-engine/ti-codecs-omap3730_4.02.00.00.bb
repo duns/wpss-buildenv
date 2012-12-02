@@ -1,6 +1,8 @@
 DESCRIPTION = "TI Codecs and Server Combo for OMAP3730"
 SECTION = "multimedia"
 LICENSE = "TI"
+PN = "ti-codecs-omap3530"
+FILESEXTRAPATHS_prepend := "${THISDIR}/ti-codecs-omap3730:"
 
 require recipes-ti/includes/ti-paths.inc
 require recipes-ti/includes/ti-staging.inc
@@ -18,8 +20,8 @@ SRCREV = "8393c892b09e0ac42b19ff1531e232478c3b1a6c"
 
 
 SRC_URI="file://codecs-omap3530_4_02_00_00.tgz \
-    file://disable-c6accel.diff \
 "
+#    file://disable-c6accel.diff \
 
 
 TI_BIN_UNPK_CMDS = "Y:workdir"
@@ -99,7 +101,7 @@ do_install() {
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-PACKAGES += "ti-codecs-omap3730-server"
-FILES_ti-codecs-omap3730-server = "${installdir}/ti-codecs-server/*"
+PACKAGES += "ti-codecs-omap3530-server"
+FILES_ti-codecs-omap3530-server = "${installdir}/ti-codecs-server/*"
 
 
