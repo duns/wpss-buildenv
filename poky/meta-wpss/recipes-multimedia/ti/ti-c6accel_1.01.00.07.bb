@@ -8,11 +8,19 @@ SRC_URI[c6accelbin.md5sum] = "d9e3943efbae2b4f85df936bae4f03fd"
 
 LIC_FILES_CHKSUM = "file://docs/ReleaseNotes_C6Accel.txt;md5=a1adcd27b7152a4916afae75e2b33472"
 
-SSRC_URI_append = " \
+SRC_URI += " \
                   file://0001-soc-honour-buildsystem-CFLAGS-and-LDFLAGS-when-set.patch \
+		file://0002-Makefile-app-link-fix.patch \
+		file://0003-config-bld-tooldir-poky.patch \
                  "
 
 PV = "1_01_00_07"
+
+addtask prepatch after do_unpack before do_patch
+do_prepatch() {
+	rm -f ${S}/patches/*.patch
+	rm -f ${S}/patches/series
+}
 
 
 CFLAGS += "-fPIC"
