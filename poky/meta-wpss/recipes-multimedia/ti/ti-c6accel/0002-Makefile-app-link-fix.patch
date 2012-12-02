@@ -1,0 +1,15 @@
+diff --git a/soc/app/Makefile b/soc/app/Makefile
+index 00789b1..0ddeac1 100755
+--- a/soc/app/Makefile
++++ b/soc/app/Makefile
+@@ -97,8 +97,8 @@ install_$(TARGET):
+ $(TARGET):	$(OBJFILES) $(C6ACCEL_LIB) $(XDC_LFILE)
+ 	@echo
+ 	@echo Linking $@ from $^..
+-	@echo $(LINK.c) -o $@ $^ 
+-	$(LINK.c) -o $@ $^ 
++	@echo $(VERBOSE) $(CSTOOL_PREFIX)gcc -o $@ -Wl,-T $(XDC_LFILE) $(OBJFILES) $(C6ACCEL_LIB) $(LD_FLAGS)
++	$(VERBOSE) $(CSTOOL_PREFIX)gcc -o $@ -Wl,-T $(XDC_LFILE) $(OBJFILES) $(C6ACCEL_LIB) $(LD_FLAGS)
+ 
+ $(OBJFILES):	%.o: %.c $(HEADERS) $(XDC_CFLAGS)
+ 	@echo Compiling $@ from $<..
