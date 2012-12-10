@@ -10,9 +10,14 @@ if [ "$CMD" = "CONNECTED" ]; then
 	# Kick DHCP client to do a renewal
 	kill -usr1 `cat /var/run/udhcpc.$IFNAME.pid`
 	kill -usr1 `cat /var/run/udhcpc.$IFNAME.pid`
+	[ -e /etc/systemd/system/multi-user.target.wants/videosource.service ] && systemctl restart videosource.service
+	[ -e /etc/systemd/system/multi-user.target.wants/openvpn-tap.service ] && systemctl restart openvpn-tap.service
+	true
 fi
 
 if [ "$CMD" = "DISCONNECTED" ]; then 
+	[ -e /etc/systemd/system/multi-user.target.wants/videosource.service ] && systemctl stop videosource.service
+	[ -e /etc/systemd/system/multi-user.target.wants/openvpn-tap.service ] && systemctl stop openvpn-tap.service
 	# TODO any actions still needed?
 	true
 #	kill -usr2 `cat /var/run/udhcpc.$IFNAME.pid`
