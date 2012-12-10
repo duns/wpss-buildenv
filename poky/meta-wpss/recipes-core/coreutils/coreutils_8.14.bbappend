@@ -4,6 +4,6 @@
 #}
 
 pkg_postinst_${PN}_append() {
-	ln -s "$D"${libdir}/coreutils/libstdbuf.so "$D"${libexecdir}/coreutils/libstdbuf.so
+	ln -s ${libdir}/coreutils/libstdbuf.so "$D"${libexecdir}/coreutils/libstdbuf.so
 	
 }
