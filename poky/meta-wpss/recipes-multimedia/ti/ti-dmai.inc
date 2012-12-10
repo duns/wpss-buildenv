@@ -34,7 +34,7 @@ DEPENDS = "virtual/kernel alsa-lib ti-framework-components ti-codec-engine ti-xd
 
 DEPENDS_append_dm6446 	= " ti-codecs-dm6446   ti-dspbios ti-cgt6x ti-linuxutils"
 DEPENDS_append_dm6467 	= " ti-codecs-dm6467   ti-dspbios ti-cgt6x ti-linuxutils"
-DEPENDS_append_omap3    = " ti-codecs-omap3730 ti-dspbios ti-cgt6x ti-linuxutils"
+DEPENDS_append_omap3    = " ti-codecs-omap3530 ti-dspbios ti-cgt6x ti-linuxutils"
 DEPENDS_append_dm355  	= " ti-codecs-dm355"
 DEPENDS_append_dm365    = " ti-codecs-dm365"
 DEPENDS_append_omapl137 = " ti-codecs-omapl137 ti-dspbios ti-cgt6x ti-linuxutils"
@@ -150,7 +150,7 @@ INSANE_SKIP_ti-dmai-apps = "1"
 
 RDEPENDS_ti-dmai-apps_dm6446    += "ti-codecs-dm6446-server   ti-cmem-module ti-dsplink-module"
 RDEPENDS_ti-dmai-apps_dm6467    += "ti-codecs-dm6467          ti-cmem-module ti-dsplink-module"
-RDEPENDS_ti-dmai-apps_omap3     += "ti-codecs-omap3730-server ti-cmem-module ti-dsplink-module ti-lpm-module ti-sdma-module"
+RDEPENDS_ti-dmai-apps_omap3     += "ti-codecs-omap3530-server ti-cmem-module ti-dsplink-module ti-lpm-module ti-sdma-module"
 RDEPENDS_ti-dmai-apps_dm355     += "ti-codecs-dm355           ti-cmem-module ti-dm355mm-module"
 RDEPENDS_ti-dmai-apps_dm365     += "ti-codecs-dm365           ti-cmem-module ti-dm365mm-module ti-edma-module ti-irq-module"
 RDEPENDS_ti-dmai-apps_omapl137  += "ti-codecs-omapl137-server ti-cmem-module ti-dsplink-module"
