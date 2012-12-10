@@ -4,10 +4,12 @@ PRINC := "${@int(PRINC) + 3}"
 SRC_URI += " file://wpa_action  \
         file://ifupdown.rules \
         file://wpa_supplicant.conf \
+        file://checkcon.sh \
 "
 
 FILES_${PN} += " ${sysconfdir}/wpa_supplicant/wpa_supplicant.conf \
 		${sbindir}/wpa_action \
+		${sbindir}/checkcon.sh \
 		${sysconfdir}/udev/rules.d/ifupdown.rules \
 "
 
@@ -18,6 +20,7 @@ do_install_append() {
 #       install -m 0644 ${WORKDIR}/functions.sh ${D}${sysconfdir}/wpa_supplicant/
         install -d  ${D}/${sbindir}
         install -m 0755 ${WORKDIR}/wpa_action ${D}${sbindir}/
+        install -m 0755 ${WORKDIR}/checkcon.sh ${D}${sbindir}/
         install -d  ${D}/${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/ifupdown.rules ${D}${sysconfdir}/udev/rules.d/
 }
