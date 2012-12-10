@@ -1,5 +1,6 @@
 DESCRIPTION = "WPSS console image"
-
+WPSS_VERSION = "WPSS firmware version Tc (unstable) build ${BUILDNAME}"
+WPSS_SHORTVERSION = "Tc-${BUILDNAME}"
 inherit image
 IMAGE_FEATURES += "package-management"
 IMAGE_EXTRA_INSTALL ?= ""
@@ -121,7 +122,14 @@ add_modules_at_boot() {
 	true
 
 }
-ROOTFS_POSTPROCESS_COMMAND =+ "remove_blacklist_files ; add_modules_at_boot ; "
+add_version() {
+	echo -e "${WPSS_SHORTVERSION}" > ${IMAGE_ROOTFS}/${sysconfdir}/version
+	echo -e "${WPSS_VERSION}" >> ${IMAGE_ROOTFS}/${sysconfdir}/issue
+	echo -e "${WPSS_VERSION}" >> ${IMAGE_ROOTFS}/${sysconfdir}/motd
+	true
+
+}
+ROOTFS_POSTPROCESS_COMMAND =+ "remove_blacklist_files ; add_modules_at_boot ; add_version  ; "
 
 
 LICENSE = "LGPLv2"
@@ -182,6 +190,7 @@ watchdog \
 wpss-vpn-keys-systemd \
 config-fs-storage-systemd \
 tzdata \
+extra-image-files \
  "
 #  gst-omapfb \
 #  gsl-dev \
