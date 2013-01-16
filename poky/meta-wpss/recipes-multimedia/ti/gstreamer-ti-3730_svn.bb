@@ -6,6 +6,7 @@ PV = "svnr${SRCREV}"
 
 S = "${WORKDIR}/gstreamer_ti/ti_build/ticodecplugin"
 
+#SRCREV = "919"
 SRCREV = "962"
 
 # apply patches from tracker 1208 to get zero copy support.
@@ -14,6 +15,7 @@ SRCREV = "962"
 SRC_URI = "svn://gforge.ti.com/svn/gstreamer_ti/trunk;module=gstreamer_ti;proto=https;user=anonymous;pswd='' \
            file://gstreamer-ti-rc.sh \
            file://r962-remove-include-videodev.diff \
+	   file://001-r962-DM3730-CBR.patch \
            file://gstti-init.service \
 "
 
