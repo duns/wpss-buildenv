@@ -1,6 +1,17 @@
---- git/board/overo/overo.h.orig	2012-09-06 22:56:19.839852567 +0200
-+++ git/board/overo/overo.h	2012-10-07 20:02:24.824388708 +0200
-@@ -297,13 +297,13 @@
+--- git/board/overo/overo.h.orig	2013-01-08 13:34:40.138054907 +0100
++++ git/board/overo/overo.h	2013-01-16 04:08:19.176084919 +0100
+@@ -266,8 +266,8 @@
+ 								 /* - USBH_CPEN*/\
+ 	MUX_VAL(CP(I2C2_SDA),		(IEN  | PTU | EN  | M4)) /*GPIO_183*/\
+ 								 /* - USBH_RESET*/\
+-	MUX_VAL(CP(I2C3_SCL),		(IEN  | PTU | EN  | M0)) /*I2C3_SCL*/\
+-	MUX_VAL(CP(I2C3_SDA),		(IEN  | PTU | EN  | M0)) /*I2C3_SDA*/\
++	MUX_VAL(CP(I2C3_SCL),		(IEN  | PTU | EN | M4)) /*I2C3_SCL*/\
++	MUX_VAL(CP(I2C3_SDA),		(IEN  | PTU | EN | M4)) /*I2C3_SDA*/\
+ 	MUX_VAL(CP(I2C4_SCL),		(IEN  | PTU | EN  | M0)) /*I2C4_SCL*/\
+ 	MUX_VAL(CP(I2C4_SDA),		(IEN  | PTU | EN  | M0)) /*I2C4_SDA*/\
+ 	MUX_VAL(CP(HDQ_SIO),		(IDIS | PTU | EN  | M4)) /*HDQ_SIO*/\
+@@ -298,13 +298,13 @@
  	MUX_VAL(CP(SYS_OFF_MODE),	(IEN  | PTD | DIS | M0)) /*SYS_OFF_MODE*/\
  	MUX_VAL(CP(SYS_CLKOUT1),	(IEN  | PTU | EN  | M4)) /*GPIO_10*/\
  	MUX_VAL(CP(SYS_CLKOUT2),	(IEN  | PTU | EN  | M4)) /*GPIO_186*/\
