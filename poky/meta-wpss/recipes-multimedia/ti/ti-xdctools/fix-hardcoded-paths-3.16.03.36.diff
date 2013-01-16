@@ -1,0 +1,20 @@
+diff --git a/packages/gnu/targets/ITarget.xs b/packages/gnu/targets/ITarget.xs
+index 251e5ae..bee7f44 100644
+--- a/packages/gnu/targets/ITarget.xs
++++ b/packages/gnu/targets/ITarget.xs
+@@ -405,13 +405,13 @@ function _mkCmds(target)
+     tool2cmd["cpp"] = mkdep == null ? cmd : cmd.concat(mkdep + cmdOpts);
+ 
+     /* define the link command template */
+-    cmd = prefix + target.lnk.cmd
++    cmd = prefix + target.GCCTARG + "-ld"
+         + " $(LOPTS_P) $(lopts) -o $@ $(files) " + target.lnk.opts
+         + " $(LOPTS_S)\n";
+     tool2cmd["link"] = cmd;
+ 
+     /* define the ar command template */
+-    cmd  = prefix + target.ar.cmd
++    cmd  = prefix + target.GCCTARG + "-ar"
+         + " $(AROPTS_P) " + target.ar.opts
+         + " $@ $(AROPTS_S) $(aropts) $(files)";
+     tool2cmd["ar"] = cmd;

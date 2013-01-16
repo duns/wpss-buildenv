@@ -1,0 +1,59 @@
+diff --git a/packages/gnu/targets/arm/linkcmd.xdt b/packages/gnu/targets/arm/linkcmd.xdt
+index 8ca04dd..d9a32e7 100644
+--- a/packages/gnu/targets/arm/linkcmd.xdt
++++ b/packages/gnu/targets/arm/linkcmd.xdt
+@@ -17,9 +17,6 @@
+  *      $args[]     - array of zero or more libraries that should be linked
+  *                    with (in the order they appear in the argument list)
+  *
+- *  We can't add "'s around names; otherwise the GNU linker looks for names
+- *  with "'s.
+- *
+  *  The GNU linker accepts any text file as "command files", so there is no
+  *  need to use a special option to identify them.  In fact, if you use the
+  *  -T option you must also include the default linker command file (which
+@@ -33,30 +30,34 @@
+ %if ($args.length > 0) {
+ INPUT(
+     %for (var i = 0; i < $args.length; i++) {
+-    `$args[i]`
++    "`$args[i]`"
+     %}
+ )
+ %}
+ 
+-%var _utils = xdc.loadCapsule("gnu/targets/linkUtils.xs");
+-%/* Bugzilla 295146 prevent us from using the SECTIONS directive for
+-% * CodeSourcery target 4.3.3 or newer version.
+-% */
+-%if (prog.build.target.GCCVERS < "4.3.3"
+-%    || prog.build.target.GCCTARG != "arm-none-linux-gnueabi") {
++%if ("BINVERS" in prog.build.target) {
++%    var _utils = xdc.loadCapsule("gnu/targets/linkUtils.xs");
++%    if (prog.build.target.GCCVERS < "4.3.3") {
+ SECTIONS {
+ `_utils.genSections(prog)`
+ }
++%    }
++%    if (prog.build.target.noStdLinkScript
++%        && prog.build.target.BINVERS >= "2.19") {
++INSERT BEFORE .gnu.attributes
++%    }
+ 
+-%if (xdc.om['xdc.runtime.Text'].isLoaded != true) {
++%    if ("xdc.runtime" in xdc.om
++%        && xdc.om['xdc.runtime.Text'].isLoaded != true) {
+ ASSERT(ADDR(xdc.noload) + SIZEOF(xdc.noload) < ADDR(.rodata)
+     || ADDR(.rodata) + SIZEOF(.rodata) < ADDR(xdc.noload),
+     "Sections .rodata and xdc.noload overlap. See xdc.runtime.Text.isLoaded for more.")
++%    }
+ %}
+-%} // end of the workaround for 295146
+ %%{
+ /*
+- * @(#) gnu.targets.arm; 1, 0, 0, 0,216; 2-24-2010 16:24:01; /db/ztree/library/trees/xdctargets/xdctargets-b36x/src/
++ * @(#) gnu.targets.arm; 1, 0, 0, 0,324; 11-11-2011 10:33:05; /db/ztree/library/trees/xdctargets/xdctargets-f12x/src/ xlibrary
++
+  */
+ 
+ %%}
