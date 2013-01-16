@@ -191,6 +191,8 @@ wpss-vpn-keys-systemd \
 config-fs-storage-systemd \
 tzdata \
 extra-image-files \
+media-ctl \
+net-snmp-server-snmpd-systemd \
  "
 #  gst-omapfb \
 #  gsl-dev \
