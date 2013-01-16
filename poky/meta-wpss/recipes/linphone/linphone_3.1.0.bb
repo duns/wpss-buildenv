@@ -27,7 +27,9 @@ SRC_URI = "http://download.savannah.nongnu.org/releases/linphone/3.1.x/sources/l
 	file://alsac.patch \
 	file://linphone.conf \
 	file://linphonerc \
+	file://linphone_select_input.sh \
 	file://linphone.service \
+	file://soundsettings.conf \
 	file://asound.state \
 	"
 #	file://config.patch \
@@ -55,9 +57,13 @@ PARALLEL_MAKE = ""
 do_install(){
 	autotools_do_install
 	install -d ${D}${sysconfdir}/linphone
-        install -m 0755 ${WORKDIR}/linphonerc ${D}${sysconfdir}/linphone
-        install -m 0755 ${WORKDIR}/linphone.conf ${D}${sysconfdir}/linphone
-        install -m 0755 ${WORKDIR}/asound.state ${D}${sysconfdir}/linphone
+        install -m 0644 ${WORKDIR}/soundsettings.conf ${D}${sysconfdir}/linphone
+        install -m 0644 ${WORKDIR}/linphonerc ${D}${sysconfdir}/linphone
+        install -m 0644 ${WORKDIR}/linphone.conf ${D}${sysconfdir}/linphone
+        install -m 0644 ${WORKDIR}/asound.state ${D}${sysconfdir}/linphone
+	install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/linphone_select_input.sh ${D}${bindir}
+	
 }
 #deprecated staging
 do_dstage() {
@@ -96,7 +102,8 @@ FILES_${PN} = "${bindir}/linphone-3 \
 	    ${datadir}/sounds/linphone/hello16000.wav \
 	    ${datadir}/images/nowebcamCIF.jpg \
 	    "
-FILES_${PN}c = "${bindir}/linphonec ${bindir}/linphonecsh ${bindir}/sipomatic ${datadir}/sounds/linphone/ringback.wav ${sysconfdir}/linphone/linphone.conf ${sysconfdir}/linphone/linphonerc ${sysconfdir}/linphone/asound.state"
+FILES_${PN}c = "${bindir}/linphonec ${bindir}/linphonecsh ${bindir}/sipomatic ${datadir}/sounds/linphone/ringback.wav ${sysconfdir}/linphone/linphone.conf ${sysconfdir}/linphone/linphonerc ${sysconfdir}/linphone/asound.state ${sysconfdir}/linphone/soundsettings.conf  ${bindir}/linphone_select_input.sh"
+CONFFILES_${PN}c += " ${sysconfdir}/linphone/asound.state ${sysconfdir}/linphone/soundsettings.conf "
 FILES_${PN}-rings = "${datadir}/sounds/linphone/rings"
 FILES_liblinphone = "${libdir}/liblinphone.so.*"
 #FILES_libquickstream = "${libdir}/libquickstream.so.*"
