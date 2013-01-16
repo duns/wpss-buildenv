@@ -9,7 +9,8 @@ RDEPENDS += " update-modules"
 inherit module
 
 SRCREV =  "${AUTOREV}"
-SRC_URI = "git://github.com/chpap/ptu-software.git;branch=master;protocol=git"
+SRC_URI = "git://github.com/chpap/ptu-software.git;branch=master;protocol=git \
+	"
 
 S = "${WORKDIR}/git/src/pwm-mod/"
 
@@ -21,13 +22,18 @@ do_compile() {
 do_install() {
   install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
   install -m 0644 pwm${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+  install -d ${D}${bindir}
+  install -m 0755 ${S}/tunes.sh ${D}${bindir}
+  install -m 0755 ${S}/beep.sh ${D}${bindir}
   install -d ${D}${sysconfdir}/modules-load.d
   echo pwm > ${D}${sysconfdir}/modules-load.d/wpss-pwm.conf
   echo options pwm timers=8  >> ${D}${sysconfdir}/modules-load.d/wpss-pwm.conf
+  install -d ${D}${sysconfdir}/modprobe.d
+  echo options pwm timers=8  >> ${D}${sysconfdir}/modprobe.d/wpss-pwm.conf
 }
 
 pkg_postinst_append() {
 	update-modules
 }
 
-#FILES_${PN}_append = "file://${sysconfdir}/modules-load.d/wpss-pwm.conf"
+FILES_${PN} += "${sysconfdir}/modules-load.d/wpss-pwm.conf ${bindir}/beep.sh  ${bindir}/tunes.sh ${sysconfdir}/modprobe.d/wpss-pwm.conf "
