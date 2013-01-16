@@ -1,5 +1,5 @@
---- git/arch/arm/mach-omap2/board-overo.c.orig	2012-09-08 03:24:06.850951404 +0200
-+++ git/arch/arm/mach-omap2/board-overo.c	2012-09-08 03:26:15.266950272 +0200
+--- git/arch/arm/mach-omap2/board-overo.c.orig	2013-01-08 13:06:40.926761537 +0100
++++ git/arch/arm/mach-omap2/board-overo.c	2013-01-08 13:49:47.975139259 +0100
 @@ -391,15 +391,15 @@
  
  static struct gpio_led gpio_leds[] = {
@@ -9,14 +9,15 @@
 -		.gpio			= 21,
 +		.name			= "wpss:status",
 +		.default_trigger	= "default-on",
-+		.gpio			= 146,
++		.gpio			= 146, 
  		.active_low		= true,
  	},
  	{
 -		.name			= "overo:blue:gpio22",
-+		.name			= "wpss:network",
- 		.default_trigger	= "none",
+-		.default_trigger	= "none",
 -		.gpio			= 22,
++		.name			= "wpss:network",
++		.default_trigger	= "none", 
 +		.gpio			= 144,
  		.active_low		= true,
  	},
@@ -46,7 +47,7 @@
  		.code			= BTN_0,
 -		.gpio			= 23,
 -		.desc			= "button0",
-+		.gpio			= 65,
++		.gpio			= 12,
 +		.desc			= "panic",
  		.wakeup			= 1,
  	},
