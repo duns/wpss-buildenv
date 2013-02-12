@@ -1,0 +1,12 @@
+[Unit]
+Description=WPSS commandserver
+After=remount-rootfs.service
+#After=network.target
+
+[Service]
+PIDFile=/var/run/commandserver.pid
+Restart=always
+ExecStart=/usr/sbin/commandserver --config-path /etc/commandserver.conf
+
+[Install]
+WantedBy=multi-user.target
