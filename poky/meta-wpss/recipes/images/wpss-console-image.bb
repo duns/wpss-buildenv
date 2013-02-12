@@ -129,7 +129,12 @@ add_version() {
 	true
 
 }
-ROOTFS_POSTPROCESS_COMMAND =+ "remove_blacklist_files ; add_modules_at_boot ; add_version  ; "
+change_timezone() {
+	echo -e "CET" > ${IMAGE_ROOTFS}/${sysconfdir}/timezone
+	true
+
+}
+ROOTFS_POSTPROCESS_COMMAND =+ "remove_blacklist_files ; add_modules_at_boot ; add_version  ; change_timezone ; "
 
 
 LICENSE = "LGPLv2"
@@ -176,10 +181,11 @@ IMAGE_INSTALL += " \
   usbutils \
   tcpvideosource-systemd \
   busybox \
+ptu-forwarder \
 ptu-forwarder-dev \
-  ptu-software-systemd \
 ptu-forwarder-systemd \
  wpssconf-systemd \
+ commandserver-systemd \
 libertas-wpss-config-systemd \
 wlan-network-connected-systemd  \
 wpss-pwm \
