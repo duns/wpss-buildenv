@@ -4,7 +4,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://pwm.c;endline=28;md5=c8448052329697f9239ac2d919535901"
 PR="r2"
 DEPENDS = "bc"
-RDEPENDS += " update-modules"
+RDEPENDS += " bc update-modules"
 
 inherit module
 
