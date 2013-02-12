@@ -5,9 +5,15 @@ After=network.target
 
 [Service]
 PIDFile=/var/run/ptu-forwarder.pid
-EnvironmentFile=/etc/profile
-#ExecStart=/usr/bin/PTU_forwarder_TCP_RS232
+Restart=always
+RestartSec=2
+TimeoutStartSec=0
+#could interfere with the date change
+StartLimitInterval=0
+#StartLimitBurst=5
 ExecStart=/bin/sh -c '. /etc/profile ; /usr/bin/PTU_forwarder_TCP_RS232'
+#EnvironmentFile=/etc/profile
+#ExecStart=/usr/bin/PTU_forwarder_TCP_RS232
 
 [Install]
 WantedBy=multi-user.target

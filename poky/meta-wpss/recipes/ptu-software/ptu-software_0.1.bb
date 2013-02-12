@@ -1,16 +1,17 @@
 DESCRIPTION = "Software and configuration package for WPSS phase2"
-PACKAGES ="${PN}"
-PACKAGES += " ptu-forwarder wpssconf ptu-forwarder-dev libertas-wpss-config wlan-network-connected"
-PR="r2"
+#PACKAGES ="${PN}"
+PACKAGES = " ptu-forwarder wpssconf ptu-forwarder-dev libertas-wpss-config wlan-network-connected"
+PR="r3"
 DEPENDS="start-stop-daemon"
 RDEPENDS="start-stop-daemon"
 LICENSE = "LGPLv2"
 
 #FILES_${PN} = "${bindir}/autologin"
-FILES_${PN} = " ${sbindir}/commandserver \
-		${sysconfdir}/commandserver.conf \
-		${sysconfdir}/init.d/commandserver \
-		"
+#FILES_${PN} = ""
+#FILES_${PN} = " ${sbindir}/commandserver \
+#		${sysconfdir}/commandserver.conf \
+#		${sysconfdir}/init.d/commandserver \
+#		"
 
 FILES_libertas-wpss-config = "${sysconfdir}/modprobe.d/* \
 		"
@@ -33,10 +34,10 @@ FILES_ptu-forwarder-dev = " /usr/src/* "
 SRCREV =  "${AUTOREV}"
 SRC_URI = "git://github.com/chpap/ptu-software.git;branch=master;protocol=git \
 	file://ptu_forwarder.service \
-	file://commandserver.service \
 	file://wpssconf.service \
 	file://libertas-module.service \
 	file://wlan-network-connected.service \
+	file://wpss-system.sh \
 	file://ptu_forwarder.conf \
 	file://blacklist.conf \
 	file://libertas.conf \
@@ -54,8 +55,8 @@ INITSCRIPT_PARAMS_ptu-forwarder="defaults 99 1"
 INITSCRIPT_NAME_wpssconf="wpssconf"
 INITSCRIPT_PARAMS_wpssconf="defaults 98 2"
 
-SYSTEMD_PACKAGES="${PN}-systemd ptu-forwarder-systemd wpssconf-systemd libertas-wpss-config-systemd  wlan-network-connected-systemd"
-SYSTEMD_SERVICE_${PN}-systemd="commandserver.service"
+SYSTEMD_PACKAGES="ptu-forwarder-systemd wpssconf-systemd libertas-wpss-config-systemd  wlan-network-connected-systemd"
+#SYSTEMD_SERVICE_${PN}-systemd="commandserver.service"
 SYSTEMD_SERVICE_ptu-forwarder-systemd="ptu_forwarder.service"
 SYSTEMD_SERVICE_wpssconf-systemd="wpssconf.service"
 SYSTEMD_SERVICE_libertas-wpss-config-systemd="libertas-module.service"
@@ -69,6 +70,7 @@ DEPENDS_wlan-network-connected-systemd= " systemd-systemctl-native"
 RDEPENDS_wlan-network-connected-systemd= " systemd"
 
 do_compile () {
+	cd ${S}/src/PTU_forwarder_TCP_RS232
 	make
 	cd ${S}/conf
 	mkimage -T script -C none -n 'WPSS phase2 FireSTORM' -d WPSS-FireSTORM-bootcmds.txt boot.scr
@@ -76,6 +78,7 @@ do_compile () {
 }
 
 do_install () {
+	cd ${S}/src/PTU_forwarder_TCP_RS232
 	  oe_runmake  install DESTDIR=${D}/usr
 	  install -d ${D}${sysconfdir}/profile.d/
 	  install -d ${D}${sysconfdir}/init.d/
@@ -88,7 +91,7 @@ do_install () {
 	  install -m 0644 ${WORKDIR}/libertas.conf ${D}/etc/modprobe.d/
 	  install -m 0644 ${WORKDIR}/blacklist.conf ${D}/etc/modprobe.d/
 	  install -m 0644 ${S}/conf/wpa_supplicant_wpss.conf ${D}${sysconfdir}/
-	  install -m 0755 ${S}/scripts/wpss-system.sh ${D}${sbindir}/
+	  install -m 0755 ${WORKDIR}/wpss-system.sh ${D}${sbindir}/
 	  install -m 0755 ${S}/scripts/wpssconf ${D}${sysconfdir}/init.d/
 	  install -m 0755 ${WORKDIR}/timezone.sh ${D}${sysconfdir}/profile.d/
 	  install -m 0755 ${S}/conf/pinouts.sh ${D}${sysconfdir}/profile.d/
@@ -100,12 +103,12 @@ do_install () {
 #	  install -m 0644 ${S}/src/*/ptu_forwarder.conf  ${D}${sysconfdir}/
 	  install -m 0755 ${S}/src/PTU_forwarder_TCP_RS232/ptu_forwarder  ${D}${sysconfdir}/init.d/
 #commandserver
-	  install -m 0755 ${S}/src/commandserver/commandserver.conf ${D}${sysconfdir}/
-	  install -m 0755 ${S}/src/commandserver/commandserver-initscript ${D}${sysconfdir}/init.d/commandserver
+#	  install -m 0755 ${S}/src/commandserver/commandserver.conf ${D}${sysconfdir}/
+#	  install -m 0755 ${S}/src/commandserver/commandserver-initscript ${D}${sysconfdir}/init.d/commandserver
 }
 
 
-pkg_postinst_${PN}_append () {
+#pkg_postinst_${PN}_append () {
 #	sed 's_ttyS2_ttyO2_' /etc/inittab > inittab.tmp
 #	mv inittab.tmp /etc/inittab
 #	cp /boot/boot.scr /media/mmcblk0p1/
@@ -123,7 +126,7 @@ pkg_postinst_${PN}_append () {
 #	' >> /etc/network/interfaces
 #	init q
 #	update-rc.d ptu_forwarder defaults 99 1
-}
+#}
 
 #pkg_postrm_${PN}() {
 #	mv /etc/wpa_supplicant.conf.orig /etc/wpa_supplicant.conf
