@@ -19,5 +19,6 @@ SRC_URI = "git://www.sakoman.com/git/linux.git;branch=omap-3.2;protocol=git \
            file://${BOOT_SPLASH} \
 	   file://0001_wpss_gpio_leds.patch \
            file://0002_musb_host_500ma.patch \
+	   file://0003-ptu-poweroff.patch \
            "
 
