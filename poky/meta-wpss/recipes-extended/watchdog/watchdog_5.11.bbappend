@@ -33,4 +33,12 @@ pkg_postinst_${PN}_prepend() {
                        echo "* * * * *    /usr/sbin/sanity-check.sh 1" >> /var/spool/cron/root
                 fi
         fi
+	OPTS=""
+	if [ -n "$D" ]; then
+    	OPTS="--root=$D"
+	fi
+
+	systemctl $OPTS enable watchdog.service
+	exit 0
+
 }

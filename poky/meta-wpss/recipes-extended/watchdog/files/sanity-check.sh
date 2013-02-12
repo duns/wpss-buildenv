@@ -35,23 +35,23 @@ refresh_failure_file()
 
 }
 
+[ -z "$1" ] && [ -e "$REASONFILE" ] && SANITY=`cat "$REASONFILE"` && rm -f "$REASONFILE"  && ${EXIT} $SANITY
 if [ -z "$1" ]; then
 #NTPSYNCED=`systemctl status ntpd.service| grep '(running)'`
 #NTPSYNCED=`date +%Y | grep -e  "201."`
-NTPSYNCED=`systemctl status ntpd.service| grep '(running)'`
-[ -z "$NTPSYNCED" ] && ${EXIT} 0
-if [ ! -e "$TIMEFILE" ] ; then
-expr "$EPOCH" + "$INITAL_GRACE_TIME" > "$TIMEFILE"
-rm -f "$FAILURE_FILE"
-fi
-PREVEPOCH=`cat $TIMEFILE`
-expr "$EPOCH" - "$PREVEPOCH" \> "$INTERVAL" 
-[ $? -eq 1 ] && echo deferring execution && ${EXIT} 0
-echo sanity check
-echo "$EPOCH" > "$TIMEFILE"
+	NTPSYNCED=`systemctl status ntpd.service| grep '(running)'`
+	[ -z "$NTPSYNCED" ] && ${EXIT} 0
+	if [ ! -e "$TIMEFILE" ] ; then
+		expr "$EPOCH" + "$INITAL_GRACE_TIME" > "$TIMEFILE"
+		rm -f "$FAILURE_FILE"
+	fi
+	PREVEPOCH=`cat $TIMEFILE`
+	expr "$EPOCH" - "$PREVEPOCH" \> "$INTERVAL" 
+	[ $? -eq 1 ] && echo deferring execution && ${EXIT} 0
+	echo sanity check
+	echo "$EPOCH" > "$TIMEFILE"
 fi
 #if called without arguments, just check for panicfile
-[ -z "$1" ] && [ -e "$REASONFILE" ] && SANITY=`cat "$REASONFILE"` && rm -f "$REASONFILE"  && ${EXIT} $SANITY
 [ -z "$1" ] && [ -e "$PANICFILE" ] && ${EXIT} 200
 [ -z "$1" ] && [ ! -e "$PANICFILE" ] && touch "$PANICFILE"  && ${EXIT} 0
 
@@ -69,35 +69,42 @@ sleep 1
 done
 
 
-#action if wireless is off
+	echo none > ${WPSS_LED_CON}/trigger
 if [ "$WIRELESS_OFF"x == "1x" ] ; then
-echo WiFi seems to be off
-SANITY=201
+	#action if wireless is off
+	echo WiFi seems to be off
+	echo none > ${WPSS_LED_NET}/trigger
+	SANITY=201
 else
-echo Wifi is on
+	echo Wifi is on
+	echo default-on > ${WPSS_LED_NET}/trigger
 #test if server is alive
-/bin/ping -q -w $WAITPING -c $NUMPINGS "$PINGHOST" 
+	/bin/ping -q -w $WAITPING -c $NUMPINGS "$PINGHOST" 
 #sleep 1
 #sleep $WAITPING &
 #wait $!
-[ "$?" -ne 0 ] && SERVER_UNREACHABLE=1
+	if [ "$?" -ne 0 ]; then
+		SERVER_UNREACHABLE=1
+		echo server is unreachable
+		SANITY=202
+	else
+		echo timer > ${WPSS_LED_NET}/trigger
 
 #test if VPN is alive
-/bin/ping -q -w $WAITPING -c $NUMPINGS "$PINGVPN" 
-[ "$?" -ne 0 ] && VPN_UNREACHABLE=1
+		/bin/ping -q -w $WAITPING -c $NUMPINGS "$PINGVPN" 
+		if [ "$?" -ne 0 ]; then
+			VPN_UNREACHABLE=1
+			echo VPN is unreachable
+			SANITY=203
+		else
+			echo none > ${WPSS_LED_NET}/trigger
+			echo default-on > ${WPSS_LED_CON}/trigger
+
+		fi
+	fi
 fi
 
-	#action if server is unreachable
-	if [ "$SERVER_UNREACHABLE"x == "1x" ];then
-	echo server is unreachable
-	SANITY=202
-	fi
 
-#action if server is alive
-	if [ "$VPN_UNREACHABLE"x == "1x" ];then
-	echo VPN is unreachable
-	SANITY=203
-	fi
 
 if [ "$SANITY" -eq 0 ]; then
 echo sanity check succeeded

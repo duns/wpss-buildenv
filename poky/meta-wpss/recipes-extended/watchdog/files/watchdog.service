@@ -1,5 +1,6 @@
 [Unit]
 Description=Watchdog Daemon
+After=remount-rootfs.service
 
 [Service]
 Type=forking

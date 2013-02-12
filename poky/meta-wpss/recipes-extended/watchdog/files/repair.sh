@@ -46,13 +46,17 @@ case $REASON in
   201)
 	date >> ${LOGFILE}
 	echo wlan interface down, enabling...  >> ${LOGFILE}
-	ifconfig wlan0 up
+	ifdown wlan0
+#	sleep 2
+
+	nohup ifup wlan0 &
+#	ifconfig wlan0 up
 	;;
   202)
 	date >> ${LOGFILE}
 	echo  server inacessible , reenabling...  >> ${LOGFILE}
 	ifdown wlan0
-	ifup wlan0
+	nohup ifup wlan0 &
 #	ifconfig wlan0 down
 #	ifconfig wlan0 up
 	;;
