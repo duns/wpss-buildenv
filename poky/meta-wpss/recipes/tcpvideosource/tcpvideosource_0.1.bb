@@ -10,7 +10,7 @@ DEPENDS="boost \
 #SRC_URI[archive.md5sum]="de370b6148434f43ce02ddbfc93d709c"
 
 #SRCREV = HEAD
-SRCREV = "4b34bf79070ee3524b2a28864883a1c1e9e3530f"
+SRCREV = "67d765a55aa986d4d1a909a48ec875371518496d"
 #SRCREV =  "${AUTOREV}"
 SRC_URI = "git://github.com/chpap/ptu-software.git;branch=develop;protocol=git \
 	file://videosrcloop.sh \
