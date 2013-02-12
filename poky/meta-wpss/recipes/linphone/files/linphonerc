@@ -85,14 +85,15 @@ start_date=Sun Nov 20 18:35:35 2011
 duration=23
 
 [proxy_0]
-reg_proxy=sip:sip@pcatlaswpss02
-reg_identity=sip:1003@pcatlaswpss02
+reg_proxy=sip:pcatlaswpss02
+reg_route=<sip:pcatlaswpss02;lr>
+reg_identity=sip:1000@pcatlaswpss02
 reg_expires=3600
 reg_sendregister=1
 publish=0
 
 [auth_info_0]
-username=1003
-passwd=pass3
+username=1000
+passwd=pass0
 realm="asterisk"
 
