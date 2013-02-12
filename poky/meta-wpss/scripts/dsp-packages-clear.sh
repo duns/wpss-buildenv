@@ -7,13 +7,15 @@ if [[ -z "${OETMP}" ]]; then
         OETMP=${OVEROTOP}/tmp
 fi
 
-packages=( ti-dsplib \
-           ti-dsplink \
+packages=( ti-dsplink \
+	   ti-codec-engine \
+	   ti-local-power-manager \
+	   ti-c6accel \
+	   ti-codecs-omap3530 \
            ti-dmai \
            ti-dspbios \
-           ti-local-power-manager \
            ti-linuxutils \
-	task-gstreamer-ti \
+	   gstreamer-ti-3730 \
 )
 
 ASD="
@@ -41,12 +43,12 @@ kernel-module-econ \
 
 for pkg in ${packages[@]}
 do
-    bitbake -c clean $pkg
+    bitbake -c cleanall $pkg
 done
 
-rm -rf $OETMP/cache/*
-for pkg in ${packages[@]}
-do
-    bitbake $pkg
-done
+#rm -rf $OETMP/cache/*
+#for pkg in ${packages[@]}
+#do
+#    bitbake $pkg
+#done
 
