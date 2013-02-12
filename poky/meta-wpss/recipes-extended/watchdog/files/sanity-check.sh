@@ -88,7 +88,8 @@ else
 		echo server is unreachable
 		SANITY=202
 	else
-		echo timer > ${WPSS_LED_NET}/trigger
+		echo none > ${WPSS_LED_NET}/trigger
+		echo timer > ${WPSS_LED_CON}/trigger
 
 #test if VPN is alive
 		/bin/ping -q -w $WAITPING -c $NUMPINGS "$PINGVPN" 
